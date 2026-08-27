@@ -35,7 +35,7 @@ if (import_fs.default.existsSync(envLocalPath)) {
   import_dotenv.default.config();
 }
 async function generateGeminiContent(ai, contents, config = {}) {
-  const models = ["gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash"];
+  const models = ["gemini-2.5-flash", "gemini-2.5-pro"];
   let lastErr = null;
   for (const model of models) {
     for (let attempt = 1; attempt <= 2; attempt++) {

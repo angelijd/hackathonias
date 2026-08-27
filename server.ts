@@ -16,7 +16,7 @@ if (fs.existsSync(envLocalPath)) {
 
 // Helper to call Gemini API with model fallback and automatic retry
 async function generateGeminiContent(ai: GoogleGenAI, contents: any, config: any = {}) {
-  const models = ['gemini-3.7-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'];
+  const models = ['gemini-2.5-flash', 'gemini-2.5-pro'];
   let lastErr: any = null;
 
   for (const model of models) {
