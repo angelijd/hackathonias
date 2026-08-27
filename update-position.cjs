@@ -1,10 +1,14 @@
-﻿/* ==== Botões Flutuantes em Posição Inferior (Bottom-Right) ==== */
+﻿const fs = require('fs');
+
+// 1. Update accessibility.css to position widgets at BOTTOM-RIGHT
+const cssContent = \
+/* ==== Botões Flutuantes em Posição Inferior (Bottom-Right) ==== */
 /* Evita sobrepor o toggle de Modo Claro/Escuro no topo */
 
 #ias-a11y-widget {
   position: fixed;
   bottom: 25px;
-  left: 25px;
+  right: 25px;
   z-index: 999999;
   background-color: #04142B;
   color: #fff;
@@ -30,7 +34,7 @@
 #ias-info-widget {
   position: fixed;
   bottom: 25px;
-  left: 90px;
+  right: 90px;
   z-index: 999999;
   background-color: #04142B;
   color: #FDC300;
@@ -57,7 +61,7 @@
 #ias-a11y-menu {
   position: fixed;
   bottom: 90px;
-  left: 25px;
+  right: 25px;
   z-index: 999998;
   background: white;
   border-radius: 12px;
@@ -248,3 +252,7 @@ body.ias-a11y-mode .ias-tts-btn {
   color: #000 !important;
   border: 2px solid #FFF !important;
 }
+\;
+
+fs.writeFileSync('public/a11y/accessibility.css', cssContent, 'utf8');
+console.log('accessibility.css updated with bottom-right positioning');
