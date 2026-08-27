@@ -2080,6 +2080,10 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
   app.use('/autoavaliacao', express.static(autoavaliacaoDist));
   app.use('/hackathon', express.static(hackathonDist));
 
+  // Fix for hardcoded video paths in React components that request from root
+  app.use('/beco-intro.mp4', express.static(path.join(hackathonDist, 'beco-intro.mp4')));
+  app.use('/beco-intro.mp4.mp4', express.static(path.join(hackathonDist, 'beco-intro.mp4.mp4')));
+
   // Fallbacks do roteador para SPA
   app.get('/login/*', (req, res) => {
     res.sendFile(path.join(sennaLoginDist, 'index.html'));
