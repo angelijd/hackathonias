@@ -2561,11 +2561,19 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
       const audioPath = path.join(process.cwd(), 'public', 'audio', hash + '.mp3');
       const audioUrl = '/audio/' + hash + '.mp3';
 
+      const audioDir = path.dirname(audioPath);
+      if (!fs.existsSync(audioDir)) {
+        fs.mkdirSync(audioDir, { recursive: true });
+      }
+
       if (fs.existsSync(audioPath)) {
         return res.json({ audioUrl });
       }
 
       const openaiKey = process.env.OPENAI_API_KEY;
+      if (!openaiKey) {
+        throw new Error('OPENAI_API_KEY is not set');
+      }
       
       const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
         method: 'POST',
@@ -2581,7 +2589,8 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
       });
 
       if (!ttsRes.ok) {
-        throw new Error('Falha na API da OpenAI');
+        const errText = await ttsRes.text();
+        throw new Error('Falha na API da OpenAI: ' + errText);
       }
 
       const buffer = await ttsRes.arrayBuffer();
@@ -2590,7 +2599,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
       return res.json({ audioUrl });
     } catch (error) {
       console.error('[TTS Error]:', error);
-      res.status(500).json({ error: 'Falha na geracao de voz' });
+      res.status(500).json({ error: 'Falha na geracao de voz', details: error.message || error });
     }
   });
 
