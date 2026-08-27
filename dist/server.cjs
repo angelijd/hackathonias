@@ -1129,18 +1129,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             auth: { user: smtpUser, pass: smtpPass }
           });
         } else {
-          const testAccount = await import_nodemailer.default.createTestAccount();
-          transporter = import_nodemailer.default.createTransport({
-            host: "smtp.ethereal.email",
-            port: 587,
-            secure: false,
-            auth: { user: testAccount.user, pass: testAccount.pass }
-          });
+          throw new Error("Ethereal desativado (502 Timeout)");
         }
         const info = await transporter.sendMail({
           from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
           to: user.personalEmail,
-          subject: "\xF0\u0178\u201D\u2018 Recupera\xC3\xA7\xC3\xA3o de Acesso - Portal IAS",
+          subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
           text: `Ol\xC3\xA1 ${user.name},
 
 Recebemos uma solicita\xC3\xA7\xC3\xA3o de redefini\xC3\xA7\xC3\xA3o de acesso para sua conta.
