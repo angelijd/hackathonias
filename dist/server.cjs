@@ -1844,6 +1844,9 @@ ${mem.summaryMemory ? `- Mem\xC3\xB3ria executiva das conversas anteriores: ${me
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Instituto Ayrton Senna - Portal de Compet\xEAncias</title>
+        <!-- A11y Injection -->
+        <link rel="stylesheet" href="/a11y/accessibility.css" />
+        <script src="/a11y/accessibility.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
           * {
