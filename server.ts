@@ -2572,6 +2572,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
         }
 
         console.log(`[Auto-Config Webhook] Registrando webhook na Evolution API...`);
+        const publicUrl = process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : (process.env.PUBLIC_URL || `http://localhost:${PORT}`);
         const webhookRes = await fetch(`${evolutionUrl}/webhook/set/${evolutionInstance}`, {
           method: 'POST',
           headers: {
@@ -2581,7 +2582,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           body: JSON.stringify({
             webhook: {
               enabled: true,
-              url: `http://host.docker.internal:3001/api/evolution-webhook`,
+              url: `${publicUrl}/api/evolution-webhook`,
               byEvents: false,
               base64: false,
               events: [
