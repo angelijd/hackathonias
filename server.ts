@@ -2601,6 +2601,62 @@ ${mem.summaryMemory ? `- MemÃƒÆ’Ã‚Â³ria executiva das conversas anteri
     }
   });
 
+  
+  // ==========================================
+  // INCLUSÃO E ACESSIBILIDADE (A11Y)
+  // ==========================================
+
+  app.use('/a11y', express.static(path.join(process.cwd(), 'public', 'a11y')));
+  app.use('/audio', express.static(path.join(process.cwd(), 'public', 'audio')));
+  app.use('/sandbox', express.static(path.join(process.cwd(), 'public', 'sandbox')));
+
+  app.post('/api/tts', async (req, res) => {
+    try {
+      const { text, isDynamic } = req.body;
+      if (!text) return res.status(400).json({ error: 'Texto ausente' });
+
+      const crypto = require('crypto');
+      const hash = crypto.createHash('md5').update(text).digest('hex');
+      const audioPath = path.join(process.cwd(), 'public', 'audio', hash + '.mp3');
+      const audioUrl = '/audio/' + hash + '.mp3';
+
+      if (fs.existsSync(audioPath)) {
+        return res.json({ audioUrl });
+      }
+
+      const openaiKey = process.env.OPENAI_API_KEY;
+      
+      const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + openaiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'tts-1',
+          voice: 'onyx',
+          input: text
+        })
+      });
+
+      if (!ttsRes.ok) {
+        throw new Error('Falha na API da OpenAI');
+      }
+
+      const buffer = await ttsRes.arrayBuffer();
+      fs.writeFileSync(audioPath, Buffer.from(buffer));
+
+      return res.json({ audioUrl });
+    } catch (error) {
+      console.error('[TTS Error]:', error);
+      res.status(500).json({ error: 'Falha na geracao de voz' });
+    }
+  });
+
+  app.get('/sandbox-live', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'public', 'sandbox', 'live-test.html'));
+  });
+
   app.listen(PORT, "0.0.0.0", async () => {
     console.log(`Server running on http://localhost:${PORT}`);
 
@@ -2681,5 +2737,7 @@ ${mem.summaryMemory ? `- MemÃƒÆ’Ã‚Â³ria executiva das conversas anteri
 }
 
 startServer();
+
+
 
 
