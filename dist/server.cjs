@@ -2282,32 +2282,60 @@ ${mem.summaryMemory ? `- Mem\xC3\u0192\xC2\xB3ria executiva das conversas anteri
   });
   app.get("/whatsapp-qr", async (req, res) => {
     try {
-      const evolutionUrl = process.env.EVOLUTION_API_URL;
+      const evolutionUrl = process.env.EVOLUTION_API_URL?.replace(/\/$/, "");
       const evolutionKey = process.env.EVOLUTION_API_KEY;
       const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
       if (!evolutionUrl || !evolutionKey) {
         return res.send("<h1>Erro: Vari\xE1veis do Evolution API n\xE3o configuradas no Railway.</h1>");
       }
-      const qrRes = await fetch(`${evolutionUrl}/instance/connect/${evolutionInstance}`, {
+      if (req.query.reset === "1") {
+        await fetch(`${evolutionUrl}/instance/logout/${evolutionInstance}`, { method: "DELETE", headers: { apikey: evolutionKey } });
+        await fetch(`${evolutionUrl}/instance/delete/${evolutionInstance}`, { method: "DELETE", headers: { apikey: evolutionKey } });
+        await new Promise((r) => setTimeout(r, 2e3));
+        await fetch(`${evolutionUrl}/instance/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: evolutionKey },
+          body: JSON.stringify({ instanceName: evolutionInstance, token: evolutionKey, qrcode: true, integration: "WHATSAPP-BAILEYS" })
+        });
+        return res.redirect("/whatsapp-qr");
+      }
+      let qrRes = await fetch(`${evolutionUrl}/instance/connect/${evolutionInstance}`, {
         headers: { "apikey": evolutionKey }
       });
       if (!qrRes.ok) {
-        return res.send(`<h1>Erro ao buscar QR Code. Status: ${qrRes.status}</h1><p>A inst\xE2ncia pode n\xE3o existir ainda. Aguarde 1 minuto e recarregue.</p>`);
+        await fetch(`${evolutionUrl}/instance/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: evolutionKey },
+          body: JSON.stringify({ instanceName: evolutionInstance, token: evolutionKey, qrcode: true, integration: "WHATSAPP-BAILEYS" })
+        });
+        await new Promise((r) => setTimeout(r, 2e3));
+        qrRes = await fetch(`${evolutionUrl}/instance/connect/${evolutionInstance}`, {
+          headers: { "apikey": evolutionKey }
+        });
       }
       const data = await qrRes.json();
       if (data.instance?.state === "open" || data.state === "open" || data.instance?.state === "connected") {
         return res.send("<h1>\u2705 WhatsApp j\xE1 est\xE1 conectado!</h1><p>Voc\xEA j\xE1 pode fechar esta p\xE1gina e testar o envio de mensagens no SennaHub.</p>");
       }
-      const base64 = data.base64;
+      const base64 = data.base64 || data.qrcode?.base64;
       if (!base64) {
-        return res.send("<h1>O QR Code n\xE3o est\xE1 pronto. Recarregue a p\xE1gina em alguns segundos...</h1><pre>" + JSON.stringify(data, null, 2) + "</pre>");
+        return res.send(`
+          <div style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+            <h1>O QR Code n\xE3o p\xF4de ser gerado agora.</h1>
+            <p>Isso acontece muito na nuvem se o rob\xF4 "dormiu" ou se o c\xF3digo expirou.</p>
+            <a href="/whatsapp-qr?reset=1" style="display: inline-block; padding: 15px 30px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">CLIQUE AQUI PARA RESETAR O ROB\xD4</a>
+            <p style="margin-top: 10px; font-size: 13px; color: gray;">(O processo vai levar 3 segundos e recarregar a tela)</p>
+          </div>
+        `);
       }
       res.send(`
         <div style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-          <h2>Conecte o WhatsApp do B\xE9co (Nuvem Railway)</h2>
+          <h2>Conecte o WhatsApp do B\xE9co (Nuvem)</h2>
           <p>Abra o WhatsApp no seu celular > Aparelhos Conectados > Conectar um Aparelho</p>
           <img src="${base64}" alt="QR Code" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; width: 300px; height: 300px; margin: 20px auto;" />
-          <p style="color: gray;">A p\xE1gina n\xE3o recarrega sozinha. Ap\xF3s ler o QR Code com o celular, teste o site novamente!</p>
+          <p style="color: gray;">A p\xE1gina n\xE3o recarrega sozinha. Ap\xF3s ler, feche e teste o site!</p>
+          <br><br>
+          <a href="/whatsapp-qr?reset=1" style="color: #e74c3c; text-decoration: underline; font-size: 13px;">O QR Code travou ou n\xE3o carrega? Clique aqui para resetar.</a>
         </div>
       `);
     } catch (err) {
