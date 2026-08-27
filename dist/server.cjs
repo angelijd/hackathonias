@@ -2336,6 +2336,47 @@ ${mem.summaryMemory ? `- Mem\xC3\u0192\xC6\u2019\xC3\u201A\xC2\xB3ria executiva 
       res.send(`<h1>Erro no servidor</h1><pre>${err.message}</pre>`);
     }
   });
+  app.use("/a11y", import_express.default.static(import_path.default.join(process.cwd(), "public", "a11y")));
+  app.use("/audio", import_express.default.static(import_path.default.join(process.cwd(), "public", "audio")));
+  app.use("/sandbox", import_express.default.static(import_path.default.join(process.cwd(), "public", "sandbox")));
+  app.post("/api/tts", async (req, res) => {
+    try {
+      const { text, isDynamic } = req.body;
+      if (!text) return res.status(400).json({ error: "Texto ausente" });
+      const crypto = require("crypto");
+      const hash = crypto.createHash("md5").update(text).digest("hex");
+      const audioPath = import_path.default.join(process.cwd(), "public", "audio", hash + ".mp3");
+      const audioUrl = "/audio/" + hash + ".mp3";
+      if (import_fs.default.existsSync(audioPath)) {
+        return res.json({ audioUrl });
+      }
+      const openaiKey = process.env.OPENAI_API_KEY;
+      const ttsRes = await fetch("https://api.openai.com/v1/audio/speech", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + openaiKey,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "tts-1",
+          voice: "onyx",
+          input: text
+        })
+      });
+      if (!ttsRes.ok) {
+        throw new Error("Falha na API da OpenAI");
+      }
+      const buffer = await ttsRes.arrayBuffer();
+      import_fs.default.writeFileSync(audioPath, Buffer.from(buffer));
+      return res.json({ audioUrl });
+    } catch (error) {
+      console.error("[TTS Error]:", error);
+      res.status(500).json({ error: "Falha na geracao de voz" });
+    }
+  });
+  app.get("/sandbox-live", (req, res) => {
+    res.sendFile(import_path.default.join(process.cwd(), "public", "sandbox", "live-test.html"));
+  });
   app.listen(PORT, "0.0.0.0", async () => {
     console.log(`Server running on http://localhost:${PORT}`);
     const evolutionUrl = process.env.EVOLUTION_API_URL;
