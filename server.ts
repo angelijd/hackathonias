@@ -99,19 +99,19 @@ async function startServer() {
         
         if (isCreativity) {
           fallbackItems = [
-            { rubricaId: "cr2", tipo: "dissertativa", enunciado: `${name}, imagine que a prefeitura de ${city} quer criar um novo espaço perto da ${school} para estimular a imaginação dos jovens, mas o local atual é cinza e sem graça. Como o ambiente afeta sua vontade de criar e o que você faria para transformar esse lugar?` },
-            { rubricaId: "cr3", tipo: "dissertativa", enunciado: `Pense no seu dia a dia e na sua paixão por ${interestName}. Qual foi a ideia mais simples e criativa que você teve recentemente para resolver um problema comum e como você se sentiu ao colocá-la em prática?` },
-            { rubricaId: "cr5", tipo: "dissertativa", enunciado: `Se você tivesse que inventar 5 usos totalmente diferentes e fora do comum para um objeto relacionado a ${interestName}, quais seriam?` },
-            { rubricaId: "cr6", tipo: "dissertativa", enunciado: `Conte sobre uma experiência recente na qual você tentou criar algo diferente, mas a sua ideia não deu certo. Como você lidou com a frustração desse erro e tentou novamente?` },
-            { rubricaId: "cr7", tipo: "dissertativa", enunciado: `Imagine que você e seus amigos do ${grade} precisam organizar um evento sobre ${interestName}, mas ninguém sabe direito o que fazer e as opiniões são muito diferentes. Como você lidaria com essa confusão sem perder a calma e a criatividade?` }
+            { rubricaId: "cr2", tipo: "dissertativa", enunciado: `${name}, imagine que a prefeitura de ${city} quer criar um novo espaÃ§o perto da ${school} para estimular a imaginaÃ§Ã£o dos jovens, mas o local atual Ã© cinza e sem graÃ§a. Como o ambiente afeta sua vontade de criar e o que vocÃª faria para transformar esse lugar?` },
+            { rubricaId: "cr3", tipo: "dissertativa", enunciado: `Pense no seu dia a dia e na sua paixÃ£o por ${interestName}. Qual foi a ideia mais simples e criativa que vocÃª teve recentemente para resolver um problema comum e como vocÃª se sentiu ao colocÃ¡-la em prÃ¡tica?` },
+            { rubricaId: "cr5", tipo: "dissertativa", enunciado: `Se vocÃª tivesse que inventar 5 usos totalmente diferentes e fora do comum para um objeto relacionado a ${interestName}, quais seriam?` },
+            { rubricaId: "cr6", tipo: "dissertativa", enunciado: `Conte sobre uma experiÃªncia recente na qual vocÃª tentou criar algo diferente, mas a sua ideia nÃ£o deu certo. Como vocÃª lidou com a frustraÃ§Ã£o desse erro e tentou novamente?` },
+            { rubricaId: "cr7", tipo: "dissertativa", enunciado: `Imagine que vocÃª e seus amigos do ${grade} precisam organizar um evento sobre ${interestName}, mas ninguÃ©m sabe direito o que fazer e as opiniÃµes sÃ£o muito diferentes. Como vocÃª lidaria com essa confusÃ£o sem perder a calma e a criatividade?` }
           ];
         } else {
           fallbackItems = [
-            { rubricaId: "pc1", tipo: "dissertativa", enunciado: `${name}, imagine que a prefeitura de ${city} quer proibir o uso de celulares na ${school} para melhorar o foco, mas alguns alunos dizem que usam para pesquisar sobre ${interestName}. Como você analisaria os argumentos dos dois lados sem deixar sua emoção falar mais alto?` },
-            { rubricaId: "pc2", tipo: "multipla_marcacao", enunciado: `Pense em uma situação em que você teve que tomar uma decisão difícil envolvendo seus amigos do ${grade} e sua paixão por ${interestName}. Como você lidou com o conflito entre o que você sentia e o que a lógica dizia ser o certo? Marque as opções que se aplicam:`, opcoes: ["Procurei confirmar se os fatos eram verdadeiros.", "Procurei verificar a credibilidade da fonte.", "Busquei mais informação antes de decidir.", "Refleti sobre os impactos éticos."] },
-            { rubricaId: "pc4", tipo: "multipla_marcacao", enunciado: `Sendo um estudante de ${age}, é comum a gente buscar informações que só confirmam o que já pensamos sobre ${interestName}. Como você faria para não cair nessa armadilha? Marque o que você faz:`, opcoes: ["Presto atenção em como minhas crenças influenciam meu julgamento.", "Examino argumentos contrários com calma.", "Busco fontes alternativas confiáveis."] },
-            { rubricaId: "pc5", tipo: "multipla_marcacao", enunciado: `Ao assistir a um vídeo ou post polêmico sobre ${interestName}, como você identifica o que realmente está sendo dito? Marque o que se aplica:`, opcoes: ["Consigo identificar as ideias principais.", "Percebo o que está dito diretamente e o que fica nas entrelinhas.", "Distingo o que é opinião, o que é fato e o que é bem fundamentado.", "Entendo o que o autor quis dizer, mesmo nas entrelinhas."] },
-            { rubricaId: "pc8", tipo: "multipla_marcacao", enunciado: `Quando surge uma novidade sobre ${interestName} que vai contra algo que você sempre defendeu, como você age? Marque suas atitudes:`, opcoes: ["Percebo quando minhas crenças podem estar influenciando o que penso.", "Percebo quando estou buscando só o que confirma o que já acredito.", "Me esforço para buscar informações que contradizem o que acredito.", "Analiso com cuidado antes de rejeitar."] }
+            { rubricaId: "pc1", tipo: "dissertativa", enunciado: `${name}, imagine que a prefeitura de ${city} quer proibir o uso de celulares na ${school} para melhorar o foco, mas alguns alunos dizem que usam para pesquisar sobre ${interestName}. Como vocÃª analisaria os argumentos dos dois lados sem deixar sua emoÃ§Ã£o falar mais alto?` },
+            { rubricaId: "pc2", tipo: "multipla_marcacao", enunciado: `Pense em uma situaÃ§Ã£o em que vocÃª teve que tomar uma decisÃ£o difÃ­cil envolvendo seus amigos do ${grade} e sua paixÃ£o por ${interestName}. Como vocÃª lidou com o conflito entre o que vocÃª sentia e o que a lÃ³gica dizia ser o certo? Marque as opÃ§Ãµes que se aplicam:`, opcoes: ["Procurei confirmar se os fatos eram verdadeiros.", "Procurei verificar a credibilidade da fonte.", "Busquei mais informaÃ§Ã£o antes de decidir.", "Refleti sobre os impactos Ã©ticos."] },
+            { rubricaId: "pc4", tipo: "multipla_marcacao", enunciado: `Sendo um estudante de ${age}, Ã© comum a gente buscar informaÃ§Ãµes que sÃ³ confirmam o que jÃ¡ pensamos sobre ${interestName}. Como vocÃª faria para nÃ£o cair nessa armadilha? Marque o que vocÃª faz:`, opcoes: ["Presto atenÃ§Ã£o em como minhas crenÃ§as influenciam meu julgamento.", "Examino argumentos contrÃ¡rios com calma.", "Busco fontes alternativas confiÃ¡veis."] },
+            { rubricaId: "pc5", tipo: "multipla_marcacao", enunciado: `Ao assistir a um vÃ­deo ou post polÃªmico sobre ${interestName}, como vocÃª identifica o que realmente estÃ¡ sendo dito? Marque o que se aplica:`, opcoes: ["Consigo identificar as ideias principais.", "Percebo o que estÃ¡ dito diretamente e o que fica nas entrelinhas.", "Distingo o que Ã© opiniÃ£o, o que Ã© fato e o que Ã© bem fundamentado.", "Entendo o que o autor quis dizer, mesmo nas entrelinhas."] },
+            { rubricaId: "pc8", tipo: "multipla_marcacao", enunciado: `Quando surge uma novidade sobre ${interestName} que vai contra algo que vocÃª sempre defendeu, como vocÃª age? Marque suas atitudes:`, opcoes: ["Percebo quando minhas crenÃ§as podem estar influenciando o que penso.", "Percebo quando estou buscando sÃ³ o que confirma o que jÃ¡ acredito.", "Me esforÃ§o para buscar informaÃ§Ãµes que contradizem o que acredito.", "Analiso com cuidado antes de rejeitar."] }
           ];
         }
         
@@ -124,7 +124,192 @@ async function startServer() {
 
       const promptCriticalThinking = `# CONTEXTO
 
-Você é um avaliador do Instituto Ayrton Senna. As rubricas abaixo são material oficial do IAS — não são inspiração, são fonte primária. Nunca parafraseie o conteúdo de uma rubrica de forma que mude a habilidade que ela mede.
+VocÃª Ã© um avaliador do Instituto Ayrton Senna. As rubricas abaixo sÃ£o material oficial do IAS â€” nÃ£o sÃ£o inspiraÃ§Ã£o, sÃ£o fonte primÃ¡ria. Nunca parafraseie o conteÃºdo de uma rubrica de forma que mude a habilidade que ela mede.
+
+# ALUNO
+
+Nome: ${name} | Idade: ${age} | Ano: ${grade} | Escola: ${school} | Cidade: ${city}
+Interesses: ${interests.join(', ')}
+Interesse detalhado: ${interestDetail}
+
+# RESOLUÃƒâ€¡ÃƒÆ’O DE INTERESSE DETALHADO
+
+Quando o campo "Interesse detalhado" estiver preenchido (ex: nome de jogo, instrumento, esporte especÃ­fico):
+1. VocÃª DEVE usar o interesse do aluno ao longo das 5 perguntas do teste, contextualizando as situaÃ§Ãµes nesse universo.
+2. Se o item especÃ­fico listado nÃ£o for reconhecÃ­vel (nome inventado ou erro irreconhecÃ­vel), use o interesse amplo correspondente.
+3. Nunca invente mecÃ¢nicas, personagens, times, artistas ou elementos que nÃ£o existam de verdade. Se nÃ£o tiver certeza de algum item especÃ­fico, use o interesse amplo correspondente.
+
+# BANCO FIXO DE RUBRICAS Ã¢â‚¬â€ PENSAMENTO CRÃƒï¿½TICO (5 itens)
+
+Cada rubrica contÃƒÂ©m o campo "intencao_cena", que orienta o tipo de situaÃƒÂ§ÃƒÂ£o a construir, e o campo "formato", que define a estrutura do item gerado. Respeite ambos rigorosamente.
+Para rubricas de mÃƒÂºltipla marcaÃƒÂ§ÃƒÂ£o: "itens_originais" contÃƒÂ©m o texto oficial do IAS (nÃƒÂ£o use nas opÃƒÂ§ÃƒÂµes geradas). "itens_traduzidos" contÃƒÂ©m a versÃƒÂ£o acessÃƒÂ­vel Ã¢â‚¬â€ use exclusivamente estes nas opÃƒÂ§ÃƒÂµes.
+
+[
+  {
+    "id": "pc1",
+    "formato": "dissertativa",
+    "habilidade": "Conhecimento especÃƒÂ­fico do tema",
+    "intencao_cena": "Crie um momento em que o aluno se depara com uma afirmaÃƒÂ§ÃƒÂ£o ou debate sobre algo diretamente ligado ao seu interesse especÃƒÂ­fico, e alguÃƒÂ©m pede a opiniÃƒÂ£o dele ou ele precisa tomar uma posiÃƒÂ§ÃƒÂ£o.",
+    "niveis": [
+      "NÃƒÂ£o tenho conhecimento algum sobre o tema.",
+      "ConheÃƒÂ§o um pouco o tema, mas nÃƒÂ£o o suficiente para refletir muito sobre ele.",
+      "ConheÃƒÂ§o o tema, consigo refletir sobre ele e imaginar diferentes pontos de vista.",
+      "ConheÃƒÂ§o bem o tema, consigo refletir sobre ele quando necessÃƒÂ¡rio."
+    ]
+  },
+  {
+    "id": "pc2",
+    "formato": "multipla_marcacao",
+    "habilidade": "Conhecimento especÃƒÂ­fico do pensamento crÃƒÂ­tico",
+    "intencao_cena": "Crie um momento em que o aluno recebe uma informaÃƒÂ§ÃƒÂ£o sobre seu interesse que pode ser verdadeira ou falsa Ã¢â‚¬â€ e precisa decidir se confia nela.",
+    "itens_originais": [
+      "ConheÃƒÂ§o os princÃƒÂ­pios cientÃƒÂ­ficos para inferÃƒÂªncia causal.",
+      "ConheÃƒÂ§o lÃƒÂ³gica categÃƒÂ³rica.",
+      "Sei o que ÃƒÂ© uma premissa.",
+      "Sei o que ÃƒÂ© um argumento.",
+      "ConheÃƒÂ§o alguns tipos de falÃƒÂ¡cia (lÃƒÂ³gica).",
+      "ConheÃƒÂ§o algumas tÃƒÂ©cnicas de convencimento (retÃƒÂ³rica).",
+      "ConheÃƒÂ§o princÃƒÂ­pios bÃƒÂ¡sicos da ÃƒÂ©tica em uma sociedade democrÃƒÂ¡tica.",
+      "Tenho conhecimento bÃƒÂ¡sico para interpretar tabelas e grÃƒÂ¡ficos.",
+      "Tenho conhecimento bÃƒÂ¡sico para interpretar dados estatÃƒÂ­sticos e probabilidades."
+    ],
+    "itens_traduzidos": [
+      "Sei entender por que uma coisa causa a outra.",
+      "Sei raciocinar com grupos e categorias.",
+      "Sei o que ÃƒÂ© a ideia base que sustenta uma opiniÃƒÂ£o.",
+      "Sei identificar as razÃƒÂµes usadas para defender uma opiniÃƒÂ£o.",
+      "Consigo reconhecer erros de raciocÃƒÂ­nio que parecem verdadeiros mas nÃƒÂ£o sÃƒÂ£o.",
+      "ConheÃƒÂ§o alguns jeitos que as pessoas usam para convencer os outros.",
+      "Entendo princÃƒÂ­pios bÃƒÂ¡sicos do que ÃƒÂ© justo para todos numa sociedade.",
+      "Consigo ler e entender tabelas e grÃƒÂ¡ficos.",
+      "Consigo entender dados e probabilidades bÃƒÂ¡sicas."
+    ]
+  },
+  {
+    "id": "pc4",
+    "formato": "multipla_marcacao",
+    "habilidade": "AvaliaÃƒÂ§ÃƒÂ£o das premissas, argumentaÃƒÂ§ÃƒÂ£o e conclusÃƒÂµes (parte 1)",
+    "intencao_cena": "Crie uma situaÃƒÂ§ÃƒÂ£o em que o aluno encontra uma afirmaÃƒÂ§ÃƒÂ£o sobre seu interesse que parece verdadeira mas pode nÃƒÂ£o ser Ã¢â‚¬â€ e precisa decidir como verificar.",
+    "itens_originais": [
+      "Procuro confirmar, a partir de fontes externas confiÃƒÂ¡veis, se os fatos sÃƒÂ£o verdadeiros.",
+      "Procuro verificar a credibilidade da fonte de uma informaÃƒÂ§ÃƒÂ£o/opiniÃƒÂ£o.",
+      "Busco mais informaÃƒÂ§ÃƒÂ£o se achar necessÃƒÂ¡rio.",
+      "Procuro aplicar anÃƒÂ¡lise lÃƒÂ³gica para detectar erros na argumentaÃƒÂ§ÃƒÂ£o.",
+      "Consigo identificar falÃƒÂ¡cias e tÃƒÂ©cnicas de convencimento.",
+      "Procuro pensar se existem explicaÃƒÂ§ÃƒÂµes alternativas para os mesmos dados.",
+      "Consigo examinar a adequaÃƒÂ§ÃƒÂ£o dos argumentos declarando causa-efeito.",
+      "Reflito sobre as questÃƒÂµes ÃƒÂ©ticas que podem estar envolvidas.",
+      "Procuro imaginar quais pessoas/seres vivos poderiam ser prejudicados."
+    ],
+    "itens_traduzidos": [
+      "Busco fontes confiÃƒÂ¡veis para confirmar se o que li ou ouvi ÃƒÂ© verdade.",
+      "Verifico se quem disse algo ÃƒÂ© de fato confiÃƒÂ¡vel.",
+      "Procuro mais informaÃƒÂ§ÃƒÂµes quando acho que preciso.",
+      "Verifico se as razÃƒÂµes apresentadas realmente fazem sentido.",
+      "Percebo quando alguÃƒÂ©m usa erros de raciocÃƒÂ­nio ou truques para convencer.",
+      "Penso se os mesmos dados poderiam ter outra explicaÃƒÂ§ÃƒÂ£o.",
+      "Avalio se a relaÃƒÂ§ÃƒÂ£o de causa e efeito nos argumentos faz sentido.",
+      "Penso se hÃƒÂ¡ questÃƒÂµes de certo e errado envolvidas.",
+      "Penso em quem poderia ser prejudicado pela situaÃƒÂ§ÃƒÂ£o."
+    ]
+  },
+  {
+    "id": "pc5",
+    "formato": "multipla_marcacao",
+    "habilidade": "InterpretaÃƒÂ§ÃƒÂ£o/decodificaÃƒÂ§ÃƒÂ£o das ideias centrais",
+    "intencao_cena": "Crie um momento em que o aluno assiste, lÃƒÂª ou ouve algo sobre seu interesse Ã¢â‚¬â€ um vÃƒÂ­deo, post, artigo ou comentÃƒÂ¡rio Ã¢â‚¬â€ e precisa entender o que realmente estÃƒÂ¡ sendo dito.",
+    "itens_originais": [
+      "Consigo identificar as ideias/os conceitos principais.",
+      "Consigo identificar as premissas principais, explÃƒÂ­citas e implÃƒÂ­citas.",
+      "Consigo reconhecer diferenÃƒÂ§as entre opiniÃƒÂµes, argumentos fundamentados e fatos.",
+      "Compreendo a intenÃƒÂ§ÃƒÂ£o explÃƒÂ­cita ou implÃƒÂ­cita do texto/ÃƒÂ¡udio/vÃƒÂ­deo em um contexto comunicativo."
+    ],
+    "itens_traduzidos": [
+      "Consigo identificar as ideias principais do que li ou assisti.",
+      "Percebo o que estÃƒÂ¡ dito diretamente e o que fica nas entrelinhas.",
+      "Distingo o que ÃƒÂ© opiniÃƒÂ£o, o que ÃƒÂ© fato e o que ÃƒÂ© uma opiniÃƒÂ£o bem fundamentada.",
+      "Entendo o que o autor quis dizer, mesmo quando nÃƒÂ£o estÃƒÂ¡ totalmente explÃƒÂ­cito."
+    ]
+  },
+  {
+    "id": "pc8",
+    "formato": "multipla_marcacao",
+    "habilidade": "Monitoramento da influÃƒÂªncia de crenÃƒÂ§as e vieses",
+    "intencao_cena": "Crie um momento em que o aluno encontra uma informaÃƒÂ§ÃƒÂ£o sobre seu interesse que confirma Ã¢â‚¬â€ ou contraria Ã¢â‚¬â€ algo que ele sempre acreditou ser verdade.",
+    "itens_originais": [
+      "Procuro prestar atenÃƒÂ§ÃƒÂ£o em como minhas crenÃƒÂ§as influenciam meu julgamento.",
+      "Procuro prestar atenÃƒÂ§ÃƒÂ£o se meus julgamentos tÃƒÂªm viÃƒÂ©s confirmatÃƒÂ³rio.",
+      "Procuro prestar atenÃƒÂ§ÃƒÂ£o se estou buscando evidÃƒÂªncias que contradizem uma ideia em que acredito.",
+      "Examino argumentos com mais calma quando as conclusÃƒÂµes sÃƒÂ£o fÃƒÂ¡ceis de aceitar porque se afinam aos meus valores.",
+      "Examino argumentos com mais calma quando as conclusÃƒÂµes sÃƒÂ£o difÃƒÂ­ceis de aceitar porque entram em conflito com meus valores."
+    ],
+    "itens_traduzidos": [
+      "Percebo quando minhas crenÃƒÂ§as podem estar influenciando o que penso.",
+      "Percebo quando estou buscando sÃƒÂ³ o que confirma o que jÃƒÂ¡ acredito.",
+      "Me esforÃƒÂ§o para buscar tambÃƒÂ©m informaÃƒÂ§ÃƒÂµes que contradizem o que acredito.",
+      "Analiso com mais cuidado quando uma conclusÃƒÂ£o ÃƒÂ© fÃƒÂ¡cil de aceitar porque combina com o que jÃƒÂ¡ penso.",
+      "Analiso com mais cuidado quando uma conclusÃƒÂ£o ÃƒÂ© difÃƒÂ­cil de aceitar porque vai contra o que acredito."
+    ]
+  }
+]
+
+# TAREFA Ã¢â‚¬â€ ESTRUTURA OBRIGATÃƒâ€œRIAS POR FORMATO
+
+## Para itens com formato "dissertativa" (pc1):
+1. CENA (1Ã¢â‚¬â€œ2 frases): Situe o aluno num momento concreto e especÃƒÂ­fico dentro do universo do seu interesse, com uma tensÃƒÂ£o natural que se encaixa na "intencao_cena" da rubrica. Use 2Ã‚Âª pessoa direta.
+2. PERGUNTA (1 frase): Uma pergunta aberta, ancorada na cena, guiada pela rubrica correspondente.
+
+## Para itens com formato "multipla_marcacao" (pc2, pc4, pc5, pc8):
+1. CENA (1Ã¢â‚¬â€œ2 frases): Situe o aluno num momento concreto dentro do universo do seu interesse, conforme a "intencao_cena" da rubrica. Use 2Ã‚Âª pessoa direta.
+2. PERGUNTA de marcaÃƒÂ§ÃƒÂ£o (1 frase): "Marque o que vocÃƒÂª costuma fazer nessa situaÃƒÂ§ÃƒÂ£o:" ou variaÃƒÂ§ÃƒÂ£o natural.
+3. OPÃƒâ€¡Ãƒâ€¢ES: Selecione 4Ã¢â‚¬â€œ5 itens de "itens_traduzidos" da rubrica correspondente. Use o texto de "itens_traduzidos" exatamente como estÃƒÂ¡ Ã¢â‚¬â€ nunca os "itens_originais".
+
+# REGRAS DE SELEÃƒâ€¡ÃƒÆ’O DE OPÃƒâ€¡Ãƒâ€¢ES (apenas para multipla_marcacao)
+
+Ao selecionar 4Ã¢â‚¬â€œ5 itens de "itens_traduzidos" de uma rubrica:
+1. Inclua ao menos 1 comportamento mais simples (geralmente os primeiros da lista) e 1 mais complexo (geralmente os ÃƒÂºltimos).
+2. Escolha os itens que se conectam mais naturalmente ao cenÃƒÂ¡rio narrado na CENA.
+3. Evite dois itens que descrevam comportamentos muito parecidos entre si Ã¢â‚¬â€ maximize a variedade.
+4. Para rubricas com 4 itens traduzidos (pc5, pc8), inclua todos Ã¢â‚¬â€ nÃƒÂ£o hÃƒÂ¡ necessidade de cortar.
+5. Nunca altere, misture ou crie opÃƒÂ§ÃƒÂµes fora de "itens_traduzidos".
+
+# REGRAS DE PERSONALIZAÃƒâ€¡ÃƒÆ’O
+
+1. O interesse ancora o cenÃƒÂ¡rio de forma concreta: use o nome do jogo, esporte, instrumento ou atividade especÃƒÂ­fica Ã¢â‚¬â€ nÃƒÂ£o o interesse amplo ("games", "mÃƒÂºsica") quando o interesse detalhado estiver disponÃƒÂ­vel.
+2. Use 1Ã¢â‚¬â€œ2 termos que alguÃƒÂ©m que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "tÃƒÂ¡tica"). Se estiver usando o interesse amplo (fallback), use termos genÃƒÂ©ricos do domÃƒÂ­nio.
+3. O dilema da cena deve ser algo que realmente acontece naquele universo Ã¢â‚¬â€ nÃƒÂ£o drama inventado.
+4. Nunca comece com "JÃƒÂ¡ que vocÃƒÂª gosta de..." ou "Pensando nos seus interesses..." Ã¢â‚¬â€ coloque o aluno direto na cena.
+5. As consequÃƒÂªncias e a aposta devem ser realistas para a idade e o cotidiano do aluno.
+6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
+
+# REGRAS OBRIGATÃƒâ€œRIAS
+
+1. Sempre fale diretamente com o aluno usando "vocÃƒÂª". Use o nome apenas como vocativo de abertura (ex: "[Nome], ..."). Nunca narre o aluno como personagem em 3Ã‚Âª pessoa ("Ayrton foi", "Ayrton percebeu").
+2. Linguagem simples, frases curtas, tom amigÃƒÂ¡vel.
+3. Nunca inclua competiÃƒÂ§ÃƒÂ£o, ranking ou comparaÃƒÂ§ÃƒÂ£o entre alunos.
+4. Nunca sugira que existe resposta certa ou errada.
+5. Nunca revele a rubrica, habilidade ou "intencao_cena" sendo avaliada no enunciado ou nas opÃƒÂ§ÃƒÂµes.
+6. Nunca inclua teoria, jargÃƒÂ£o pedagÃƒÂ³gico ou metalinguagem no enunciado.
+7. Para mÃƒÂºltipla marcaÃƒÂ§ÃƒÂ£o: use exclusivamente "itens_traduzidos". Nunca use "itens_originais" nas opÃƒÂ§ÃƒÂµes geradas.
+
+# FORMATO DE SAÃƒï¿½DA
+
+Responda ESTRITAMENTE em JSON vÃƒÂ¡lido, sem markdown por fora, seguindo exatamente este formato:
+
+{
+  "items": [
+    { "rubricaId": "pc1", "tipo": "dissertativa", "enunciado": "texto da cena + pergunta" },
+    { "rubricaId": "pc2", "tipo": "multipla_marcacao", "enunciado": "texto da cena + pergunta de marcaÃƒÂ§ÃƒÂ£o", "opcoes": ["opÃƒÂ§ÃƒÂ£o traduzida A", "opÃƒÂ§ÃƒÂ£o traduzida B", "opÃƒÂ§ÃƒÂ£o traduzida C", "opÃƒÂ§ÃƒÂ£o traduzida D"] }
+  ]
+}
+
+O array "items" deve ter exatamente 5 objetos, um por rubrica do banco, na ordem pc1, pc2, pc4, pc5, pc8.
+
+REGRA DE FORMATO: Itens com formato "dissertativa" nÃƒÂ£o podem ter o campo "opcoes". Itens com formato "multipla_marcacao" devem ter o campo "opcoes" com exatamente 4 ou 5 strings. Qualquer violaÃƒÂ§ÃƒÂ£o torna a resposta invÃƒÂ¡lida.`;
+
+      const promptCreativity = `# CONTEXTO
+
+VocÃª Ã© um avaliador do Instituto Ayrton Senna. As rubricas abaixo sÃ£o material oficial do IAS â€” nÃ£o sÃ£o inspiraÃ§Ã£o, sÃ£o fonte primÃ¡ria. Nunca parafraseie o conteÃºdo de uma rubrica de forma que mude a habilidade que ela mede.
 
 # ALUNO
 
@@ -134,204 +319,19 @@ Interesse detalhado: ${interestDetail}
 
 # RESOLUÃ‡ÃƒO DE INTERESSE DETALHADO
 
-Quando o campo "Interesse detalhado" estiver preenchido (ex: nome de jogo, instrumento, esporte específico):
-1. Você DEVE usar o interesse do aluno ao longo das 5 perguntas do teste, contextualizando as situações nesse universo.
-2. Se o item específico listado não for reconhecível (nome inventado ou erro irreconhecível), use o interesse amplo correspondente.
-3. Nunca invente mecânicas, personagens, times, artistas ou elementos que não existam de verdade. Se não tiver certeza de algum item específico, use o interesse amplo correspondente.
+Quando o campo "Interesse detalhado" estiver preenchido (ex: nome de jogo, instrumento, esporte especÃ­fico):
+1. VocÃª DEVE usar o interesse do aluno ao longo das 5 perguntas do teste, contextualizando as situaÃ§Ãµes nesse universo.
+2. Se o item especÃ­fico listado nÃ£o for reconhecÃ­vel (nome inventado ou erro irreconhecÃ­vel), use o interesse amplo correspondente.
+3. Nunca invente mecÃ¢nicas, personagens, times, artistas ou elementos que nÃ£o existam de verdade. Se nÃ£o tiver certeza de algum item especÃ­fico, use o interesse amplo correspondente.
 
-# BANCO FIXO DE RUBRICAS â€” PENSAMENTO CRÃ�TICO (5 itens)
-
-Cada rubrica contÃ©m o campo "intencao_cena", que orienta o tipo de situaÃ§Ã£o a construir, e o campo "formato", que define a estrutura do item gerado. Respeite ambos rigorosamente.
-Para rubricas de mÃºltipla marcaÃ§Ã£o: "itens_originais" contÃ©m o texto oficial do IAS (nÃ£o use nas opÃ§Ãµes geradas). "itens_traduzidos" contÃ©m a versÃ£o acessÃ­vel â€” use exclusivamente estes nas opÃ§Ãµes.
+# BANCO FIXO DE RUBRICAS â€” CRIATIVIDADE (5 itens, todos dissertativos)
 
 [
-  {
-    "id": "pc1",
-    "formato": "dissertativa",
-    "habilidade": "Conhecimento especÃ­fico do tema",
-    "intencao_cena": "Crie um momento em que o aluno se depara com uma afirmaÃ§Ã£o ou debate sobre algo diretamente ligado ao seu interesse especÃ­fico, e alguÃ©m pede a opiniÃ£o dele ou ele precisa tomar uma posiÃ§Ã£o.",
-    "niveis": [
-      "NÃ£o tenho conhecimento algum sobre o tema.",
-      "ConheÃ§o um pouco o tema, mas nÃ£o o suficiente para refletir muito sobre ele.",
-      "ConheÃ§o o tema, consigo refletir sobre ele e imaginar diferentes pontos de vista.",
-      "ConheÃ§o bem o tema, consigo refletir sobre ele quando necessÃ¡rio."
-    ]
-  },
-  {
-    "id": "pc2",
-    "formato": "multipla_marcacao",
-    "habilidade": "Conhecimento especÃ­fico do pensamento crÃ­tico",
-    "intencao_cena": "Crie um momento em que o aluno recebe uma informaÃ§Ã£o sobre seu interesse que pode ser verdadeira ou falsa â€” e precisa decidir se confia nela.",
-    "itens_originais": [
-      "ConheÃ§o os princÃ­pios cientÃ­ficos para inferÃªncia causal.",
-      "ConheÃ§o lÃ³gica categÃ³rica.",
-      "Sei o que Ã© uma premissa.",
-      "Sei o que Ã© um argumento.",
-      "ConheÃ§o alguns tipos de falÃ¡cia (lÃ³gica).",
-      "ConheÃ§o algumas tÃ©cnicas de convencimento (retÃ³rica).",
-      "ConheÃ§o princÃ­pios bÃ¡sicos da Ã©tica em uma sociedade democrÃ¡tica.",
-      "Tenho conhecimento bÃ¡sico para interpretar tabelas e grÃ¡ficos.",
-      "Tenho conhecimento bÃ¡sico para interpretar dados estatÃ­sticos e probabilidades."
-    ],
-    "itens_traduzidos": [
-      "Sei entender por que uma coisa causa a outra.",
-      "Sei raciocinar com grupos e categorias.",
-      "Sei o que Ã© a ideia base que sustenta uma opiniÃ£o.",
-      "Sei identificar as razÃµes usadas para defender uma opiniÃ£o.",
-      "Consigo reconhecer erros de raciocÃ­nio que parecem verdadeiros mas nÃ£o sÃ£o.",
-      "ConheÃ§o alguns jeitos que as pessoas usam para convencer os outros.",
-      "Entendo princÃ­pios bÃ¡sicos do que Ã© justo para todos numa sociedade.",
-      "Consigo ler e entender tabelas e grÃ¡ficos.",
-      "Consigo entender dados e probabilidades bÃ¡sicas."
-    ]
-  },
-  {
-    "id": "pc4",
-    "formato": "multipla_marcacao",
-    "habilidade": "AvaliaÃ§Ã£o das premissas, argumentaÃ§Ã£o e conclusÃµes (parte 1)",
-    "intencao_cena": "Crie uma situaÃ§Ã£o em que o aluno encontra uma afirmaÃ§Ã£o sobre seu interesse que parece verdadeira mas pode nÃ£o ser â€” e precisa decidir como verificar.",
-    "itens_originais": [
-      "Procuro confirmar, a partir de fontes externas confiÃ¡veis, se os fatos sÃ£o verdadeiros.",
-      "Procuro verificar a credibilidade da fonte de uma informaÃ§Ã£o/opiniÃ£o.",
-      "Busco mais informaÃ§Ã£o se achar necessÃ¡rio.",
-      "Procuro aplicar anÃ¡lise lÃ³gica para detectar erros na argumentaÃ§Ã£o.",
-      "Consigo identificar falÃ¡cias e tÃ©cnicas de convencimento.",
-      "Procuro pensar se existem explicaÃ§Ãµes alternativas para os mesmos dados.",
-      "Consigo examinar a adequaÃ§Ã£o dos argumentos declarando causa-efeito.",
-      "Reflito sobre as questÃµes Ã©ticas que podem estar envolvidas.",
-      "Procuro imaginar quais pessoas/seres vivos poderiam ser prejudicados."
-    ],
-    "itens_traduzidos": [
-      "Busco fontes confiÃ¡veis para confirmar se o que li ou ouvi Ã© verdade.",
-      "Verifico se quem disse algo Ã© de fato confiÃ¡vel.",
-      "Procuro mais informaÃ§Ãµes quando acho que preciso.",
-      "Verifico se as razÃµes apresentadas realmente fazem sentido.",
-      "Percebo quando alguÃ©m usa erros de raciocÃ­nio ou truques para convencer.",
-      "Penso se os mesmos dados poderiam ter outra explicaÃ§Ã£o.",
-      "Avalio se a relaÃ§Ã£o de causa e efeito nos argumentos faz sentido.",
-      "Penso se hÃ¡ questÃµes de certo e errado envolvidas.",
-      "Penso em quem poderia ser prejudicado pela situaÃ§Ã£o."
-    ]
-  },
-  {
-    "id": "pc5",
-    "formato": "multipla_marcacao",
-    "habilidade": "InterpretaÃ§Ã£o/decodificaÃ§Ã£o das ideias centrais",
-    "intencao_cena": "Crie um momento em que o aluno assiste, lÃª ou ouve algo sobre seu interesse â€” um vÃ­deo, post, artigo ou comentÃ¡rio â€” e precisa entender o que realmente estÃ¡ sendo dito.",
-    "itens_originais": [
-      "Consigo identificar as ideias/os conceitos principais.",
-      "Consigo identificar as premissas principais, explÃ­citas e implÃ­citas.",
-      "Consigo reconhecer diferenÃ§as entre opiniÃµes, argumentos fundamentados e fatos.",
-      "Compreendo a intenÃ§Ã£o explÃ­cita ou implÃ­cita do texto/Ã¡udio/vÃ­deo em um contexto comunicativo."
-    ],
-    "itens_traduzidos": [
-      "Consigo identificar as ideias principais do que li ou assisti.",
-      "Percebo o que estÃ¡ dito diretamente e o que fica nas entrelinhas.",
-      "Distingo o que Ã© opiniÃ£o, o que Ã© fato e o que Ã© uma opiniÃ£o bem fundamentada.",
-      "Entendo o que o autor quis dizer, mesmo quando nÃ£o estÃ¡ totalmente explÃ­cito."
-    ]
-  },
-  {
-    "id": "pc8",
-    "formato": "multipla_marcacao",
-    "habilidade": "Monitoramento da influÃªncia de crenÃ§as e vieses",
-    "intencao_cena": "Crie um momento em que o aluno encontra uma informaÃ§Ã£o sobre seu interesse que confirma â€” ou contraria â€” algo que ele sempre acreditou ser verdade.",
-    "itens_originais": [
-      "Procuro prestar atenÃ§Ã£o em como minhas crenÃ§as influenciam meu julgamento.",
-      "Procuro prestar atenÃ§Ã£o se meus julgamentos tÃªm viÃ©s confirmatÃ³rio.",
-      "Procuro prestar atenÃ§Ã£o se estou buscando evidÃªncias que contradizem uma ideia em que acredito.",
-      "Examino argumentos com mais calma quando as conclusÃµes sÃ£o fÃ¡ceis de aceitar porque se afinam aos meus valores.",
-      "Examino argumentos com mais calma quando as conclusÃµes sÃ£o difÃ­ceis de aceitar porque entram em conflito com meus valores."
-    ],
-    "itens_traduzidos": [
-      "Percebo quando minhas crenÃ§as podem estar influenciando o que penso.",
-      "Percebo quando estou buscando sÃ³ o que confirma o que jÃ¡ acredito.",
-      "Me esforÃ§o para buscar tambÃ©m informaÃ§Ãµes que contradizem o que acredito.",
-      "Analiso com mais cuidado quando uma conclusÃ£o Ã© fÃ¡cil de aceitar porque combina com o que jÃ¡ penso.",
-      "Analiso com mais cuidado quando uma conclusÃ£o Ã© difÃ­cil de aceitar porque vai contra o que acredito."
-    ]
-  }
-]
-
-# TAREFA â€” ESTRUTURA OBRIGATÃ“RIAS POR FORMATO
-
-## Para itens com formato "dissertativa" (pc1):
-1. CENA (1â€“2 frases): Situe o aluno num momento concreto e especÃ­fico dentro do universo do seu interesse, com uma tensÃ£o natural que se encaixa na "intencao_cena" da rubrica. Use 2Âª pessoa direta.
-2. PERGUNTA (1 frase): Uma pergunta aberta, ancorada na cena, guiada pela rubrica correspondente.
-
-## Para itens com formato "multipla_marcacao" (pc2, pc4, pc5, pc8):
-1. CENA (1â€“2 frases): Situe o aluno num momento concreto dentro do universo do seu interesse, conforme a "intencao_cena" da rubrica. Use 2Âª pessoa direta.
-2. PERGUNTA de marcaÃ§Ã£o (1 frase): "Marque o que vocÃª costuma fazer nessa situaÃ§Ã£o:" ou variaÃ§Ã£o natural.
-3. OPÃ‡Ã•ES: Selecione 4â€“5 itens de "itens_traduzidos" da rubrica correspondente. Use o texto de "itens_traduzidos" exatamente como estÃ¡ â€” nunca os "itens_originais".
-
-# REGRAS DE SELEÃ‡ÃƒO DE OPÃ‡Ã•ES (apenas para multipla_marcacao)
-
-Ao selecionar 4â€“5 itens de "itens_traduzidos" de uma rubrica:
-1. Inclua ao menos 1 comportamento mais simples (geralmente os primeiros da lista) e 1 mais complexo (geralmente os Ãºltimos).
-2. Escolha os itens que se conectam mais naturalmente ao cenÃ¡rio narrado na CENA.
-3. Evite dois itens que descrevam comportamentos muito parecidos entre si â€” maximize a variedade.
-4. Para rubricas com 4 itens traduzidos (pc5, pc8), inclua todos â€” nÃ£o hÃ¡ necessidade de cortar.
-5. Nunca altere, misture ou crie opÃ§Ãµes fora de "itens_traduzidos".
-
-# REGRAS DE PERSONALIZAÃ‡ÃƒO
-
-1. O interesse ancora o cenÃ¡rio de forma concreta: use o nome do jogo, esporte, instrumento ou atividade especÃ­fica â€” nÃ£o o interesse amplo ("games", "mÃºsica") quando o interesse detalhado estiver disponÃ­vel.
-2. Use 1â€“2 termos que alguÃ©m que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "tÃ¡tica"). Se estiver usando o interesse amplo (fallback), use termos genÃ©ricos do domÃ­nio.
-3. O dilema da cena deve ser algo que realmente acontece naquele universo â€” nÃ£o drama inventado.
-4. Nunca comece com "JÃ¡ que vocÃª gosta de..." ou "Pensando nos seus interesses..." â€” coloque o aluno direto na cena.
-5. As consequÃªncias e a aposta devem ser realistas para a idade e o cotidiano do aluno.
-6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
-
-# REGRAS OBRIGATÃ“RIAS
-
-1. Sempre fale diretamente com o aluno usando "vocÃª". Use o nome apenas como vocativo de abertura (ex: "[Nome], ..."). Nunca narre o aluno como personagem em 3Âª pessoa ("Ayrton foi", "Ayrton percebeu").
-2. Linguagem simples, frases curtas, tom amigÃ¡vel.
-3. Nunca inclua competiÃ§Ã£o, ranking ou comparaÃ§Ã£o entre alunos.
-4. Nunca sugira que existe resposta certa ou errada.
-5. Nunca revele a rubrica, habilidade ou "intencao_cena" sendo avaliada no enunciado ou nas opÃ§Ãµes.
-6. Nunca inclua teoria, jargÃ£o pedagÃ³gico ou metalinguagem no enunciado.
-7. Para mÃºltipla marcaÃ§Ã£o: use exclusivamente "itens_traduzidos". Nunca use "itens_originais" nas opÃ§Ãµes geradas.
-
-# FORMATO DE SAÃ�DA
-
-Responda ESTRITAMENTE em JSON vÃ¡lido, sem markdown por fora, seguindo exatamente este formato:
-
-{
-  "items": [
-    { "rubricaId": "pc1", "tipo": "dissertativa", "enunciado": "texto da cena + pergunta" },
-    { "rubricaId": "pc2", "tipo": "multipla_marcacao", "enunciado": "texto da cena + pergunta de marcaÃ§Ã£o", "opcoes": ["opÃ§Ã£o traduzida A", "opÃ§Ã£o traduzida B", "opÃ§Ã£o traduzida C", "opÃ§Ã£o traduzida D"] }
-  ]
-}
-
-O array "items" deve ter exatamente 5 objetos, um por rubrica do banco, na ordem pc1, pc2, pc4, pc5, pc8.
-
-REGRA DE FORMATO: Itens com formato "dissertativa" nÃ£o podem ter o campo "opcoes". Itens com formato "multipla_marcacao" devem ter o campo "opcoes" com exatamente 4 ou 5 strings. Qualquer violaÃ§Ã£o torna a resposta invÃ¡lida.`;
-
-      const promptCreativity = `# CONTEXTO
-
-Você é um avaliador do Instituto Ayrton Senna. As rubricas abaixo são material oficial do IAS — não são inspiração, são fonte primária. Nunca parafraseie o conteúdo de uma rubrica de forma que mude a habilidade que ela mede.
-
-# ALUNO
-
-Nome: ${name} | Idade: ${age} | Ano: ${grade} | Escola: ${school} | Cidade: ${city}
-Interesses: ${interests.join(', ')}
-Interesse detalhado: ${interestDetail}
-
-# RESOLUÇÃO DE INTERESSE DETALHADO
-
-Quando o campo "Interesse detalhado" estiver preenchido (ex: nome de jogo, instrumento, esporte específico):
-1. Você DEVE usar o interesse do aluno ao longo das 5 perguntas do teste, contextualizando as situações nesse universo.
-2. Se o item específico listado não for reconhecível (nome inventado ou erro irreconhecível), use o interesse amplo correspondente.
-3. Nunca invente mecânicas, personagens, times, artistas ou elementos que não existam de verdade. Se não tiver certeza de algum item específico, use o interesse amplo correspondente.
-
-# BANCO FIXO DE RUBRICAS — CRIATIVIDADE (5 itens, todos dissertativos)
-
-[
-  {"id":"cr2","habilidade":"Fluência associativa / Flexibilidade e reclassificação","niveis":["Em nada, sem ideias.","Em pelo menos uma ideia.","Em algumas ideias, mas elas são parecidas entre si.","Em várias ideias, diferentes umas das outras."],"intencao":"Peça ao aluno para listar o maior número possível de ideias ou soluções para a situação. A pergunta deve deixar espaço para ideias muito diferentes entre si."},
-  {"id":"cr3","habilidade":"Fluência associativa / Originalidade","niveis":["São sempre parecidas com ideias dos colegas.","Às vezes são diferentes do que já foi pensado.","São sempre diferentes das ideias já pensadas pelos colegas."],"intencao":"Apresente uma situação e peça ao aluno qual seria A ideia dele — uma só, a mais dele. Não peça lista, peça a ideia que ele acha que ninguém mais teria."},
-  {"id":"cr5","habilidade":"Raciocínio fluido / Síntese convergente e analítico","niveis":["Eu geralmente fico indeciso e acabo não escolhendo.","Eu acho que sei qual é a melhor ideia, mas não sei justificar a minha escolha.","Consigo analisar os pontos positivos e negativos para selecionar a melhor ideia."],"intencao":"Apresente 2–3 caminhos plausíveis dentro da situação e peça ao aluno que escolha um e explique por que acha que é o melhor."},
-  {"id":"cr6","habilidade":"Raciocínio fluido / Indução diante de problemas complexos","niveis":["Prefiro terminar logo, pois não gosto de problemas que demorem muito para resolver.","De início acho difícil, mas, com o tempo, vou me envolvendo.","Me sinto motivado para tentar resolver."],"intencao":"Descreva um desafio que parece grande e vai demorar para ser resolvido. Pergunte como o aluno se SENTE ao pensar em enfrentar esse desafio — não peça a solução."},
-  {"id":"cr7","habilidade":"Raciocínio fluido / Indução e conexão de ideias","niveis":["Tenho dificuldade em pensar quando os problemas têm muitas informações novas.","Consigo entender algumas partes do problema.","Consigo analisar e isolar o problema em partes para ficarem mais fáceis de manejar."],"intencao":"Crie uma situação com várias informações simultâneas (peças, variáveis, sintomas). Pergunte como o aluno organizaria o raciocínio para descobrir o que está acontecendo."}
+  {"id":"cr2","habilidade":"FluÃªncia associativa / Flexibilidade e reclassificaÃ§Ã£o","niveis":["Em nada, sem ideias.","Em pelo menos uma ideia.","Em algumas ideias, mas elas sÃ£o parecidas entre si.","Em vÃ¡rias ideias, diferentes umas das outras."],"intencao":"PeÃ§a ao aluno para listar o maior nÃºmero possÃ­vel de ideias ou soluÃ§Ãµes para a situaÃ§Ã£o. A pergunta deve deixar espaÃ§o para ideias muito diferentes entre si."},
+  {"id":"cr3","habilidade":"FluÃªncia associativa / Originalidade","niveis":["SÃ£o sempre parecidas com ideias dos colegas.","Ã€s vezes sÃ£o diferentes do que jÃ¡ foi pensado.","SÃ£o sempre diferentes das ideias jÃ¡ pensadas pelos colegas."],"intencao":"Apresente uma situaÃ§Ã£o e peÃ§a ao aluno qual seria A ideia dele â€” uma sÃ³, a mais dele. NÃ£o peÃ§a lista, peÃ§a a ideia que ele acha que ninguÃ©m mais teria."},
+  {"id":"cr5","habilidade":"RaciocÃ­nio fluido / SÃ­ntese convergente e analÃ­tico","niveis":["Eu geralmente fico indeciso e acabo nÃ£o escolhendo.","Eu acho que sei qual Ã© a melhor ideia, mas nÃ£o sei justificar a minha escolha.","Consigo analisar os pontos positivos e negativos para selecionar a melhor ideia."],"intencao":"Apresente 2â€“3 caminhos plausÃ­veis dentro da situaÃ§Ã£o e peÃ§a ao aluno que escolha um e explique por que acha que Ã© o melhor."},
+  {"id":"cr6","habilidade":"RaciocÃ­nio fluido / InduÃ§Ã£o diante de problemas complexos","niveis":["Prefiro terminar logo, pois nÃ£o gosto de problemas que demorem muito para resolver.","De inÃ­cio acho difÃ­cil, mas, com o tempo, vou me envolvendo.","Me sinto motivado para tentar resolver."],"intencao":"Descreva um desafio que parece grande e vai demorar para ser resolvido. Pergunte como o aluno se SENTE ao pensar em enfrentar esse desafio â€” nÃ£o peÃ§a a soluÃ§Ã£o."},
+  {"id":"cr7","habilidade":"RaciocÃ­nio fluido / InduÃ§Ã£o e conexÃ£o de ideias","niveis":["Tenho dificuldade em pensar quando os problemas tÃªm muitas informaÃ§Ãµes novas.","Consigo entender algumas partes do problema.","Consigo analisar e isolar o problema em partes para ficarem mais fÃ¡ceis de manejar."],"intencao":"Crie uma situaÃ§Ã£o com vÃ¡rias informaÃ§Ãµes simultÃ¢neas (peÃ§as, variÃ¡veis, sintomas). Pergunte como o aluno organizaria o raciocÃ­nio para descobrir o que estÃ¡ acontecendo."}
 ]
 
 # TAREFA
@@ -339,29 +339,29 @@ Quando o campo "Interesse detalhado" estiver preenchido (ex: nome de jogo, instr
 Gere 1 item dissertativo para cada uma das 5 rubricas acima, na ordem em que aparecem.
 
 Para cada item, siga esta estrutura:
-1. CENA (1–2 frases): Situe o aluno num momento concreto e específico dentro do universo do interesse dele, com uma tensão natural — algo que realmente acontece naquele contexto.
-2. PERGUNTA (1 frase): Faça UMA pergunta aberta, guiada pelo campo "intencao" da rubrica correspondente.
+1. CENA (1â€“2 frases): Situe o aluno num momento concreto e especÃ­fico dentro do universo do interesse dele, com uma tensÃ£o natural â€” algo que realmente acontece naquele contexto.
+2. PERGUNTA (1 frase): FaÃ§a UMA pergunta aberta, guiada pelo campo "intencao" da rubrica correspondente.
 
-# REGRAS DE PERSONALIZAÇÃO
+# REGRAS DE PERSONALIZAÃ‡ÃƒO
 
-1. O dilema da cena só pode existir dentro do universo daquele interesse específico. Se trocar o interesse por outro e a pergunta continuar funcionando sem mudar nada, reescreva — a personalização está falsa.
-2. Use 1–2 termos que alguém que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos genéricos do domínio.
-3. Nunca comece com "Já que você gosta de..." ou "Pensando nos seus interesses..." — jogue o aluno direto na cena.
-4. O conflito deve ser algo que realmente acontece naquele interesse, não um drama inventado ou artificial.
-5. As consequências e a aposta devem ser realistas para a idade e o cotidiano do aluno — nem triviais demais, nem grandiosas demais.
+1. O dilema da cena sÃ³ pode existir dentro do universo daquele interesse especÃ­fico. Se trocar o interesse por outro e a pergunta continuar funcionando sem mudar nada, reescreva â€” a personalizaÃ§Ã£o estÃ¡ falsa.
+2. Use 1â€“2 termos que alguÃ©m que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos genÃ©ricos do domÃ­nio.
+3. Nunca comece com "JÃ¡ que vocÃª gosta de..." ou "Pensando nos seus interesses..." â€” jogue o aluno direto na cena.
+4. O conflito deve ser algo que realmente acontece naquele interesse, nÃ£o um drama inventado ou artificial.
+5. As consequÃªncias e a aposta devem ser realistas para a idade e o cotidiano do aluno â€” nem triviais demais, nem grandiosas demais.
 6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
 
-# REGRAS OBRIGATÓRIAS
+# REGRAS OBRIGATÃ“RIAS
 
-1. Linguagem simples, frases curtas, tom amigável e conversando diretamente com o aluno.
+1. Linguagem simples, frases curtas, tom amigÃ¡vel e conversando diretamente com o aluno.
 2. Nunca sugira que existe resposta certa ou errada nem use palavras avaliativas.
-3. Não use "Como você resolveria isso?" de forma genérica — a pergunta deve refletir a intenção específica da rubrica.
+3. NÃ£o use "Como vocÃª resolveria isso?" de forma genÃ©rica â€” a pergunta deve refletir a intenÃ§Ã£o especÃ­fica da rubrica.
 4. Nunca use o nome da rubrica ou da habilidade no enunciado.
-5. Nunca inclua teoria, jargão pedagógico ou metalinguagem no enunciado.
+5. Nunca inclua teoria, jargÃ£o pedagÃ³gico ou metalinguagem no enunciado.
 
-# FORMATO DE SAÍDA
+# FORMATO DE SAÃDA
 
-Responda ESTRITAMENTE em JSON válido, sem markdown por fora, seguindo exatamente este formato:
+Responda ESTRITAMENTE em JSON vÃ¡lido, sem markdown por fora, seguindo exatamente este formato:
 
 {
   "items": [
@@ -375,7 +375,7 @@ Responda ESTRITAMENTE em JSON válido, sem markdown por fora, seguindo exatament
 
 O array "items" deve ter exatamente 5 objetos, todos com "tipo":"dissertativa", um por rubrica do banco, na ordem cr2, cr3, cr5, cr6, cr7.
 
-REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se você gerar "opcoes" em qualquer item, sua resposta é inválida. Todos os 5 itens são EXCLUSIVAMENTE dissertativos.`;
+REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se vocÃª gerar "opcoes" em qualquer item, sua resposta Ã© invÃ¡lida. Todos os 5 itens sÃ£o EXCLUSIVAMENTE dissertativos.`;
 
       const prompt = isCreativity ? promptCreativity : promptCriticalThinking;
 
@@ -397,11 +397,11 @@ REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se você 
       console.log('Serving mock questions.');
       const name = req.body.name || 'Estudante';
       const mockItems = [
-        { rubricaId: "m1", tipo: "dissertativa", enunciado: `1. ${name}, pensando nos seus interesses, como vocÃª resolveria um desafio comum no seu dia a dia?` },
-        { rubricaId: "m2", tipo: "multipla_marcacao", enunciado: `2. Descreva um momento em que vocÃª precisou mudar de ideia. Marque o que se aplica:`, opcoes: ["Foi difÃ­cil", "Foi fÃ¡cil", "NÃ£o mudei"] },
-        { rubricaId: "m3", tipo: "dissertativa", enunciado: `3. O que vocÃª faria em uma situaÃ§Ã£o em que nÃ£o existe uma resposta certa clara?` },
-        { rubricaId: "m4", tipo: "multipla_marcacao", enunciado: `4. Qual Ã© a sua forma favorita de exercitar a criatividade?`, opcoes: ["Desenhando", "Escrevendo", "Conversando"] },
-        { rubricaId: "m5", tipo: "dissertativa", enunciado: `5. Conte como vocÃª lidou com a frustraÃ§Ã£o ao tentar aprender algo novo recentemente.` }
+        { rubricaId: "m1", tipo: "dissertativa", enunciado: `1. ${name}, pensando nos seus interesses, como vocÃƒÂª resolveria um desafio comum no seu dia a dia?` },
+        { rubricaId: "m2", tipo: "multipla_marcacao", enunciado: `2. Descreva um momento em que vocÃƒÂª precisou mudar de ideia. Marque o que se aplica:`, opcoes: ["Foi difÃƒÂ­cil", "Foi fÃƒÂ¡cil", "NÃƒÂ£o mudei"] },
+        { rubricaId: "m3", tipo: "dissertativa", enunciado: `3. O que vocÃƒÂª faria em uma situaÃƒÂ§ÃƒÂ£o em que nÃƒÂ£o existe uma resposta certa clara?` },
+        { rubricaId: "m4", tipo: "multipla_marcacao", enunciado: `4. Qual ÃƒÂ© a sua forma favorita de exercitar a criatividade?`, opcoes: ["Desenhando", "Escrevendo", "Conversando"] },
+        { rubricaId: "m5", tipo: "dissertativa", enunciado: `5. Conte como vocÃƒÂª lidou com a frustraÃƒÂ§ÃƒÂ£o ao tentar aprender algo novo recentemente.` }
       ];
       res.json({ items: mockItems });
     }
@@ -420,35 +420,35 @@ REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se você 
         if (isCreativity) {
           return res.json({
             habilidadesCognitivas: ["Pensamento Divergente", "Originalidade"],
-            habilidadesSocioemocionais: ["Abertura ao Novo", "AutorregulaÃ§Ã£o"],
+            habilidadesSocioemocionais: ["Abertura ao Novo", "AutorregulaÃƒÂ§ÃƒÂ£o"],
             pontosFortes: [
-              "VocÃª propÃ´s ideias variadas e pouco Ã³bvias â€” isso mostra que jÃ¡ ultrapassa o \"primeiro caminho\" que vem Ã  cabeÃ§a.",
-              "Demonstrou conseguir enxergar o mesmo problema de Ã¢ngulos diferentes."
+              "VocÃƒÂª propÃƒÂ´s ideias variadas e pouco ÃƒÂ³bvias Ã¢â‚¬â€ isso mostra que jÃƒÂ¡ ultrapassa o \"primeiro caminho\" que vem ÃƒÂ  cabeÃƒÂ§a.",
+              "Demonstrou conseguir enxergar o mesmo problema de ÃƒÂ¢ngulos diferentes."
             ],
             pontosMelhoria: [
-              "Em algumas situaÃ§Ãµes, ainda faltou escolher a melhor ideia e explicar por que ela Ã© a mais forte.",
-              "Registrar as hipÃ³teses antes de avanÃ§ar para a soluÃ§Ã£o ajuda a perceber quando vocÃª estÃ¡ repetindo um padrÃ£o."
+              "Em algumas situaÃƒÂ§ÃƒÂµes, ainda faltou escolher a melhor ideia e explicar por que ela ÃƒÂ© a mais forte.",
+              "Registrar as hipÃƒÂ³teses antes de avanÃƒÂ§ar para a soluÃƒÂ§ÃƒÂ£o ajuda a perceber quando vocÃƒÂª estÃƒÂ¡ repetindo um padrÃƒÂ£o."
             ],
             proximoPasso: [
-              "Na prÃ³xima vez que tiver um problema, liste pelo menos 3 caminhos antes de escolher um â€” e escreva por que descartou os outros.",
-              "Tente unir duas ideias que parecem opostas para criar uma soluÃ§Ã£o que ninguÃ©m teria pensado sozinho."
+              "Na prÃƒÂ³xima vez que tiver um problema, liste pelo menos 3 caminhos antes de escolher um Ã¢â‚¬â€ e escreva por que descartou os outros.",
+              "Tente unir duas ideias que parecem opostas para criar uma soluÃƒÂ§ÃƒÂ£o que ninguÃƒÂ©m teria pensado sozinho."
             ]
           });
         } else {
           return res.json({
-            habilidadesCognitivas: ["AvaliaÃ§Ã£o de EvidÃªncias", "AnÃ¡lise"],
-            habilidadesSocioemocionais: ["Mente Aberta", "AutorregulaÃ§Ã£o"],
+            habilidadesCognitivas: ["AvaliaÃƒÂ§ÃƒÂ£o de EvidÃƒÂªncias", "AnÃƒÂ¡lise"],
+            habilidadesSocioemocionais: ["Mente Aberta", "AutorregulaÃƒÂ§ÃƒÂ£o"],
             pontosFortes: [
-              `${name}, vocÃª identificou bem as premissas dos dois lados sem tomar partido de cara â€” isso Ã© o comeÃ§o do pensamento crÃ­tico de verdade.`,
-              "Conseguiu separar o que Ã© fato do que Ã© opiniÃ£o em boa parte das situaÃ§Ãµes."
+              `${name}, vocÃƒÂª identificou bem as premissas dos dois lados sem tomar partido de cara Ã¢â‚¬â€ isso ÃƒÂ© o comeÃƒÂ§o do pensamento crÃƒÂ­tico de verdade.`,
+              "Conseguiu separar o que ÃƒÂ© fato do que ÃƒÂ© opiniÃƒÂ£o em boa parte das situaÃƒÂ§ÃƒÂµes."
             ],
             pontosMelhoria: [
-              "O desafio agora Ã© explicar com mais clareza como as evidÃªncias que vocÃª escolheu sustentam a sua conclusÃ£o.",
-              "Em algumas respostas, a conclusÃ£o apareceu antes das razÃµes â€” o que enfraquece o argumento."
+              "O desafio agora ÃƒÂ© explicar com mais clareza como as evidÃƒÂªncias que vocÃƒÂª escolheu sustentam a sua conclusÃƒÂ£o.",
+              "Em algumas respostas, a conclusÃƒÂ£o apareceu antes das razÃƒÂµes Ã¢â‚¬â€ o que enfraquece o argumento."
             ],
             proximoPasso: [
-              "Na prÃ³xima vez que precisar defender um ponto de vista, tente montar o argumento assim: razÃ£o 1 â†’ razÃ£o 2 â†’ conclusÃ£o.",
-              "Antes de fechar uma opiniÃ£o, pergunte a si mesmo: qual seria o melhor contra-argumento? VocÃª consegue rebatÃª-lo?"
+              "Na prÃƒÂ³xima vez que precisar defender um ponto de vista, tente montar o argumento assim: razÃƒÂ£o 1 Ã¢â€ â€™ razÃƒÂ£o 2 Ã¢â€ â€™ conclusÃƒÂ£o.",
+              "Antes de fechar uma opiniÃƒÂ£o, pergunte a si mesmo: qual seria o melhor contra-argumento? VocÃƒÂª consegue rebatÃƒÂª-lo?"
             ]
           });
         }
@@ -626,7 +626,7 @@ Interesse detalhado: ${interestDetail}
 ### EM DESENVOLVIMENTO
 - Gera mais de uma ideia, com alguma variedade entre elas
 - Consegue adaptar uma ideia de um contexto para outro
-- Começa a refletir sobre o que funcionou ou nao no proprio processo
+- ComeÃ§a a refletir sobre o que funcionou ou nao no proprio processo
 - Ainda prefere caminhos mais seguros, mas arrisca em alguns momentos
 
 ### PROFICIENTE
@@ -672,7 +672,7 @@ cotidiano:
 
 ## EM DESENVOLVIMENTO
 escola:
-  - Consegue improvisar solucoes para problemas do dia a dia escolar - encontra uma forma de avançar mesmo sem as condicoes ideais.
+  - Consegue improvisar solucoes para problemas do dia a dia escolar - encontra uma forma de avanÃ§ar mesmo sem as condicoes ideais.
   - Em projetos em grupo, costuma ter ideias praticas e viaveis que os outros conseguem usar.
 responsabilidade:
   - Consegue propor pequenas melhorias na forma como o grupo trabalha - simplificar uma etapa, reorganizar a divisao de tarefas.
@@ -749,10 +749,10 @@ Cada string e um topico completo e independente.
         delete result.nivel;
       } catch(e) {
         result = { 
-          habilidadesCognitivas: ["AnÃ¡lise", "LÃ³gica"],
-          habilidadesSocioemocionais: ["Foco", "ResiliÃªncia"],
-          pontosFortes: ["NÃ£o foi possÃ­vel analisar suas respostas em detalhe desta vez."], 
-          pontosMelhoria: ["Ocorreu um erro no processamento â€” suas respostas foram salvas."],
+          habilidadesCognitivas: ["AnÃƒÂ¡lise", "LÃƒÂ³gica"],
+          habilidadesSocioemocionais: ["Foco", "ResiliÃƒÂªncia"],
+          pontosFortes: ["NÃƒÂ£o foi possÃƒÂ­vel analisar suas respostas em detalhe desta vez."], 
+          pontosMelhoria: ["Ocorreu um erro no processamento Ã¢â‚¬â€ suas respostas foram salvas."],
           proximoPasso: ["Tente novamente em alguns instantes."]
         };
       }
@@ -760,16 +760,16 @@ Cada string e um topico completo e independente.
     } catch (error: any) {
       console.log('Serving mock report.');
       res.json({
-        habilidadesCognitivas: ["AnÃ¡lise", "Criatividade"],
-        habilidadesSocioemocionais: ["Foco", "ResiliÃªncia"],
-        pontosFortes: ["Ã“tima dedicaÃ§Ã£o em completar o teste mesmo com o sistema em alta demanda!"],
-        pontosMelhoria: ["A anÃ¡lise detalhada com IA nÃ£o pÃ´de ser concluÃ­da neste momento."],
-        proximoPasso: ["Revisite suas respostas depois e veja se vocÃª mudaria alguma coisa."]
+        habilidadesCognitivas: ["AnÃƒÂ¡lise", "Criatividade"],
+        habilidadesSocioemocionais: ["Foco", "ResiliÃƒÂªncia"],
+        pontosFortes: ["Ãƒâ€œtima dedicaÃƒÂ§ÃƒÂ£o em completar o teste mesmo com o sistema em alta demanda!"],
+        pontosMelhoria: ["A anÃƒÂ¡lise detalhada com IA nÃƒÂ£o pÃƒÂ´de ser concluÃƒÂ­da neste momento."],
+        proximoPasso: ["Revisite suas respostas depois e veja se vocÃƒÂª mudaria alguma coisa."]
       });
     }
   });
 
-  // API Route for BÃ©co Chat
+  // API Route for BÃƒÂ©co Chat
   app.post('/api/beco-chat', async (req, res) => {
     try {
       const { question, userMessage, history } = req.body;
@@ -779,7 +779,7 @@ Cada string e um topico completo e independente.
         // Fallback mock response
         await new Promise(resolve => setTimeout(resolve, 1500));
         return res.json({
-          response: `E aÃ­ parÃ§a! Papo reto, tÃ´ aqui sem a chave da API ðŸ’€ Mas foca nessa pergunta aÃ­ e manda ver, tamo junto!`,
+          response: `E aÃƒÂ­ parÃƒÂ§a! Papo reto, tÃƒÂ´ aqui sem a chave da API Ã°Å¸â€™â‚¬ Mas foca nessa pergunta aÃƒÂ­ e manda ver, tamo junto!`,
           chips: ["Me explica de outro jeito?", "Quero uma pista", "Por que isso importa?"]
         });
       }
@@ -787,25 +787,25 @@ Cada string e um topico completo e independente.
       const ai = new GoogleGenAI({ apiKey });
 
       const prompt = `
-VocÃª Ã© o BÃ©co, um tutor virtual no tom da GeraÃ§Ã£o Z ("Soca"), muito gente boa.
-Seu estilo de comunicaÃ§Ã£o usa uma linguagem amigÃ¡vel, direta, empÃ¡tica e gÃ­rias leves de 2020 (como "papo reto", "tamo junto", "parÃ§a", "vixe", "desembolar", "massa").
+VocÃƒÂª ÃƒÂ© o BÃƒÂ©co, um tutor virtual no tom da GeraÃƒÂ§ÃƒÂ£o Z ("Soca"), muito gente boa.
+Seu estilo de comunicaÃƒÂ§ÃƒÂ£o usa uma linguagem amigÃƒÂ¡vel, direta, empÃƒÂ¡tica e gÃƒÂ­rias leves de 2020 (como "papo reto", "tamo junto", "parÃƒÂ§a", "vixe", "desembolar", "massa").
 
-Sua missÃ£o Ã© guiar o(a) estudante usando RaciocÃ­nio SocrÃ¡tico para responder Ã  seguinte pergunta do teste:
+Sua missÃƒÂ£o ÃƒÂ© guiar o(a) estudante usando RaciocÃƒÂ­nio SocrÃƒÂ¡tico para responder ÃƒÂ  seguinte pergunta do teste:
 "${question?.enunciado || question}"
 
-Diretrizes de InteraÃ§Ã£o:
-1. Nunca dÃª a resposta pronta. Em vez disso, faÃ§a perguntas reflexivas curtas que estimulem o raciocÃ­nio prÃ³prio do aluno.
-2. Se o(a) estudante disser que nÃ£o entendeu, reescreva a pergunta com palavras mais simples e coloquiais.
-3. Corrija interpretaÃ§Ãµes equivocadas com muita empatia e dÃª pistas sutis e pontuais.
-4. Sempre destaque sutilmente que o teste avalia habilidades importantes para o futuro, como criatividade e pensamento crÃ­tico.
-5. Sempre retorne exatamente 3 botÃµes/chips de opÃ§Ãµes rÃ¡pidas de resposta ao final, pensados para o contexto atual da dÃºvida (ex: "[Me explica de outro jeito?]", "[Quero uma pista]", "[NÃ£o sei por onde comeÃ§ar]").
+Diretrizes de InteraÃƒÂ§ÃƒÂ£o:
+1. Nunca dÃƒÂª a resposta pronta. Em vez disso, faÃƒÂ§a perguntas reflexivas curtas que estimulem o raciocÃƒÂ­nio prÃƒÂ³prio do aluno.
+2. Se o(a) estudante disser que nÃƒÂ£o entendeu, reescreva a pergunta com palavras mais simples e coloquiais.
+3. Corrija interpretaÃƒÂ§ÃƒÂµes equivocadas com muita empatia e dÃƒÂª pistas sutis e pontuais.
+4. Sempre destaque sutilmente que o teste avalia habilidades importantes para o futuro, como criatividade e pensamento crÃƒÂ­tico.
+5. Sempre retorne exatamente 3 botÃƒÂµes/chips de opÃƒÂ§ÃƒÂµes rÃƒÂ¡pidas de resposta ao final, pensados para o contexto atual da dÃƒÂºvida (ex: "[Me explica de outro jeito?]", "[Quero uma pista]", "[NÃƒÂ£o sei por onde comeÃƒÂ§ar]").
 
-Regras de SeguranÃ§a (Guardrails):
-Se a mensagem do estudante contiver ofensas, palavras sem sentido (nonsense), zombaria ou fugir totalmente do assunto do teste, ignore o conteÃºdo da mensagem e responda estritamente com a seguinte resposta padrÃ£o:
-"Vibe errada! ðŸ’€ Que tal a gente focar no que realmente importa e amassar esse teste juntos? Escolha uma opÃ§Ã£o abaixo ou mande sua dÃºvida!"
+Regras de SeguranÃƒÂ§a (Guardrails):
+Se a mensagem do estudante contiver ofensas, palavras sem sentido (nonsense), zombaria ou fugir totalmente do assunto do teste, ignore o conteÃƒÂºdo da mensagem e responda estritamente com a seguinte resposta padrÃƒÂ£o:
+"Vibe errada! Ã°Å¸â€™â‚¬ Que tal a gente focar no que realmente importa e amassar esse teste juntos? Escolha uma opÃƒÂ§ÃƒÂ£o abaixo ou mande sua dÃƒÂºvida!"
 
-Formato de saÃ­da:
-VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer tipo de formataÃ§Ã£o markdown por fora (como \`\`\`json ou \`\`\`), contendo exatamente as chaves:
+Formato de saÃƒÂ­da:
+VocÃƒÂª deve responder ESTRITAMENTE com um objeto JSON vÃƒÂ¡lido, sem qualquer tipo de formataÃƒÂ§ÃƒÂ£o markdown por fora (como \`\`\`json ou \`\`\`), contendo exatamente as chaves:
 {
   "response": "Texto da sua fala direcionada ao estudante",
   "chips": ["Texto do Chip 1", "Texto do Chip 2", "Texto do Chip 3"]
@@ -814,7 +814,7 @@ VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer t
 
       const contents = [
         { role: 'user', parts: [{ text: prompt }] },
-        { role: 'model', parts: [{ text: 'Entendido. Estou no papel do BÃ©co. Aguardando a mensagem do aluno.' }] }
+        { role: 'model', parts: [{ text: 'Entendido. Estou no papel do BÃƒÂ©co. Aguardando a mensagem do aluno.' }] }
       ];
 
       for (const msg of history) {
@@ -839,7 +839,7 @@ VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer t
         result = JSON.parse(jsonText);
       } catch(e) {
         result = { 
-          response: "Vixe, deu um bug na matrix aqui ðŸ˜… Bora focar na pergunta principal!",
+          response: "Vixe, deu um bug na matrix aqui Ã°Å¸Ëœâ€¦ Bora focar na pergunta principal!",
           chips: ["Me explica de outro jeito?", "Quero uma pista", "Por que isso importa?"]
         };
       }
@@ -847,7 +847,7 @@ VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer t
     } catch (error: any) {
       console.log('Serving mock chat.');
       res.json({ 
-        response: "Vixe, o sistema tÃ¡ lotado agora ðŸ˜…! Mas tamo junto, bora tentar focar na pergunta e responder do seu jeito!",
+        response: "Vixe, o sistema tÃƒÂ¡ lotado agora Ã°Å¸Ëœâ€¦! Mas tamo junto, bora tentar focar na pergunta e responder do seu jeito!",
         chips: ["Tentar de novo", "Entendi", "Beleza"]
       });
     }
@@ -873,17 +873,17 @@ VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer t
       if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
         await new Promise(resolve => setTimeout(resolve, 2000));
         return res.json({
-          arquetipo: "Inovador EstratÃ©gico",
-          sinteseGeral: `${name}, a integraÃ§Ã£o entre sua capacidade de analisar fatos com precisÃ£o e sua imaginaÃ§Ã£o fÃ©rtil revela um perfil Ãºnico. Quando vocÃª aplica seu raciocÃ­nio ao universo de ${interestDetail || interests.join(', ')}, vocÃª nÃ£o apenas questiona premissas com firmeza, mas tambÃ©m propÃµe saÃ­das criativas e originais que surpreendem seus colegas.\n\nSua forma de pensar equilibra a curiosidade exploratÃ³ria com o discernimento prÃ¡tico, permitindo transformar desafios complexos em planos realizÃ¡veis tanto na ${school} quanto na sua vida diÃ¡ria em ${city}.`,
+          arquetipo: "Inovador EstratÃƒÂ©gico",
+          sinteseGeral: `${name}, a integraÃƒÂ§ÃƒÂ£o entre sua capacidade de analisar fatos com precisÃƒÂ£o e sua imaginaÃƒÂ§ÃƒÂ£o fÃƒÂ©rtil revela um perfil ÃƒÂºnico. Quando vocÃƒÂª aplica seu raciocÃƒÂ­nio ao universo de ${interestDetail || interests.join(', ')}, vocÃƒÂª nÃƒÂ£o apenas questiona premissas com firmeza, mas tambÃƒÂ©m propÃƒÂµe saÃƒÂ­das criativas e originais que surpreendem seus colegas.\n\nSua forma de pensar equilibra a curiosidade exploratÃƒÂ³ria com o discernimento prÃƒÂ¡tico, permitindo transformar desafios complexos em planos realizÃƒÂ¡veis tanto na ${school} quanto na sua vida diÃƒÂ¡ria em ${city}.`,
           matrizCompetencias: {
-            cognitiva: "Excelente equilÃ­brio entre pensamento divergente (geraÃ§Ã£o de mÃºltiplas soluÃ§Ãµes inovadoras) e pensamento convergente (anÃ¡lise lÃ³gica e separaÃ§Ã£o de fatos e opiniÃµes).",
-            socioemocional: "Elevada mente aberta combinada com tolerÃ¢ncia Ã  incerteza, demonstrando coragem para errar, aprender e sustentar pontos de vista fundamentados.",
-            metacognitiva: "Alta autoconsciÃªncia de vieses e forte autorregulaÃ§Ã£o emocional diante de conflitos de opiniÃ£o."
+            cognitiva: "Excelente equilÃƒÂ­brio entre pensamento divergente (geraÃƒÂ§ÃƒÂ£o de mÃƒÂºltiplas soluÃƒÂ§ÃƒÂµes inovadoras) e pensamento convergente (anÃƒÂ¡lise lÃƒÂ³gica e separaÃƒÂ§ÃƒÂ£o de fatos e opiniÃƒÂµes).",
+            socioemocional: "Elevada mente aberta combinada com tolerÃƒÂ¢ncia ÃƒÂ  incerteza, demonstrando coragem para errar, aprender e sustentar pontos de vista fundamentados.",
+            metacognitiva: "Alta autoconsciÃƒÂªncia de vieses e forte autorregulaÃƒÂ§ÃƒÂ£o emocional diante de conflitos de opiniÃƒÂ£o."
           },
-          superPoder: "Capacidade de enxergar Ã¢ngulos inesperados em problemas difÃ­ceis e construir argumentos sÃ³lidos para defender suas ideias.",
-          desafioDesenvolvimento: "Aprofundar a validaÃ§Ã£o das evidÃªncias antes de fechar uma proposta criativa.",
-          proximoPassoPratico: `Na prÃ³xima semana, crie um pequeno projeto na ${school} unindo suas ideias em ${interestDetail || interests[0] || 'seus interesses'} para resolver uma questÃ£o real da sua turma!`,
-          recadoBecoWhats: "ðŸ’¬ Vou continuar contigo pra te ajudar no que ainda Ã© desafiador pra vocÃª! Clica aqui pra falar comigo no WhatsApp!"
+          superPoder: "Capacidade de enxergar ÃƒÂ¢ngulos inesperados em problemas difÃƒÂ­ceis e construir argumentos sÃƒÂ³lidos para defender suas ideias.",
+          desafioDesenvolvimento: "Aprofundar a validaÃƒÂ§ÃƒÂ£o das evidÃƒÂªncias antes de fechar uma proposta criativa.",
+          proximoPassoPratico: `Na prÃƒÂ³xima semana, crie um pequeno projeto na ${school} unindo suas ideias em ${interestDetail || interests[0] || 'seus interesses'} para resolver uma questÃƒÂ£o real da sua turma!`,
+          recadoBecoWhats: "Ã°Å¸â€™Â¬ Vou continuar contigo pra te ajudar no que ainda ÃƒÂ© desafiador pra vocÃƒÂª! Clica aqui pra falar comigo no WhatsApp!"
         });
       }
 
@@ -891,44 +891,44 @@ VocÃª deve responder ESTRITAMENTE com um objeto JSON vÃ¡lido, sem qualquer t
 
       const promptMergedReport = `# CONTEXTO
 
-VocÃª Ã© o avaliador-chefe de competÃªncias do Instituto Ayrton Senna. Sua missÃ£o Ã© sintetizar uma avaliaÃ§Ã£o holÃ­stica e hÃ­brida de um estudante que completou DUAS avaliaÃ§Ãµes formativas oficiais: Pensamento CrÃ­tico e Criatividade.
+VocÃƒÂª ÃƒÂ© o avaliador-chefe de competÃƒÂªncias do Instituto Ayrton Senna. Sua missÃƒÂ£o ÃƒÂ© sintetizar uma avaliaÃƒÂ§ÃƒÂ£o holÃƒÂ­stica e hÃƒÂ­brida de um estudante que completou DUAS avaliaÃƒÂ§ÃƒÂµes formativas oficiais: Pensamento CrÃƒÂ­tico e Criatividade.
 
 # ESTUDANTE
 Nome: ${name} | Idade: ${age} | Ano: ${grade} | Escola: ${school} | Cidade: ${city}
 Interesses: ${interests.join(', ')}
 Interesses detalhados: ${interestDetail}
 
-# DADOS DOS RELATÃ“RIOS INDIVIDUAIS
---- RELATÃ“RIO DE PENSAMENTO CRÃ�TICO ---
-Habilidades Cognitivas: ${Array.isArray(reportPC?.habilidadesCognitivas) ? reportPC.habilidadesCognitivas.join(', ') : reportPC?.habilidadesCognitivas || 'AnÃ¡lise de EvidÃªncias'}
+# DADOS DOS RELATÃƒâ€œRIOS INDIVIDUAIS
+--- RELATÃƒâ€œRIO DE PENSAMENTO CRÃƒï¿½TICO ---
+Habilidades Cognitivas: ${Array.isArray(reportPC?.habilidadesCognitivas) ? reportPC.habilidadesCognitivas.join(', ') : reportPC?.habilidadesCognitivas || 'AnÃƒÂ¡lise de EvidÃƒÂªncias'}
 Habilidades Socioemocionais: ${Array.isArray(reportPC?.habilidadesSocioemocionais) ? reportPC.habilidadesSocioemocionais.join(', ') : reportPC?.habilidadesSocioemocionais || 'Mente Aberta'}
-ForÃ§as: ${Array.isArray(reportPC?.pontosFortes) ? reportPC.pontosFortes.join(' | ') : reportPC?.pontosFortes || 'Boa identificaÃ§Ã£o de premissas'}
-Melhorias: ${Array.isArray(reportPC?.pontosMelhoria) ? reportPC.pontosMelhoria.join(' | ') : reportPC?.pontosMelhoria || 'ArticulaÃ§Ã£o de argumentos'}
+ForÃƒÂ§as: ${Array.isArray(reportPC?.pontosFortes) ? reportPC.pontosFortes.join(' | ') : reportPC?.pontosFortes || 'Boa identificaÃƒÂ§ÃƒÂ£o de premissas'}
+Melhorias: ${Array.isArray(reportPC?.pontosMelhoria) ? reportPC.pontosMelhoria.join(' | ') : reportPC?.pontosMelhoria || 'ArticulaÃƒÂ§ÃƒÂ£o de argumentos'}
 
---- RELATÃ“RIO DE CRIATIVIDADE ---
+--- RELATÃƒâ€œRIO DE CRIATIVIDADE ---
 Habilidades Cognitivas: ${Array.isArray(reportCR?.habilidadesCognitivas) ? reportCR.habilidadesCognitivas.join(', ') : reportCR?.habilidadesCognitivas || 'Pensamento Divergente'}
 Habilidades Socioemocionais: ${Array.isArray(reportCR?.habilidadesSocioemocionais) ? reportCR.habilidadesSocioemocionais.join(', ') : reportCR?.habilidadesSocioemocionais || 'Abertura ao Novo'}
-ForÃ§as: ${Array.isArray(reportCR?.pontosFortes) ? reportCR.pontosFortes.join(' | ') : reportCR?.pontosFortes || 'ProposiÃ§Ã£o de ideias originais'}
+ForÃƒÂ§as: ${Array.isArray(reportCR?.pontosFortes) ? reportCR.pontosFortes.join(' | ') : reportCR?.pontosFortes || 'ProposiÃƒÂ§ÃƒÂ£o de ideias originais'}
 Melhorias: ${Array.isArray(reportCR?.pontosMelhoria) ? reportCR.pontosMelhoria.join(' | ') : reportCR?.pontosMelhoria || 'Detalhamento do planejamento'}
 
-# TAREFA: DIAGNÃ“STICO INTEGRADO DO SÃ‰CULO XXI
-Analise como o pensamento divergente (Criatividade) se conecta com o pensamento convergente e analÃ­tico (Pensamento CrÃ­tico) no estudante.
+# TAREFA: DIAGNÃƒâ€œSTICO INTEGRADO DO SÃƒâ€°CULO XXI
+Analise como o pensamento divergente (Criatividade) se conecta com o pensamento convergente e analÃƒÂ­tico (Pensamento CrÃƒÂ­tico) no estudante.
 
-Gere uma sÃ­ntese formativa com mindset de crescimento (sem julgamento punitivo, sem notas escolares tradicionais), destacando o potencial Ãºnico do aluno, seus interesses (${interestDetail}) e seu estilo de resoluÃ§Ã£o de problemas.
+Gere uma sÃƒÂ­ntese formativa com mindset de crescimento (sem julgamento punitivo, sem notas escolares tradicionais), destacando o potencial ÃƒÂºnico do aluno, seus interesses (${interestDetail}) e seu estilo de resoluÃƒÂ§ÃƒÂ£o de problemas.
 
-# FORMATO DE SAÃ�DA OBRIGATÃ“RIO (JSON estrito)
+# FORMATO DE SAÃƒï¿½DA OBRIGATÃƒâ€œRIO (JSON estrito)
 {
-  "arquetipo": "TÃ­tulo que define o perfil criativo-crÃ­tico do aluno (ex: 'Explorador EstratÃ©gico', 'Inovador Questionador', 'Arquiteto de Ideias')",
-  "sinteseGeral": "Texto de 2 a 3 parÃ¡grafos integrando como a criatividade e a capacidade crÃ­tica dele se complementam nos seus interesses reais (${interestDetail}). Fale diretamente com o aluno em tom encorajador e amigÃ¡vel.",
+  "arquetipo": "TÃƒÂ­tulo que define o perfil criativo-crÃƒÂ­tico do aluno (ex: 'Explorador EstratÃƒÂ©gico', 'Inovador Questionador', 'Arquiteto de Ideias')",
+  "sinteseGeral": "Texto de 2 a 3 parÃƒÂ¡grafos integrando como a criatividade e a capacidade crÃƒÂ­tica dele se complementam nos seus interesses reais (${interestDetail}). Fale diretamente com o aluno em tom encorajador e amigÃƒÂ¡vel.",
   "matrizCompetencias": {
-    "cognitiva": "SÃ­ntese das habilidades cognitivas combinadas (anÃ¡lise lÃ³gica + fluÃªncia e divergÃªncia)",
-    "socioemocional": "SÃ­ntese das atitudes socioemocionais combinadas (mente aberta + tolerÃ¢ncia Ã  ambiguidade)",
-    "metacognitiva": "SÃ­ntese de autorregulaÃ§Ã£o e autoconsciÃªncia do processo de pensar"
+    "cognitiva": "SÃƒÂ­ntese das habilidades cognitivas combinadas (anÃƒÂ¡lise lÃƒÂ³gica + fluÃƒÂªncia e divergÃƒÂªncia)",
+    "socioemocional": "SÃƒÂ­ntese das atitudes socioemocionais combinadas (mente aberta + tolerÃƒÂ¢ncia ÃƒÂ  ambiguidade)",
+    "metacognitiva": "SÃƒÂ­ntese de autorregulaÃƒÂ§ÃƒÂ£o e autoconsciÃƒÂªncia do processo de pensar"
   },
   "superPoder": "O maior diferencial identificado na forma dele pensar e agir",
   "desafioDesenvolvimento": "A principal oportunidade para ele continuar evoluindo",
-  "proximoPassoPratico": "Uma missÃ£o prÃ¡tica e instigante conectada aos interesses dele (${interestDetail}) para aplicar na escola (${school}) ou na vida",
-  "recadoBecoWhats": "ðŸ’¬ Vou continuar contigo pra te ajudar no que ainda Ã© desafiador pra vocÃª! Clica aqui pra falar comigo no WhatsApp!"
+  "proximoPassoPratico": "Uma missÃƒÂ£o prÃƒÂ¡tica e instigante conectada aos interesses dele (${interestDetail}) para aplicar na escola (${school}) ou na vida",
+  "recadoBecoWhats": "Ã°Å¸â€™Â¬ Vou continuar contigo pra te ajudar no que ainda ÃƒÂ© desafiador pra vocÃƒÂª! Clica aqui pra falar comigo no WhatsApp!"
 }`;
 
       const response = await generateGeminiContent(ai, promptMergedReport, {
@@ -940,7 +940,7 @@ Gere uma sÃ­ntese formativa com mindset de crescimento (sem julgamento punitiv
       return res.json(result);
     } catch (error: any) {
       console.log('Error generating merged report:', error);
-      return res.status(500).json({ error: 'Erro ao gerar relatÃ³rio integrado.' });
+      return res.status(500).json({ error: 'Erro ao gerar relatÃƒÂ³rio integrado.' });
     }
   });
 
@@ -961,7 +961,7 @@ Gere uma sÃ­ntese formativa com mindset de crescimento (sem julgamento punitiv
 
   const whatsAppMemoryStore = new Map<string, StudentWhatsMemory>();
 
-  // Armazenamento em memória de pedidos de recuperação de acesso
+  // Armazenamento em memÃ³ria de pedidos de recuperaÃ§Ã£o de acesso
   interface AccessRecoveryRequest {
     id: string;
     studentName: string;
@@ -972,7 +972,7 @@ Gere uma sÃ­ntese formativa com mindset de crescimento (sem julgamento punitiv
   }
   const activeAccessRequests = new Map<string, AccessRecoveryRequest>();
 
-  // Estrutura do Log de Senha Perdida para persistência do Painel do Professor
+  // Estrutura do Log de Senha Perdida para persistÃªncia do Painel do Professor
   interface LostPasswordLog {
     id: string;
     studentName: string;
@@ -988,41 +988,41 @@ Gere uma sÃ­ntese formativa com mindset de crescimento (sem julgamento punitiv
     return res.json(logDeSenhaPerdida);
   });
 
-  // API Route para o chat da IA de orientação (Prof. Cláudio)
+  // API Route para o chat da IA de orientaÃ§Ã£o (Prof. ClÃ¡udio)
   app.post('/api/ai/guidance', async (req, res) => {
     try {
       const { message, role, history = [] } = req.body;
       const apiKey = process.env.GEMINI_API_KEY;
 
-      const mentorPrompt = `Você é o Prof. Cláudio, um mentor simpático e especialista em psicologia escolar e desenvolvimento socioemocional do Instituto Ayrton Senna. 
-Sua missão é guiar educadores (professores) na interpretação dos relatórios de competências socioemocionais (Autogestão, Engajamento com os outros, Amabilidade, Resiliência Emocional e Abertura ao Novo).
+      const mentorPrompt = `VocÃª Ã© o Prof. ClÃ¡udio, um mentor simpÃ¡tico e especialista em psicologia escolar e desenvolvimento socioemocional do Instituto Ayrton Senna. 
+Sua missÃ£o Ã© guiar educadores (professores) na interpretaÃ§Ã£o dos relatÃ³rios de competÃªncias socioemocionais (AutogestÃ£o, Engajamento com os outros, Amabilidade, ResiliÃªncia Emocional e Abertura ao Novo).
 
-Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma humana, pedagógica e precisa:
-1. Explique o significado prático e psicológico das competências socioemocionais mencionadas de forma acessível.
-2. Dê sugestões de intervenções escolares totalmente voltadas para a BNCC (Base Nacional Comum Curricular), mapeando especificamente a uma ou mais das 10 Competências Gerais da BNCC:
-   - Competência Geral 1 – Conhecimento
-   - Competência Geral 2 – Pensamento Científico, Crítico e Criativo
-   - Competência Geral 3 – Repertório Cultural
-   - Competência Geral 4 – Comunicação
-   - Competência Geral 5 – Cultura Digital
-   - Competência Geral 6 – Trabalho e Projeto de Vida
-   - Competência Geral 7 – Argumentação
-   - Competência Geral 8 – Autoconhecimento e Autocuidado
-   - Competência Geral 9 – Empatia e Cooperação
-   - Competência Geral 10 – Responsabilidade e Cidadania
-3. Seja objetivo e curto nas respostas (no máximo 3 parágrafos). Nunca use metáforas. Dê a resposta exata para o que o(a) educador(a) deseja saber.`;
+Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma humana, pedagÃ³gica e precisa:
+1. Explique o significado prÃ¡tico e psicolÃ³gico das competÃªncias socioemocionais mencionadas de forma acessÃ­vel.
+2. DÃª sugestÃµes de intervenÃ§Ãµes escolares totalmente voltadas para a BNCC (Base Nacional Comum Curricular), mapeando especificamente a uma ou mais das 10 CompetÃªncias Gerais da BNCC:
+   - CompetÃªncia Geral 1 â€“ Conhecimento
+   - CompetÃªncia Geral 2 â€“ Pensamento CientÃ­fico, CrÃ­tico e Criativo
+   - CompetÃªncia Geral 3 â€“ RepertÃ³rio Cultural
+   - CompetÃªncia Geral 4 â€“ ComunicaÃ§Ã£o
+   - CompetÃªncia Geral 5 â€“ Cultura Digital
+   - CompetÃªncia Geral 6 â€“ Trabalho e Projeto de Vida
+   - CompetÃªncia Geral 7 â€“ ArgumentaÃ§Ã£o
+   - CompetÃªncia Geral 8 â€“ Autoconhecimento e Autocuidado
+   - CompetÃªncia Geral 9 â€“ Empatia e CooperaÃ§Ã£o
+   - CompetÃªncia Geral 10 â€“ Responsabilidade e Cidadania
+3. Seja objetivo e curto nas respostas (no mÃ¡ximo 3 parÃ¡grafos). Nunca use metÃ¡foras. DÃª a resposta exata para o que o(a) educador(a) deseja saber.`;
 
       if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
         // Fallback simples sem chave
         return res.json({
-          text: `Olá! Eu sou o Prof. Cláudio. Analisando os baixos desempenhos socioemocionais do estudante, sugiro uma intervenção baseada na *Competência Geral 8 (Autoconhecimento e Autocuidado)* e na *Competência Geral 9 (Empatia e Cooperação)* da BNCC. Recomendo planejar atividades de mediação de sentimentos em grupo. (Nota: Chave GEMINI_API_KEY não configurada no .env.local)`
+          text: `OlÃ¡! Eu sou o Prof. ClÃ¡udio. Analisando os baixos desempenhos socioemocionais do estudante, sugiro uma intervenÃ§Ã£o baseada na *CompetÃªncia Geral 8 (Autoconhecimento e Autocuidado)* e na *CompetÃªncia Geral 9 (Empatia e CooperaÃ§Ã£o)* da BNCC. Recomendo planejar atividades de mediaÃ§Ã£o de sentimentos em grupo. (Nota: Chave GEMINI_API_KEY nÃ£o configurada no .env.local)`
         });
       }
 
       const ai = new GoogleGenAI({ apiKey });
       const contents = [
         { role: 'user', parts: [{ text: mentorPrompt }] },
-        { role: 'model', parts: [{ text: 'Entendido! Serei o Prof. Cláudio, mentor acolhedor e especialista do IAS para apoiar educadores e gestores.' }] }
+        { role: 'model', parts: [{ text: 'Entendido! Serei o Prof. ClÃ¡udio, mentor acolhedor e especialista do IAS para apoiar educadores e gestores.' }] }
       ];
 
       for (const turn of history) {
@@ -1041,24 +1041,24 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       return res.json({ text: response.text || 'Desculpe, tive um pequeno problema para processar sua pergunta. Como posso ajudar?' });
 
     } catch (err: any) {
-      console.error('[Prof. Cláudio AI Error]:', err);
+      console.error('[Prof. ClÃ¡udio AI Error]:', err);
       return res.status(500).json({ error: err.message || 'Erro ao consultar o mentor de IA.' });
     }
   });
 
-  // API Route para exportar relatório para o WhatsApp do professor
+  // API Route para exportar relatÃ³rio para o WhatsApp do professor
   app.post('/api/ai/export', async (req, res) => {
     try {
       const { number, text } = req.body;
       const evolutionUrl = process.env.EVOLUTION_API_URL || 'http://localhost:8080';
       const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
-      const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
+      const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
       if (!number || !text) {
-        return res.status(400).json({ error: 'Parâmetros ausentes.' });
+        return res.status(400).json({ error: 'ParÃ¢metros ausentes.' });
       }
 
-      // Normaliza o número para o formato correto
+      // Normaliza o nÃºmero para o formato correto
       let formattedNumber = number.replace(/\D/g, '');
       if (!formattedNumber.endsWith('@s.whatsapp.net')) {
         formattedNumber = `${formattedNumber}@s.whatsapp.net`;
@@ -1088,11 +1088,11 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
     } catch (err: any) {
       console.error('[Export Route Error]:', err);
-      return res.status(500).json({ error: err.message || 'Erro interno na rota de exportação.' });
+      return res.status(500).json({ error: err.message || 'Erro interno na rota de exportaÃ§Ã£o.' });
     }
   });
 
-  // Estrutura e Banco de Dados de Usuários em Memória para Hidratação e Reset de Senha Reais
+  // Estrutura e Banco de Dados de UsuÃ¡rios em MemÃ³ria para HidrataÃ§Ã£o e Reset de Senha Reais
   interface UserProfile {
     code: string;
     name: string;
@@ -1146,12 +1146,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
   app.post('/api/auth/login', (req, res) => {
     const { code, password } = req.body;
     if (!code || !password) {
-      return res.status(400).json({ error: 'Parâmetros de login ausentes.' });
+      return res.status(400).json({ error: 'ParÃ¢metros de login ausentes.' });
     }
 
     const user = userRegistry.get(code);
     if (!user || user.password !== password) {
-      return res.status(401).json({ error: 'Código ou senha incorretos.' });
+      return res.status(401).json({ error: 'CÃ³digo ou senha incorretos.' });
     }
 
     return res.json({
@@ -1165,16 +1165,16 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     });
   });
 
-  // Endpoint de hidratação de primeiro acesso
+  // Endpoint de hidrataÃ§Ã£o de primeiro acesso
   app.post('/api/auth/hydrate', (req, res) => {
     const { code, personalEmail, personalWhatsapp, securityQuestion, securityAnswer } = req.body;
     if (!code || !personalEmail || !personalWhatsapp || !securityQuestion || !securityAnswer) {
-      return res.status(400).json({ error: 'Campos de hidratação obrigatórios ausentes.' });
+      return res.status(400).json({ error: 'Campos de hidrataÃ§Ã£o obrigatÃ³rios ausentes.' });
     }
 
     const user = userRegistry.get(code);
     if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado.' });
+      return res.status(404).json({ error: 'UsuÃ¡rio nÃ£o encontrado.' });
     }
 
     user.personalEmail = personalEmail;
@@ -1183,15 +1183,15 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     user.securityAnswer = securityAnswer;
     user.isFirstAccess = false;
 
-    console.log(`[Cadastro Hidratado] Usuário: ${code}. E-mail: ${personalEmail}, WhatsApp: ${personalWhatsapp}`);
+    console.log(`[Cadastro Hidratado] UsuÃ¡rio: ${code}. E-mail: ${personalEmail}, WhatsApp: ${personalWhatsapp}`);
     return res.json({ success: true });
   });
 
-  // Endpoint para recuperar os canais ativos de reset do usuário
+  // Endpoint para recuperar os canais ativos de reset do usuÃ¡rio
   app.post('/api/auth/recovery-options', (req, res) => {
     const { code } = req.body;
     if (!code) {
-      return res.status(400).json({ error: 'Código ausente.' });
+      return res.status(400).json({ error: 'CÃ³digo ausente.' });
     }
 
     const user = userRegistry.get(code);
@@ -1220,24 +1220,24 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     try {
       const { code, method, answer } = req.body;
       if (!code || !method) {
-        return res.status(400).json({ error: 'Parâmetros de reset ausentes.' });
+        return res.status(400).json({ error: 'ParÃ¢metros de reset ausentes.' });
       }
 
       const user = userRegistry.get(code);
       if (!user) {
-        return res.status(404).json({ error: 'Usuário não encontrado.' });
+        return res.status(404).json({ error: 'UsuÃ¡rio nÃ£o encontrado.' });
       }
 
       if (method === 'question') {
         if (!answer || answer.toLowerCase().trim() !== user.securityAnswer.toLowerCase().trim()) {
-          return res.json({ success: false, error: 'Resposta de segurança incorreta.' });
+          return res.json({ success: false, error: 'Resposta de seguranÃ§a incorreta.' });
         }
         return res.json({ success: true, password: user.password });
       }
 
       if (method === 'email') {
         if (!user.personalEmail) {
-          return res.status(400).json({ error: 'E-mail não configurado.' });
+          return res.status(400).json({ error: 'E-mail nÃ£o configurado.' });
         }
 
         const smtpUser = process.env.SMTP_USER;
@@ -1266,15 +1266,15 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const info = await transporter.sendMail({
           from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
           to: user.personalEmail,
-          subject: '🔑 Recuperação de Acesso - Portal IAS',
-          text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+          subject: 'ðŸ”‘ RecuperaÃ§Ã£o de Acesso - Portal IAS',
+          text: `OlÃ¡ ${user.name},\n\nRecebemos uma solicitaÃ§Ã£o de redefiniÃ§Ã£o de acesso para sua conta.\n\nSuas credenciais sÃ£o:\n- CÃ³digo: ${user.code}\n- Senha: ${user.password}\n\nSe vocÃª nÃ£o solicitou isso, ignore este e-mail.`,
           html: `
             <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
               <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-              <p>Olá <strong>${user.name}</strong>,</p>
+              <p>OlÃ¡ <strong>${user.name}</strong>,</p>
               <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
               <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
-                <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
+                <strong>CÃ³digo de Acesso:</strong> <code>${user.code}</code><br/>
                 <strong>Senha:</strong> <code>${user.password}</code>
               </div>
               <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
@@ -1288,17 +1288,17 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
       if (method === 'whatsapp') {
         if (!user.personalWhatsapp) {
-          return res.status(400).json({ error: 'WhatsApp não configurado.' });
+          return res.status(400).json({ error: 'WhatsApp nÃ£o configurado.' });
         }
 
         const evolutionUrl = process.env.EVOLUTION_API_URL || 'http://localhost:8080';
         const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
-        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
+        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
         const rawNumber = user.personalWhatsapp.replace(/\D/g, '');
         const formattedNumber = rawNumber.endsWith('@s.whatsapp.net') ? rawNumber : `${rawNumber}@s.whatsapp.net`;
 
-        const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
+        const messageText = `ðŸ”‘ *RecuperaÃ§Ã£o de Acesso - Portal IAS*\n\nOlÃ¡ *${user.name}*,\n\nSuas credenciais sÃ£o:\n- *CÃ³digo de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com seguranÃ§a.`;
 
         const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
           method: 'POST',
@@ -1319,7 +1319,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         }
       }
 
-      return res.status(400).json({ error: 'Método inválido.' });
+      return res.status(400).json({ error: 'MÃ©todo invÃ¡lido.' });
 
     } catch (err: any) {
       console.error('[Recovery Send Error]:', err);
@@ -1327,7 +1327,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     }
   });
 
-  // Helper para construir o Relatório HTML Dinâmico baseado no Design System do IAS (JSON da usuária)
+  // Helper para construir o RelatÃ³rio HTML DinÃ¢mico baseado no Design System do IAS (JSON da usuÃ¡ria)
   function buildHtmlReport(
     markdownText: string,
     metadata?: { studentName?: string; className?: string; role?: string }
@@ -1359,12 +1359,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     const className = metadata?.className || '';
     const isGestor = metadata?.role === 'gestor';
 
-    // Seção Header
+    // SeÃ§Ã£o Header
     const headerHtml = `
       <div style="background-color: ${colors.primary}; padding: 35px; color: #FFFFFF; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; border-bottom: 4px solid ${colors.amarelo};">
         <span style="font-size: 11px; font-weight: 700; color: ${colors.amarelo}; letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 10px;">Instituto Ayrton Senna</span>
-        <h1 style="font-size: 28px; font-weight: 700; margin: 0; line-height: 1.2;">Relatório Socioemocional</h1>
-        <p style="font-size: 14px; font-weight: 600; color: #8fa0dd; margin: 6px 0 0 0;">Análise Pedagógica & Intervenções BNCC</p>
+        <h1 style="font-size: 28px; font-weight: 700; margin: 0; line-height: 1.2;">RelatÃ³rio Socioemocional</h1>
+        <p style="font-size: 14px; font-weight: 600; color: #8fa0dd; margin: 6px 0 0 0;">AnÃ¡lise PedagÃ³gica & IntervenÃ§Ãµes BNCC</p>
         
         <table style="width: 100%; margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 13px; color: #FFFFFF;">
           <tr>
@@ -1379,34 +1379,34 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
               <strong>${className || 'Todas as Turmas'}</strong>
             </td>
             <td style="padding-right: 20px; vertical-align: top;">
-              <span style="color: #8fa0dd; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px;">Destinatário</span>
+              <span style="color: #8fa0dd; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px;">DestinatÃ¡rio</span>
               <strong>${isGestor ? 'Gestor Escolar' : 'Educador(a)'}</strong>
             </td>
             <td style="vertical-align: top;">
-              <span style="color: #8fa0dd; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px;">Período</span>
-              <strong>2026.2 (Avaliação Semestral)</strong>
+              <span style="color: #8fa0dd; display: block; font-size: 10px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px;">PerÃ­odo</span>
+              <strong>2026.2 (AvaliaÃ§Ã£o Semestral)</strong>
             </td>
           </tr>
         </table>
       </div>
     `;
 
-    // Resumo Executivo Card ("Em 30 segundos") - Primeiro parágrafo
-    const summaryText = cleanedParagraphs[0] || 'Relatório socioemocional estruturado a partir da árvore de resultados.';
+    // Resumo Executivo Card ("Em 30 segundos") - Primeiro parÃ¡grafo
+    const summaryText = cleanedParagraphs[0] || 'RelatÃ³rio socioemocional estruturado a partir da Ã¡rvore de resultados.';
     
-    // Montagem dos parágrafos subsequentes em cards funcionais
+    // Montagem dos parÃ¡grafos subsequentes em cards funcionais
     let bodyParagraphsHtml = '';
     cleanedParagraphs.slice(1).forEach((cleanP) => {
       const lower = cleanP.toLowerCase();
       
-      const isAcao = lower.includes('ação') || lower.includes('intervenção') || lower.includes('sugestão pedagógica') || lower.includes('passos') || lower.includes('1.') || lower.includes('2.');
-      const isBncc = lower.includes('bncc') || lower.includes('competência geral') || lower.includes('gerais');
+      const isAcao = lower.includes('aÃ§Ã£o') || lower.includes('intervenÃ§Ã£o') || lower.includes('sugestÃ£o pedagÃ³gica') || lower.includes('passos') || lower.includes('1.') || lower.includes('2.');
+      const isBncc = lower.includes('bncc') || lower.includes('competÃªncia geral') || lower.includes('gerais');
 
       if (isAcao) {
         bodyParagraphsHtml += `
           <div style="background-color: ${colors.bgSec}; border: 1px solid ${colors.borda}; padding: 24px; border-radius: 16px; margin-bottom: 24px;">
             <h3 style="font-size: 16px; font-weight: 700; color: ${colors.azul}; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-              <span style="margin-right: 8px;">🎯</span> Uma ação para começar (Recomendação Prioritária)
+              <span style="margin-right: 8px;">ðŸŽ¯</span> Uma aÃ§Ã£o para comeÃ§ar (RecomendaÃ§Ã£o PrioritÃ¡ria)
             </h3>
             <div style="font-size: 14px; color: ${colors.textSec}; line-height: 1.6; white-space: pre-line;">
               ${cleanP}
@@ -1417,7 +1417,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         bodyParagraphsHtml += `
           <div style="border: 1px solid ${colors.borda}; padding: 24px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid ${colors.verde}; background-color: #FFFFFF;">
             <h3 style="font-size: 16px; font-weight: 700; color: ${colors.verde}; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-              <span style="margin-right: 8px;">🌿</span> Conexões com as Competências Gerais da BNCC
+              <span style="margin-right: 8px;">ðŸŒ¿</span> ConexÃµes com as CompetÃªncias Gerais da BNCC
             </h3>
             <div style="font-size: 14px; color: ${colors.textSec}; line-height: 1.6; white-space: pre-line;">
               ${cleanP}
@@ -1428,7 +1428,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         bodyParagraphsHtml += `
           <div style="border: 1px solid ${colors.borda}; padding: 24px; border-radius: 16px; margin-bottom: 24px; background-color: #FFFFFF;">
             <h3 style="font-size: 16px; font-weight: 700; color: ${colors.primary}; margin-top: 0; margin-bottom: 12px;">
-              📖 O que isso pode significar na prática?
+              ðŸ“– O que isso pode significar na prÃ¡tica?
             </h3>
             <div style="font-size: 14px; color: ${colors.textSec}; line-height: 1.6; white-space: pre-line;">
               ${cleanP}
@@ -1444,41 +1444,41 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Relatório Socioemocional - Instituto Ayrton Senna</title>
+        <title>RelatÃ³rio Socioemocional - Instituto Ayrton Senna</title>
       </head>
       <body style="background-color: ${colors.bgSec}; margin: 0; padding: 40px 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
         
         <div style="max-width: 960px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; border: 1px solid ${colors.borda}; overflow: hidden; box-shadow: 0 4px 20px rgba(7, 17, 49, 0.04);">
           
-          <!-- Cabeçalho Institucional -->
+          <!-- CabeÃ§alho Institucional -->
           ${headerHtml}
           
-          <!-- Conteúdo -->
+          <!-- ConteÃºdo -->
           <div style="padding: 35px;">
             
             <!-- Resumo Executivo Destaque -->
             <div style="background-color: #f0f7ff; border: 1px solid #d0e4ff; border-left: 5px solid ${colors.azulDestaque}; padding: 24px; border-radius: 16px; margin-bottom: 30px;">
-              <h2 style="font-size: 13px; font-weight: 700; color: ${colors.azulDestaque}; margin-top: 0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Em 30 segundos</h2>
+              <h2 style="font-size: 13px; font-weight: 700; color: ${colors.azulDestaque}; margin-top: 0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">âš¡ Em 30 segundos</h2>
               <p style="font-size: 15px; color: ${colors.textMain}; line-height: 1.6; margin: 0; font-weight: 600;">
                 ${summaryText}
               </p>
             </div>
             
-            <!-- Outras Seções Formatadas -->
+            <!-- Outras SeÃ§Ãµes Formatadas -->
             ${bodyParagraphsHtml}
             
           </div>
           
-          <!-- Rodapé do Relatório -->
+          <!-- RodapÃ© do RelatÃ³rio -->
           <div style="background-color: ${colors.primary}; padding: 24px 35px; color: #FFFFFF; text-align: center; font-size: 12px; border-top: 4px solid ${colors.amarelo};">
             <p style="margin: 0 0 8px 0; color: #8fa0dd; font-weight: 600;">
-              Este relatório apoia a reflexão pedagógica e deve ser interpretado em conjunto com outras evidências e com o contexto do estudante.
+              Este relatÃ³rio apoia a reflexÃ£o pedagÃ³gica e deve ser interpretado em conjunto com outras evidÃªncias e com o contexto do estudante.
             </p>
             <p style="margin: 0 0 12px 0; color: #8fa0dd; opacity: 0.85;">
-              Relatório exportado do portal socioemocional a pedido do educador.
+              RelatÃ³rio exportado do portal socioemocional a pedido do educador.
             </p>
             <p style="margin: 0; color: #ffffff; font-weight: 700;">
-              © 2026 Instituto Ayrton Senna. Todos os direitos reservados.
+              Â© 2026 Instituto Ayrton Senna. Todos os direitos reservados.
             </p>
           </div>
           
@@ -1489,12 +1489,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     `;
   }
 
-  // API Route para exportar relatório por E-mail de verdade (SMTP real ou Ethereal de Teste)
+  // API Route para exportar relatÃ³rio por E-mail de verdade (SMTP real ou Ethereal de Teste)
   app.post('/api/ai/export-email', async (req, res) => {
     try {
       const { email, text, metadata } = req.body;
       if (!email || !text) {
-        return res.status(400).json({ error: 'Parâmetros ausentes.' });
+        return res.status(400).json({ error: 'ParÃ¢metros ausentes.' });
       }
 
       const smtpUser = process.env.SMTP_USER;
@@ -1505,7 +1505,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       let transporter;
 
       if (smtpUser && smtpPass) {
-        // Usa credenciais reais configuradas pelo usuário no .env.local
+        // Usa credenciais reais configuradas pelo usuÃ¡rio no .env.local
         transporter = nodemailer.createTransport({
           host: smtpHost,
           port: smtpPort,
@@ -1516,7 +1516,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
           }
         });
       } else {
-        // Gera uma conta de teste Ethereal descartável em tempo de execução
+        // Gera uma conta de teste Ethereal descartÃ¡vel em tempo de execuÃ§Ã£o
         const testAccount = await nodemailer.createTestAccount();
         transporter = nodemailer.createTransport({
           host: 'smtp.ethereal.email',
@@ -1529,13 +1529,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         });
       }
 
-      // Envia o e-mail de fato com o layout contemporâneo estruturado
+      // Envia o e-mail de fato com o layout contemporÃ¢neo estruturado
       const htmlBody = buildHtmlReport(text, metadata);
 
       const info = await transporter.sendMail({
-        from: '"Prof. Cláudio - Mentor IAS" <suporte@institutoayrtonsenna.org.br>',
+        from: '"Prof. ClÃ¡udio - Mentor IAS" <suporte@institutoayrtonsenna.org.br>',
         to: email,
-        subject: '📊 Relatório Socioemocional & Recomendações BNCC',
+        subject: 'ðŸ“Š RelatÃ³rio Socioemocional & RecomendaÃ§Ãµes BNCC',
         text: text,
         html: htmlBody
       });
@@ -1554,19 +1554,19 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     }
   });
 
-  // 1. Endpoint para criar a solicitação de acesso e disparar WhatsApp
+  // 1. Endpoint para criar a solicitaÃ§Ã£o de acesso e disparar WhatsApp
   app.post('/api/auth-recovery/request', async (req, res) => {
     try {
       const { name, studentClass, phoneNumber } = req.body;
       if (!name || !studentClass || !phoneNumber) {
-        return res.status(400).json({ error: 'Parâmetros ausentes.' });
+        return res.status(400).json({ error: 'ParÃ¢metros ausentes.' });
       }
 
       const reqId = Date.now().toString() + Math.random().toString(36).substring(2, 5);
       const cleanPhone = phoneNumber.replace(/\D/g, '');
       const formattedPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
       
-      // Registra a solicitação com o telefone do professor
+      // Registra a solicitaÃ§Ã£o com o telefone do professor
       activeAccessRequests.set(reqId, {
         id: reqId,
         studentName: name,
@@ -1580,9 +1580,9 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       const evolutionKey = process.env.EVOLUTION_API_KEY;
       const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
-      const messageText = `🔔 *Solicitação de Acesso - Portal IAS*\n\nOlá Educador(a), o estudante *${name}* da turma *${studentClass}* esqueceu seu código de acesso e está solicitando autorização para entrar no portal.\n\n⚠️ *Por medida de segurança para evitar cliques acidentais*, responda a esta mensagem digitando uma das palavras abaixo:\n\n👉 Digite *APROVAR* para autorizar a entrada do estudante.\n👉 Digite *RECUSAR* para negar a entrada e direcioná-lo à secretaria.\n\n_Esta solicitação expirará automaticamente se não for respondida em até 10 minutos._`;
+      const messageText = `ðŸ”” *SolicitaÃ§Ã£o de Acesso - Portal IAS*\n\nOlÃ¡ Educador(a), o estudante *${name}* da turma *${studentClass}* esqueceu seu cÃ³digo de acesso e estÃ¡ solicitando autorizaÃ§Ã£o para entrar no portal.\n\nâš ï¸ *Por medida de seguranÃ§a para evitar cliques acidentais*, responda a esta mensagem digitando uma das palavras abaixo:\n\nðŸ‘‰ Digite *APROVAR* para autorizar a entrada do estudante.\nðŸ‘‰ Digite *RECUSAR* para negar a entrada e direcionÃ¡-lo Ã  secretaria.\n\n_Esta solicitaÃ§Ã£o expirarÃ¡ automaticamente se nÃ£o for respondida em atÃ© 10 minutos._`;
 
-      console.log(`[Recuperação de Acesso] Novo pedido registrado ID: ${reqId} para ${name}. Disparando para o WhatsApp: ${formattedPhone}`);
+      console.log(`[RecuperaÃ§Ã£o de Acesso] Novo pedido registrado ID: ${reqId} para ${name}. Disparando para o WhatsApp: ${formattedPhone}`);
 
       let methodUsed = 'console_only';
 
@@ -1603,13 +1603,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
           if (evoRes.ok) {
             methodUsed = 'evolution_api_text';
-            console.log(`[Recuperação de Acesso] Mensagem de texto enviada com sucesso via Evolution API.`);
+            console.log(`[RecuperaÃ§Ã£o de Acesso] Mensagem de texto enviada com sucesso via Evolution API.`);
           } else {
             const errData = await evoRes.text();
-            console.warn('[Recuperação de Acesso] Falha no envio do sendText:', evoRes.status, errData);
+            console.warn('[RecuperaÃ§Ã£o de Acesso] Falha no envio do sendText:', evoRes.status, errData);
           }
         } catch (evoErr) {
-          console.warn('[Recuperação de Acesso] Falha ao tentar contato com Evolution API:', evoErr);
+          console.warn('[RecuperaÃ§Ã£o de Acesso] Falha ao tentar contato com Evolution API:', evoErr);
         }
       }
 
@@ -1617,8 +1617,8 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
       return res.json({ success: true, id: reqId, method: methodUsed });
     } catch (err: any) {
-      console.error('[Recuperação de Acesso] Erro geral:', err);
-      return res.status(500).json({ error: err.message || 'Erro ao registrar solicitação' });
+      console.error('[RecuperaÃ§Ã£o de Acesso] Erro geral:', err);
+      return res.status(500).json({ error: err.message || 'Erro ao registrar solicitaÃ§Ã£o' });
     }
   });
 
@@ -1639,7 +1639,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     return res.json({ status: request.status });
   });
 
-  // 3. Endpoint de aprovação (clicado no WhatsApp pelo professor)
+  // 3. Endpoint de aprovaÃ§Ã£o (clicado no WhatsApp pelo professor)
   app.get('/api/auth-recovery/approve/:id', (req, res) => {
     const { id } = req.params;
     const request = activeAccessRequests.get(id);
@@ -1648,7 +1648,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       return res.send(`
         <html>
           <body style="font-family:sans-serif; text-align:center; padding:50px; background:#F4F5F8; color:#0B1226;">
-            <h2>⚠️ Solicitação não encontrada ou já expirada.</h2>
+            <h2>âš ï¸ SolicitaÃ§Ã£o nÃ£o encontrada ou jÃ¡ expirada.</h2>
             <p>O limite de tempo de 10 minutos para autorizar o acesso expirou.</p>
           </body>
         </html>
@@ -1675,10 +1675,10 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       </head>
       <body>
         <div class="card">
-          <div class="badge">Acesso Autorizado ✓</div>
+          <div class="badge">Acesso Autorizado âœ“</div>
           <h1>Entrada Concedida!</h1>
           <p>O acesso para o estudante <strong>${request.studentName}</strong> (turma <strong>${request.studentClass}</strong>) foi liberado com sucesso.</p>
-          <p>A tela do aluno será atualizada automaticamente em instantes.</p>
+          <p>A tela do aluno serÃ¡ atualizada automaticamente em instantes.</p>
         </div>
       </body>
       </html>
@@ -1694,7 +1694,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       return res.send(`
         <html>
           <body style="font-family:sans-serif; text-align:center; padding:50px; background:#F4F5F8; color:#0B1226;">
-            <h2>⚠️ Solicitação não encontrada ou já expirada.</h2>
+            <h2>âš ï¸ SolicitaÃ§Ã£o nÃ£o encontrada ou jÃ¡ expirada.</h2>
           </body>
         </html>
       `);
@@ -1720,10 +1720,10 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       </head>
       <body>
         <div class="card">
-          <div class="badge">Acesso Negado ✗</div>
+          <div class="badge">Acesso Negado âœ—</div>
           <h1>Pedido Recusado</h1>
           <p>O pedido de acesso para o estudante <strong>${request.studentName}</strong> foi recusado.</p>
-          <p>O aluno recebeu a instrução de procurar a secretaria para regularizar seu cadastro.</p>
+          <p>O aluno recebeu a instruÃ§Ã£o de procurar a secretaria para regularizar seu cadastro.</p>
         </div>
       </body>
       </html>
@@ -1759,7 +1759,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         city: city || existing.city,
         interests: Array.isArray(interests) ? interests.join(', ') : (interests || existing.interests),
         interestDetail: interestDetail || existing.interestDetail,
-        arquetipo: arquetipo || existing.arquetipo || 'Inovador EstratÃ©gico',
+        arquetipo: arquetipo || existing.arquetipo || 'Inovador EstratÃƒÂ©gico',
         superPoder: superPoder || existing.superPoder,
         desafioDesenvolvimento: desafioDesenvolvimento || existing.desafioDesenvolvimento,
       });
@@ -1768,7 +1768,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       const evolutionKey = process.env.EVOLUTION_API_KEY;
       const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
-      const defaultMessage = `Oi, ${name || 'parceiro'}! Aqui Ã© o BÃ©co do Instituto Ayrton Senna! ðŸš€\n\nVi aqui que seu perfil no laboratÃ³rio foi *${arquetipo || 'Inovador EstratÃ©gico'}*! ðŸ�†\n\nðŸ’¬ Vou continuar contigo por aqui pra te ajudar no que ainda Ã© desafiador pra vocÃª! Sempre que tiver uma dÃºvida, desafio escolar ou quiser trocar uma ideia, Ã© sÃ³ me mandar uma mensagem aqui!`;
+      const defaultMessage = `Oi, ${name || 'parceiro'}! Aqui ÃƒÂ© o BÃƒÂ©co do Instituto Ayrton Senna! Ã°Å¸Å¡â‚¬\n\nVi aqui que seu perfil no laboratÃƒÂ³rio foi *${arquetipo || 'Inovador EstratÃƒÂ©gico'}*! Ã°Å¸ï¿½â€ \n\nÃ°Å¸â€™Â¬ Vou continuar contigo por aqui pra te ajudar no que ainda ÃƒÂ© desafiador pra vocÃƒÂª! Sempre que tiver uma dÃƒÂºvida, desafio escolar ou quiser trocar uma ideia, ÃƒÂ© sÃƒÂ³ me mandar uma mensagem aqui!`;
 
       // If Evolution API credentials are provided, attempt dispatch via HTTP
       if (evolutionUrl && evolutionKey) {
@@ -1845,7 +1845,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
             body: JSON.stringify({
               number: rawNumber,
-              text: "Opa! Por enquanto eu sÃ³ consigo ler mensagens de texto por aqui ðŸ“� Manda sua dÃºvida ou ideia em texto que a gente desenrola!",
+              text: "Opa! Por enquanto eu sÃƒÂ³ consigo ler mensagens de texto por aqui Ã°Å¸â€œï¿½ Manda sua dÃƒÂºvida ou ideia em texto que a gente desenrola!",
               delay: 1000
             })
           });
@@ -1880,7 +1880,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             const statusText = isApprove ? 'APROVADO' : 'REPROVADO';
             foundRequest.status = isApprove ? 'approved' : 'rejected';
             activeAccessRequests.set(foundRequest.id, foundRequest);
-            console.log(`[Recuperação de Acesso Webhook] Resposta por texto processada: ${normalizedText} para ID: ${foundRequest.id}`);
+            console.log(`[RecuperaÃ§Ã£o de Acesso Webhook] Resposta por texto processada: ${normalizedText} para ID: ${foundRequest.id}`);
 
             logTelemetry('whatsapp', 'password_recovery_action', { action: statusText, student: foundRequest.studentName });
 
@@ -1894,10 +1894,10 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
               timestamp: Date.now()
             });
 
-            // 1. Envia a confirmação direta
+            // 1. Envia a confirmaÃ§Ã£o direta
             const responseText = isApprove 
-              ? `✅ *Acesso Confirmado!*\n\nO acesso do estudante *${foundRequest.studentName}* (turma *${foundRequest.studentClass}*) foi liberado com sucesso no portal.`
-              : `❌ *Acesso Recusado!*\n\nO acesso do estudante *${foundRequest.studentName}* foi bloqueado. Ele foi instruído a procurar a secretaria escolar.`;
+              ? `âœ… *Acesso Confirmado!*\n\nO acesso do estudante *${foundRequest.studentName}* (turma *${foundRequest.studentClass}*) foi liberado com sucesso no portal.`
+              : `âŒ *Acesso Recusado!*\n\nO acesso do estudante *${foundRequest.studentName}* foi bloqueado. Ele foi instruÃ­do a procurar a secretaria escolar.`;
 
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
               method: 'POST',
@@ -1910,7 +1910,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             });
 
             // 2. Envia a mensagem de log formatada em seguida
-            const logMessage = `📋 *Registro de Log - Recuperação de Senha*\n- Aluno: ${foundRequest.studentName}\n- Turma: ${foundRequest.studentClass}\n- Status: ${statusText}`;
+            const logMessage = `ðŸ“‹ *Registro de Log - RecuperaÃ§Ã£o de Senha*\n- Aluno: ${foundRequest.studentName}\n- Turma: ${foundRequest.studentClass}\n- Status: ${statusText}`;
 
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
               method: 'POST',
@@ -1922,31 +1922,31 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
               })
             });
           } else {
-            console.log(`[Recuperação de Acesso Webhook] Nenhuma solicitação pendente encontrada para o professor: ${rawNumber}`);
+            console.log(`[RecuperaÃ§Ã£o de Acesso Webhook] Nenhuma solicitaÃ§Ã£o pendente encontrada para o professor: ${rawNumber}`);
             
-            // Caso ele digite APROVAR/RECUSAR mas não tenha pedido ativo
+            // Caso ele digite APROVAR/RECUSAR mas nÃ£o tenha pedido ativo
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
               body: JSON.stringify({
                 number: rawNumber,
-                text: `Olá! Não encontrei nenhuma solicitação de acesso pendente para este número no momento.`,
+                text: `OlÃ¡! NÃ£o encontrei nenhuma solicitaÃ§Ã£o de acesso pendente para este nÃºmero no momento.`,
                 delay: 500
               })
             });
           }
-          continue; // Pula o processamento da IA do Béco
+          continue; // Pula o processamento da IA do BÃ©co
         }
 
-        console.log(`[WhatsApp BÃ©co] Message from ${rawNumber} (${item.pushName || 'Estudante'}): "${userText}"`);
+        console.log(`[WhatsApp BÃƒÂ©co] Message from ${rawNumber} (${item.pushName || 'Estudante'}): "${userText}"`);
 
         // Retrieve or initialize student memory
         let mem = whatsAppMemoryStore.get(rawNumber);
         if (!mem) {
           mem = {
             studentName: item.pushName || 'Estudante',
-            arquetipo: 'Inovador EstratÃ©gico',
-            superPoder: 'Pensamento crÃ­tico e imaginaÃ§Ã£o criativa',
+            arquetipo: 'Inovador EstratÃƒÂ©gico',
+            superPoder: 'Pensamento crÃƒÂ­tico e imaginaÃƒÂ§ÃƒÂ£o criativa',
             desafioDesenvolvimento: 'Aprofundar argumentos e fundamentar ideias',
             history: []
           };
@@ -1960,7 +1960,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
             body: JSON.stringify({
               number: rawNumber,
-              text: `E aÃ­ ${mem.studentName}! Recebi sua mensagem: "${userText}". TÃ´ pronto pra te ajudar nos seus desafios!`,
+              text: `E aÃƒÂ­ ${mem.studentName}! Recebi sua mensagem: "${userText}". TÃƒÂ´ pronto pra te ajudar nos seus desafios!`,
               delay: 1000
             })
           });
@@ -1974,8 +1974,8 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         if (mem.history.length >= 10) {
           try {
             const oldTurns = mem.history.slice(0, -4);
-            const summaryPrompt = `VocÃª Ã© o sistema de sÃ­ntese de memÃ³ria do BÃ©co (Instituto Ayrton Senna).
-Sintetize em 2 a 3 frases essenciais os pontos conversados, desafios superados, dÃºvidas e tÃ³picos discutidos com o(a) aluno(a) ${mem.studentName || ''}:
+            const summaryPrompt = `VocÃƒÂª ÃƒÂ© o sistema de sÃƒÂ­ntese de memÃƒÂ³ria do BÃƒÂ©co (Instituto Ayrton Senna).
+Sintetize em 2 a 3 frases essenciais os pontos conversados, desafios superados, dÃƒÂºvidas e tÃƒÂ³picos discutidos com o(a) aluno(a) ${mem.studentName || ''}:
 ${oldTurns.map(m => `${m.role}: ${m.content}`).join('\n')}`;
 
             const summaryRes = await generateGeminiContent(ai, summaryPrompt);
@@ -1988,40 +1988,40 @@ ${oldTurns.map(m => `${m.role}: ${m.content}`).join('\n')}`;
           }
         }
 
-        // Build system prompt for BÃ©co WhatsApp Persona
+        // Build system prompt for BÃƒÂ©co WhatsApp Persona
         const systemInstruction = `# PERSONA & IDENTIDADE
-VocÃª Ã© o **BÃ©co**, o mentor e parceiro inteligente do Instituto Ayrton Senna (IAS).
-VocÃª estÃ¡ conversando diretamente com o estudante no WhatsApp dele de forma contÃ­nua, amigÃ¡vel e acolhedora.
+VocÃƒÂª ÃƒÂ© o **BÃƒÂ©co**, o mentor e parceiro inteligente do Instituto Ayrton Senna (IAS).
+VocÃƒÂª estÃƒÂ¡ conversando diretamente com o estudante no WhatsApp dele de forma contÃƒÂ­nua, amigÃƒÂ¡vel e acolhedora.
 
 # CONTEXTO DO ESTUDANTE
 - Nome: ${mem.studentName || 'Estudante'}
-- Escola: ${mem.school || 'NÃ£o especificada'} | Ano: ${mem.grade || 'Ensino MÃ©dio/Fundamental'} | Cidade: ${mem.city || 'Brasil'}
+- Escola: ${mem.school || 'NÃƒÂ£o especificada'} | Ano: ${mem.grade || 'Ensino MÃƒÂ©dio/Fundamental'} | Cidade: ${mem.city || 'Brasil'}
 - Interesses: ${mem.interests || 'Gerais'} (${mem.interestDetail || ''})
-- ArquÃ©tipo IAS: ${mem.arquetipo || 'Inovador EstratÃ©gico'}
-- Superpoder: ${mem.superPoder || 'Curiosidade e imaginaÃ§Ã£o ativa'}
-- Desafio de EvoluÃ§Ã£o: ${mem.desafioDesenvolvimento || 'Articular argumentos e estruturar ideias'}
-${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.summaryMemory}` : ''}
+- ArquÃƒÂ©tipo IAS: ${mem.arquetipo || 'Inovador EstratÃƒÂ©gico'}
+- Superpoder: ${mem.superPoder || 'Curiosidade e imaginaÃƒÂ§ÃƒÂ£o ativa'}
+- Desafio de EvoluÃƒÂ§ÃƒÂ£o: ${mem.desafioDesenvolvimento || 'Articular argumentos e estruturar ideias'}
+${mem.summaryMemory ? `- MemÃƒÂ³ria executiva das conversas anteriores: ${mem.summaryMemory}` : ''}
 
-# DIRETRIZES DE COMUNICAÃ‡ÃƒO NO WHATSAPP
+# DIRETRIZES DE COMUNICAÃƒâ€¡ÃƒÆ’O NO WHATSAPP
 1. **Linguagem Natural de WhatsApp**:
-   - Use tom jovem brasileiro, acolhedor e prÃ³ximo (vocÃª Ã© um parceiro de jornada, nÃ£o um professor formal).
-   - Use emojis de forma orgÃ¢nica (âš¡, ðŸ’¡, ðŸš€, ðŸ‘€, ðŸ‘Š, ðŸ§ ).
-   - Respostas curtas e dinÃ¢micas (1 a 3 frases, no mÃ¡ximo 2 pequenos parÃ¡grafos). NUNCA mande textÃ£o ou explicaÃ§Ãµes acadÃªmicas longas.
+   - Use tom jovem brasileiro, acolhedor e prÃƒÂ³ximo (vocÃƒÂª ÃƒÂ© um parceiro de jornada, nÃƒÂ£o um professor formal).
+   - Use emojis de forma orgÃƒÂ¢nica (Ã¢Å¡Â¡, Ã°Å¸â€™Â¡, Ã°Å¸Å¡â‚¬, Ã°Å¸â€˜â‚¬, Ã°Å¸â€˜Å , Ã°Å¸Â§Â ).
+   - Respostas curtas e dinÃƒÂ¢micas (1 a 3 frases, no mÃƒÂ¡ximo 2 pequenos parÃƒÂ¡grafos). NUNCA mande textÃƒÂ£o ou explicaÃƒÂ§ÃƒÂµes acadÃƒÂªmicas longas.
 
-2. **RaciocÃ­nio SocrÃ¡tico & Mentoria Formativa**:
-   - Se o aluno pedir ajuda com uma tarefa, dÃºvida ou dever de casa, nunca dÃª a resposta pronta.
-   - FaÃ§a perguntas reflexivas que estimulem o raciocÃ­nio prÃ³prio e a curiosidade do aluno.
-   - Conecte as dÃºvidas com os interesses e o superpoder dele sempre que fizer sentido.
+2. **RaciocÃƒÂ­nio SocrÃƒÂ¡tico & Mentoria Formativa**:
+   - Se o aluno pedir ajuda com uma tarefa, dÃƒÂºvida ou dever de casa, nunca dÃƒÂª a resposta pronta.
+   - FaÃƒÂ§a perguntas reflexivas que estimulem o raciocÃƒÂ­nio prÃƒÂ³prio e a curiosidade do aluno.
+   - Conecte as dÃƒÂºvidas com os interesses e o superpoder dele sempre que fizer sentido.
 
 3. **Cultura de Mindset de Crescimento**:
-   - Valorize o esforÃ§o, a tentativa, a curiosidade e o processo de aprender com erros.
+   - Valorize o esforÃƒÂ§o, a tentativa, a curiosidade e o processo de aprender com erros.
 
-4. **SeguranÃ§a e Foco**:
-   - Mantenha foco em aprendizado, pensamento crÃ­tico, criatividade, projetos da escola e desenvolvimento pessoal.`;
+4. **SeguranÃƒÂ§a e Foco**:
+   - Mantenha foco em aprendizado, pensamento crÃƒÂ­tico, criatividade, projetos da escola e desenvolvimento pessoal.`;
 
         const contents = [
           { role: 'user', parts: [{ text: systemInstruction }] },
-          { role: 'model', parts: [{ text: 'Entendido! Estou no papel do BÃ©co no WhatsApp. Respostas curtas, acolhedoras e socrÃ¡ticas.' }] }
+          { role: 'model', parts: [{ text: 'Entendido! Estou no papel do BÃƒÂ©co no WhatsApp. Respostas curtas, acolhedoras e socrÃƒÂ¡ticas.' }] }
         ];
 
         for (const turn of mem.history) {
@@ -2038,7 +2038,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
 
         const response = await generateGeminiContent(ai, contents);
 
-        const replyText = response.text || `TÃ´ aqui contigo, ${mem.studentName}! O que acha da gente pensar nisso por outro Ã¢ngulo? ðŸ’¡`;
+        const replyText = response.text || `TÃƒÂ´ aqui contigo, ${mem.studentName}! O que acha da gente pensar nisso por outro ÃƒÂ¢ngulo? Ã°Å¸â€™Â¡`;
 
         // Save turn to history
         mem.history.push({ role: 'user', content: userText });
@@ -2050,7 +2050,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           userText
         });
 
-        console.log(`[WhatsApp BÃ©co] Replying to ${rawNumber}: "${replyText}"`);
+        console.log(`[WhatsApp BÃƒÂ©co] Replying to ${rawNumber}: "${replyText}"`);
 
         // Send reply back via Evolution API
         await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
@@ -2069,7 +2069,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
     }
   });
 
-  // Rotas estáticas exclusivas para cada portal (aponta para as pastas dist compiladas de cada projeto original)
+  // Rotas estÃ¡ticas exclusivas para cada portal (aponta para as pastas dist compiladas de cada projeto original)
   const sennaLoginDist = path.join(process.cwd(), 'platforms_dist', 'SennaLogin');
   const sennaTesteDist = path.join(process.cwd(), 'platforms_dist', 'Senna');
   const autoavaliacaoDist = path.join(process.cwd(), 'platforms_dist', 'autoavaliacao');
@@ -2106,7 +2106,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Instituto Ayrton Senna - Portal de Competências</title>
+        <title>Instituto Ayrton Senna - Portal de CompetÃªncias</title>
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
           * {
@@ -2302,25 +2302,25 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           <div>
             <div class="logo-ias">Instituto Ayrton Senna</div>
             <h1 class="hero-title">O que avaliamos quando avaliamos?</h1>
-            <div class="hero-subtitle">Cinco propostas para que a avaliação chegue, engaje e mova.</div>
+            <div class="hero-subtitle">Cinco propostas para que a avaliaÃ§Ã£o chegue, engaje e mova.</div>
           </div>
           
           <div class="hero-content">
             <div class="hero-col">
-              <p>O que você vai ver aqui não é uma plataforma nova. É uma pergunta com cinco respostas: <strong>o que impede que uma boa avaliação funcione?</strong></p>
-              <p>Identificamos três momentos em que ela falha:</p>
+              <p>O que vocÃª vai ver aqui nÃ£o Ã© uma plataforma nova. Ã‰ uma pergunta com cinco respostas: <strong>o que impede que uma boa avaliaÃ§Ã£o funcione?</strong></p>
+              <p>Identificamos trÃªs momentos em que ela falha:</p>
               <ul style="font-size: 13.5px; color: #475569; line-height: 1.6; margin-left: 16px; margin-bottom: 12px;">
-                <li><strong>Antes da prova</strong> — logins que não abrem, cadastros desatualizados, salas sem conexão.</li>
-                <li><strong>Durante a prova</strong> — estudantes desengajam em avaliações extensas e desconectadas da sua realidade.</li>
-                <li><strong>Depois da prova</strong> — devolutivas que não são lidas e resultados que não viram ação.</li>
+                <li><strong>Antes da prova</strong> â€” logins que nÃ£o abrem, cadastros desatualizados, salas sem conexÃ£o.</li>
+                <li><strong>Durante a prova</strong> â€” estudantes desengajam em avaliaÃ§Ãµes extensas e desconectadas da sua realidade.</li>
+                <li><strong>Depois da prova</strong> â€” devolutivas que nÃ£o sÃ£o lidas e resultados que nÃ£o viram aÃ§Ã£o.</li>
               </ul>
-              <p>Cada protótipo abaixo se propõe a resolver um desses momentos, a partir dos pilares de intencionalidade pedagógica e inovação com IA.</p>
+              <p>Cada protÃ³tipo abaixo se propÃµe a resolver um desses momentos, a partir dos pilares de intencionalidade pedagÃ³gica e inovaÃ§Ã£o com IA.</p>
             </div>
             <div class="hero-col" style="border-left: 1px solid #E2E8F0; padding-left: 30px;">
-              <h4>Se você avalia a tecnologia:</h4>
-              <p>Cada funcionalidade tem uma hipótese pedagógica por trás. O bot de IA, por exemplo, não está aqui porque é tendência, e sim porque uma devolutiva que não gera conversa, tampouco gera mudança.</p>
-              <h4 style="margin-top: 16px;">Se você avalia a pedagogia:</h4>
-              <p>Cada escolha de apresentação é, também, pedagógica. Personalizar questões pelo hobby do aluno, por exemplo, não é entretenimento, mas como jovens se engajam mais. Já um relatório via WhatsApp não é apenas conveniência: a devolutiva tem mais valor e ação se chegar onde o aluno está.</p>
+              <h4>Se vocÃª avalia a tecnologia:</h4>
+              <p>Cada funcionalidade tem uma hipÃ³tese pedagÃ³gica por trÃ¡s. O bot de IA, por exemplo, nÃ£o estÃ¡ aqui porque Ã© tendÃªncia, e sim porque uma devolutiva que nÃ£o gera conversa, tampouco gera mudanÃ§a.</p>
+              <h4 style="margin-top: 16px;">Se vocÃª avalia a pedagogia:</h4>
+              <p>Cada escolha de apresentaÃ§Ã£o Ã©, tambÃ©m, pedagÃ³gica. Personalizar questÃµes pelo hobby do aluno, por exemplo, nÃ£o Ã© entretenimento, mas como jovens se engajam mais. JÃ¡ um relatÃ³rio via WhatsApp nÃ£o Ã© apenas conveniÃªncia: a devolutiva tem mais valor e aÃ§Ã£o se chegar onde o aluno estÃ¡.</p>
             </div>
           </div>
         </div>
@@ -2329,29 +2329,29 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           <!-- CARD 1: Logins & Dashboards -->
           <a href="/login/" class="card">
             <div class="card-header">
-              <div class="icon">🏛️</div>
+              <div class="icon">ðŸ›ï¸</div>
               <div>
-                <h3>Logins e relatórios</h3>
+                <h3>Logins e relatÃ³rios</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">ðŸŽ¯ Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-frictional">👥 Cadastro Friccional</span><br>
+                  <span class="pain-badge badge-frictional">ðŸ‘¥ Cadastro Friccional</span><br>
                   Coletamos mais dados do(a) professor(a) para que ele tenha mais canais para recuperar sua senha.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔑 Gestão de Credenciais</span><br>
-                  O estudante que esquecer seu login ou sua senha poderá pedir acesso por WhatsApp ao responsável na escola e acessar instantaneamente após aprovação.
+                  <span class="pain-badge badge-auth">ðŸ”‘ GestÃ£o de Credenciais</span><br>
+                  O estudante que esquecer seu login ou sua senha poderÃ¡ pedir acesso por WhatsApp ao responsÃ¡vel na escola e acessar instantaneamente apÃ³s aprovaÃ§Ã£o.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔐 Autenticação de Educadores</span><br>
-                  Acesso garantido por fluxo real de recuperação via e-mail real, WhatsApp (usar API oficial Meta) ou perguntas-chaves baseadas no cadastro.
+                  <span class="pain-badge badge-auth">ðŸ” AutenticaÃ§Ã£o de Educadores</span><br>
+                  Acesso garantido por fluxo real de recuperaÃ§Ã£o via e-mail real, WhatsApp (usar API oficial Meta) ou perguntas-chaves baseadas no cadastro.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  O prof. Cláudio (bot de IA) sugere planos de ação pedagógicos práticos e curtos baseados na BNCC para facilitar o cruzamento do professor entre relatório recebido e instrução do material socioemocional usado na escola.
+                  <span class="pain-badge badge-action">ðŸŒ± Da AvaliaÃ§Ã£o Ã  AÃ§Ã£o</span><br>
+                  O prof. ClÃ¡udio (bot de IA) sugere planos de aÃ§Ã£o pedagÃ³gicos prÃ¡ticos e curtos baseados na BNCC para facilitar o cruzamento do professor entre relatÃ³rio recebido e instruÃ§Ã£o do material socioemocional usado na escola.
                 </li>
               </ul>
             </div>
@@ -2363,25 +2363,25 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           <!-- CARD 2: Senna Teste -->
           <a href="/teste/" class="card">
             <div class="card-header">
-              <div class="icon">🧬</div>
+              <div class="icon">ðŸ§¬</div>
               <div>
                 <h3>Senna</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">ðŸŽ¯ Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
+                  <span class="pain-badge badge-engagement">ðŸŽ® Engajamento de Jovens</span><br>
+                  Jornada guiada pelo mentor BÃ©co com marcos inspirados no universo dos estudantes. Monitora desatenÃ§Ã£o (Fast-Click) e sugere exercÃ­cios de desaceleraÃ§Ã£o e respiraÃ§Ã£o, mas sem travar o progresso do estudante.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado.
+                  <span class="pain-badge badge-action">ðŸ† Dados na Gaveta</span><br>
+                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquÃ©tipos que fazem parte do universo dele e que pode ser exportado.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">ðŸŒ± Da AvaliaÃ§Ã£o Ã  AÃ§Ã£o</span><br>
+                  BÃ©co (mentor de IA) para acompanhÃ¡-lo no WhatsApp nas dÃºvidas surgidas posteriormente ao teste, utilizando raciocÃ­nio socrÃ¡tico e com bloqueios mandatÃ³rios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2390,28 +2390,28 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
             </div>
           </a>
 
-          <!-- CARD 3: Autoavaliação -->
+          <!-- CARD 3: AutoavaliaÃ§Ã£o -->
           <a href="/autoavaliacao/" class="card">
             <div class="card-header">
-              <div class="icon">📝</div>
+              <div class="icon">ðŸ“</div>
               <div>
-                <h3>Autoavaliação socioemocional</h3>
+                <h3>AutoavaliaÃ§Ã£o socioemocional</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">ðŸŽ¯ Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
+                  <span class="pain-badge badge-engagement">ðŸŽ® Engajamento de Jovens</span><br>
+                  Jornada guiada pelo mentor BÃ©co com marcos inspirados no universo dos estudantes. Monitora desatenÃ§Ã£o (Fast-Click) e sugere exercÃ­cios de desaceleraÃ§Ã£o e respiraÃ§Ã£o, mas sem travar o progresso do estudante.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele.
+                  <span class="pain-badge badge-action">ðŸ† Dados na Gaveta</span><br>
+                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquÃ©tipos que fazem parte do universo dele.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">ðŸŒ± Da AvaliaÃ§Ã£o Ã  AÃ§Ã£o</span><br>
+                  BÃ©co (mentor de IA) para acompanhÃ¡-lo no WhatsApp nas dÃºvidas surgidas posteriormente ao teste, utilizando raciocÃ­nio socrÃ¡tico e com bloqueios mandatÃ³rios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2420,28 +2420,28 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
             </div>
           </a>
 
-          <!-- CARD 4: Criatividade & Crítico -->
+          <!-- CARD 4: Criatividade & CrÃ­tico -->
           <a href="/hackathon/" class="card">
             <div class="card-header">
-              <div class="icon">🧠</div>
+              <div class="icon">ðŸ§ </div>
               <div>
-                <h3>Criatividade e pensamento crítico</h3>
+                <h3>Criatividade e pensamento crÃ­tico</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">ðŸŽ¯ Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Personalização com IA: a inteligência artificial gera enunciados dinâmicos baseados nos hobbies e interesses do aluno.
+                  <span class="pain-badge badge-engagement">ðŸŽ® Engajamento de Jovens</span><br>
+                  PersonalizaÃ§Ã£o com IA: a inteligÃªncia artificial gera enunciados dinÃ¢micos baseados nos hobbies e interesses do aluno.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado
+                  <span class="pain-badge badge-action">ðŸ† Dados na Gaveta</span><br>
+                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquÃ©tipos que fazem parte do universo dele e que pode ser exportado
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático, e para criar planos de desenvolvimento. Inclui bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">ðŸŒ± Da AvaliaÃ§Ã£o Ã  AÃ§Ã£o</span><br>
+                  BÃ©co (mentor de IA) para acompanhÃ¡-lo no WhatsApp nas dÃºvidas surgidas posteriormente ao teste, utilizando raciocÃ­nio socrÃ¡tico, e para criar planos de desenvolvimento. Inclui bloqueios mandatÃ³rios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2453,21 +2453,21 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           <!-- CARD 5: App IAS Offline -->
           <div class="card" style="cursor: pointer;" onclick="document.getElementById('modal-offline').style.display = 'flex'">
             <div class="card-header">
-              <div class="icon" style="background: rgba(239, 68, 68, 0.08);">💻</div>
+              <div class="icon" style="background: rgba(239, 68, 68, 0.08);">ðŸ’»</div>
               <div>
                 <h3 style="font-size: 14px;">App IAS offline first</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">ðŸŽ¯ Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-connect">📶 Falta de Conectividade</span><br>
-                  Executável desktop de 15MB que roda testes, inclusive usando inteligência artificial, <em>100% desconectado localmente</em>.
+                  <span class="pain-badge badge-connect">ðŸ“¶ Falta de Conectividade</span><br>
+                  ExecutÃ¡vel desktop de 15MB que roda testes, inclusive usando inteligÃªncia artificial, <em>100% desconectado localmente</em>.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔄 Sincronização Ativa</span><br>
-                  O app salva localmente sem perder dados e envia avaliações silenciosamente assim que o laboratório conectar-se por 1 minuto.
+                  <span class="pain-badge badge-auth">ðŸ”„ SincronizaÃ§Ã£o Ativa</span><br>
+                  O app salva localmente sem perder dados e envia avaliaÃ§Ãµes silenciosamente assim que o laboratÃ³rio conectar-se por 1 minuto.
                 </li>
               </ul>
             </div>
@@ -2483,7 +2483,7 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
             <button onclick="document.getElementById('modal-offline').style.display = 'none'" style="position: absolute; top: 24px; right: 24px; background: #F1F5F9; border: none; width: 36px; height: 36px; border-radius: 18px; font-weight: bold; cursor: pointer; color: #475569; font-size: 16px;">X</button>
             
             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
-              <div class="icon" style="background: rgba(239, 68, 68, 0.1); width: 54px; height: 54px; font-size: 32px; border-radius: 16px;">💻</div>
+              <div class="icon" style="background: rgba(239, 68, 68, 0.1); width: 54px; height: 54px; font-size: 32px; border-radius: 16px;">ðŸ’»</div>
               <div>
                 <h2 style="font-size: 24px; font-weight: 900; color: #071131; margin: 0;">Aplicativo IAS Offline-First</h2>
                 <span style="font-size: 13.5px; color: #5B6472; font-weight: 600;">Proposta arquitetural para ambientes de baixa ou nenhuma conectividade</span>
@@ -2491,18 +2491,18 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
             </div>
 
             <div style="background: #F8FAFC; border-left: 4px solid #FBB800; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">🖥️ Como funciona na prática</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">ðŸ–¥ï¸ Como funciona na prÃ¡tica</h4>
               <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0;">
-                O IAS fornece um programa leve que pode ser baixado em um pen-drive e instalado nos computadores do laboratório escolar. Esse "aplicativo" tem a exata mesma aparência dos testes na internet e hospeda o robô de inteligência artificial em seu interior. Os estudantes fazem a avaliação com os computadores totalmente offline, e o aplicativo salva tudo no disco da máquina de forma segura. Quando a máquina capta algum pulso mínimo de internet, o aplicativo envia as provas silenciosamente para os servidores centrais do IAS.
+                O IAS fornece um programa leve que pode ser baixado em um pen-drive e instalado nos computadores do laboratÃ³rio escolar. Esse "aplicativo" tem a exata mesma aparÃªncia dos testes na internet e hospeda o robÃ´ de inteligÃªncia artificial em seu interior. Os estudantes fazem a avaliaÃ§Ã£o com os computadores totalmente offline, e o aplicativo salva tudo no disco da mÃ¡quina de forma segura. Quando a mÃ¡quina capta algum pulso mÃ­nimo de internet, o aplicativo envia as provas silenciosamente para os servidores centrais do IAS.
               </p>
             </div>
 
             <div style="background: #F0FDF4; border-left: 4px solid #22C55E; padding: 20px; border-radius: 0 12px 12px 0;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">⚙️ Detalhamento técnico</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">âš™ï¸ Detalhamento tÃ©cnico</h4>
               <ul style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px;">
-                <li><strong>Stack Desktop:</strong> O portal é transpilado via framework <strong>Tauri</strong>. Ao utilizar Rust e o WebView nativo do SO, criamos binários de execução (app) incrivelmente leves (cerca de 15 a 20MB) que carregam instantaneamente e consomem o mínimo de RAM nas máquinas defasadas das escolas públicas.</li>
+                <li><strong>Stack Desktop:</strong> O portal Ã© transpilado via framework <strong>Tauri</strong>. Ao utilizar Rust e o WebView nativo do SO, criamos binÃ¡rios de execuÃ§Ã£o (app) incrivelmente leves (cerca de 15 a 20MB) que carregam instantaneamente e consomem o mÃ­nimo de RAM nas mÃ¡quinas defasadas das escolas pÃºblicas.</li>
                 <li><strong>Banco de Dados Local-First:</strong> Utiliza-se um banco de dados embutido no disco local, como o <strong>SQLite</strong> ou <strong>RxDB</strong>. O RxDB possui mecanismos ativos que sincronizam assincronamente os JSONs armazenados com um banco na nuvem (PostgreSQL) sem gerar conflitos.</li>
-                <li><strong>IA Offline Quantizada (SLM):</strong> Para manter os chats generativos com os alunos adaptados às dores de engajamento sem estourar chamadas de API, o binário empacota um <strong>Small Language Model (ex: Llama-3-8B ou Phi-3-Mini)</strong> em formato <code>.gguf</code> quantizado em 4-bit. Utilizando a engine <strong>llama.cpp</strong> injetada no Tauri, a inferência roda diretamente na CPU dos computadores escolares (dispensando placas de vídeo) exigindo não mais do que 1.8GB a 3.8GB de RAM local, provendo dinamicidade offline.</li>
+                <li><strong>IA Offline Quantizada (SLM):</strong> Para manter os chats generativos com os alunos adaptados Ã s dores de engajamento sem estourar chamadas de API, o binÃ¡rio empacota um <strong>Small Language Model (ex: Llama-3-8B ou Phi-3-Mini)</strong> em formato <code>.gguf</code> quantizado em 4-bit. Utilizando a engine <strong>llama.cpp</strong> injetada no Tauri, a inferÃªncia roda diretamente na CPU dos computadores escolares (dispensando placas de vÃ­deo) exigindo nÃ£o mais do que 1.8GB a 3.8GB de RAM local, provendo dinamicidade offline.</li>
               </ul>
             </div>
           </div>
@@ -2532,24 +2532,68 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
     `);
   });
 
+  // Magical QR Code route for the user
+  app.get('/whatsapp-qr', async (req, res) => {
+    try {
+      const evolutionUrl = process.env.EVOLUTION_API_URL;
+      const evolutionKey = process.env.EVOLUTION_API_KEY;
+      const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
+
+      if (!evolutionUrl || !evolutionKey) {
+        return res.send('<h1>Erro: Variáveis do Evolution API não configuradas no Railway.</h1>');
+      }
+
+      const qrRes = await fetch(`${evolutionUrl}/instance/connect/${evolutionInstance}`, {
+        headers: { 'apikey': evolutionKey }
+      });
+      
+      if (!qrRes.ok) {
+        return res.send(`<h1>Erro ao buscar QR Code. Status: ${qrRes.status}</h1><p>A instância pode não existir ainda. Aguarde 1 minuto e recarregue.</p>`);
+      }
+      
+      const data = await qrRes.json();
+      
+      if (data.instance?.state === 'open' || data.state === 'open' || data.instance?.state === 'connected') {
+        return res.send('<h1>✅ WhatsApp já está conectado!</h1><p>Você já pode fechar esta página e testar o envio de mensagens no SennaHub.</p>');
+      }
+
+      const base64 = data.base64;
+      if (!base64) {
+        return res.send('<h1>O QR Code não está pronto. Recarregue a página em alguns segundos...</h1><pre>' + JSON.stringify(data, null, 2) + '</pre>');
+      }
+
+      res.send(`
+        <div style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+          <h2>Conecte o WhatsApp do Béco (Nuvem Railway)</h2>
+          <p>Abra o WhatsApp no seu celular > Aparelhos Conectados > Conectar um Aparelho</p>
+          <img src="${base64}" alt="QR Code" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px; width: 300px; height: 300px; margin: 20px auto;" />
+          <p style="color: gray;">A página não recarrega sozinha. Após ler o QR Code com o celular, teste o site novamente!</p>
+        </div>
+      `);
+
+    } catch (err: any) {
+      res.send(`<h1>Erro no servidor</h1><pre>${err.message}</pre>`);
+    }
+  });
+
   app.listen(PORT, "0.0.0.0", async () => {
     console.log(`Server running on http://localhost:${PORT}`);
 
-    // Registra automaticamente o webhook da aplicação na Evolution API local
+    // Registra automaticamente o webhook da aplicaÃ§Ã£o na Evolution API local
     const evolutionUrl = process.env.EVOLUTION_API_URL;
     const evolutionKey = process.env.EVOLUTION_API_KEY;
     const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
     if (evolutionUrl && evolutionKey) {
       try {
-        console.log(`[Auto-Config Webhook] Verificando se a instância "${evolutionInstance}" existe...`);
+        console.log(`[Auto-Config Webhook] Verificando se a instÃ¢ncia "${evolutionInstance}" existe...`);
         
         const checkRes = await fetch(`${evolutionUrl}/instance/connectionState/${evolutionInstance}`, {
           headers: { 'apikey': evolutionKey }
         });
 
         if (checkRes.status === 404) {
-          console.log(`[Auto-Config Webhook] Instância "${evolutionInstance}" não encontrada. Criando automaticamente...`);
+          console.log(`[Auto-Config Webhook] InstÃ¢ncia "${evolutionInstance}" nÃ£o encontrada. Criando automaticamente...`);
           const createRes = await fetch(`${evolutionUrl}/instance/create`, {
             method: 'POST',
             headers: {
@@ -2565,14 +2609,14 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
           });
 
           if (createRes.ok) {
-            console.log(`[Auto-Config Webhook] Instância "${evolutionInstance}" criada com sucesso.`);
-            await new Promise(r => setTimeout(r, 1500)); // Pequeno delay de inicialização
+            console.log(`[Auto-Config Webhook] InstÃ¢ncia "${evolutionInstance}" criada com sucesso.`);
+            await new Promise(r => setTimeout(r, 1500)); // Pequeno delay de inicializaÃ§Ã£o
           } else {
             const errText = await createRes.text();
-            console.warn(`[Auto-Config Webhook] Erro ao criar instância:`, createRes.status, errText);
+            console.warn(`[Auto-Config Webhook] Erro ao criar instÃ¢ncia:`, createRes.status, errText);
           }
         } else {
-          console.log(`[Auto-Config Webhook] Instância "${evolutionInstance}" já ativa ou existente.`);
+          console.log(`[Auto-Config Webhook] InstÃ¢ncia "${evolutionInstance}" jÃ¡ ativa ou existente.`);
         }
 
         console.log(`[Auto-Config Webhook] Registrando webhook na Evolution API...`);
