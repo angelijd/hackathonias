@@ -1298,7 +1298,10 @@ Guarde essas credenciais com seguran\xE7a.`;
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Relat\xF3rio Socioemocional - Instituto Ayrton Senna</title>
-      </head>
+        <!-- A11y Injection -->
+          <link rel="stylesheet" href="/a11y/accessibility.css" />
+          <script src="/a11y/accessibility.js"></script>
+        </head>
       <body style="background-color: ${colors.bgSec}; margin: 0; padding: 40px 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
         
         <div style="max-width: 960px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; border: 1px solid ${colors.borda}; overflow: hidden; box-shadow: 0 4px 20px rgba(7, 17, 49, 0.04);">
