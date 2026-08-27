@@ -1834,6 +1834,8 @@ ${mem.summaryMemory ? `- Mem\xC3\xB3ria executiva das conversas anteriores: ${me
   app.use("/teste", import_express.default.static(sennaTesteDist));
   app.use("/autoavaliacao", import_express.default.static(autoavaliacaoDist));
   app.use("/hackathon", import_express.default.static(hackathonDist));
+  app.use("/beco-intro.mp4", import_express.default.static(import_path.default.join(hackathonDist, "beco-intro.mp4")));
+  app.use("/beco-intro.mp4.mp4", import_express.default.static(import_path.default.join(hackathonDist, "beco-intro.mp4.mp4")));
   app.get("/login/*", (req, res) => {
     res.sendFile(import_path.default.join(sennaLoginDist, "index.html"));
   });
