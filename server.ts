@@ -1254,19 +1254,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             auth: { user: smtpUser, pass: smtpPass }
           });
         } else {
-          const testAccount = await nodemailer.createTestAccount();
-          transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false,
-            auth: { user: testAccount.user, pass: testAccount.pass }
-          });
+          throw new Error('Ethereal desativado (502 Timeout)');
         }
 
         const info = await transporter.sendMail({
           from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
           to: user.personalEmail,
-          subject: 'ðŸ”‘ RecuperaÃ§Ã£o de Acesso - Portal IAS',
+          subject: '🔑 Recuperação de Acesso - Portal IAS',
           text: `OlÃ¡ ${user.name},\n\nRecebemos uma solicitaÃ§Ã£o de redefiniÃ§Ã£o de acesso para sua conta.\n\nSuas credenciais sÃ£o:\n- CÃ³digo: ${user.code}\n- Senha: ${user.password}\n\nSe vocÃª nÃ£o solicitou isso, ignore este e-mail.`,
           html: `
             <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
