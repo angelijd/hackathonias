@@ -1,3 +1,28 @@
+
+function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
+  const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
+  const portNum = Number(smtpPort) || 465;
+  if ((smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'))) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: smtpUser, pass: cleanPass },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000
+    });
+  }
+  return nodemailer.createTransport({
+    host: smtpHost || 'smtp.gmail.com',
+    port: portNum,
+    secure: portNum === 465,
+    auth: { user: smtpUser, pass: cleanPass },
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
+    tls: { rejectUnauthorized: false }
+  });
+}
+
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
