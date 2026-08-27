@@ -2070,10 +2070,10 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
   });
 
   // Rotas estáticas exclusivas para cada portal (aponta para as pastas dist compiladas de cada projeto original)
-  const sennaLoginDist = path.join(process.cwd(), '../SennaLogin/dist');
-  const sennaTesteDist = path.join(process.cwd(), '../Senna/dist');
-  const autoavaliacaoDist = path.join(process.cwd(), '../autoavaliacao/dist');
-  const hackathonDist = path.join(process.cwd(), '../hackathoniascpc-main/dist');
+  const sennaLoginDist = path.join(process.cwd(), 'platforms_dist', 'SennaLogin');
+  const sennaTesteDist = path.join(process.cwd(), 'platforms_dist', 'Senna');
+  const autoavaliacaoDist = path.join(process.cwd(), 'platforms_dist', 'autoavaliacao');
+  const hackathonDist = path.join(process.cwd(), 'platforms_dist', 'hackathon');
 
   app.use('/login', express.static(sennaLoginDist));
   app.use('/teste', express.static(sennaTesteDist));
