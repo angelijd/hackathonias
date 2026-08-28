@@ -239,7 +239,7 @@ export const Screen3Assessment: React.FC<Props> = ({
     }
 
     // O aviso só surge se houver 2 respostas seguidas com <10s OU ziguezague
-    if ((!speedAlertsDisabled && nextFastCount >= 2) || hasZigZag) {
+    if (!speedAlertsDisabled && (nextFastCount >= 2 || hasZigZag)) {
       setPendingAnswerValue(value);
       setWarningReason(nextFastCount >= 2 ? 'speed' : 'zigzag');
       setBreathProgress(0);
