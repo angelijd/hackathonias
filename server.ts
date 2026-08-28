@@ -2556,25 +2556,80 @@ ${mem.summaryMemory ? `- MemÃ³ria executiva das conversas anteriores: ${mem.su
       const { text, isDynamic } = req.body;
       if (!text) return res.status(400).json({ error: 'Texto ausente' });
 
+      // Normaliza texto para busca insensível a pontuação/acentos
+      const clean = (str) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+      const cleanInput = clean(text);
+
+      // Mapa dos 20 blocos de áudio da Autoavaliação
+      const autoavaliacaoMap = [
+        { id: 1, match: ['conhecerasimesmopodearirnovoscaminhos', 'ayrtonconhecerasimesmo'] },
+        { id: 2, match: ['bemvindoaoseutestedeautoavaliacaosocioemocional', 'autoavaliacaosocioemocional'] },
+        { id: 3, match: ['estetestedesenvolvimentodassuascompetenciassocioemocionais', 'mapearoniveldedesenvolvimento'] },
+        { id: 4, match: ['atencaoeastenaoeumtestedeescola', 'suaverdadeemprimeirolugar', 'obecoeataracomvoce'] },
+        { id: 5, match: ['qualuniversocombinamaiscomvoce', 'escolhaumadasseriesabaixo'] },
+        { id: 6, match: ['souumapessoaorganizada'] },
+        { id: 7, match: ['mesintofeliz'] },
+        { id: 8, match: ['facominhastarefasdamelhormaneiraqueconsigo'] },
+        { id: 9, match: ['colocopoucoesforcoetemponasminhastarefas'] },
+        { id: 10, match: ['costumodeixarminhascoisasarrumadas'] },
+        { id: 11, match: ['alinecostumadeixar', 'alineeorganizada'] },
+        { id: 12, match: ['julianaebastantecuidadosa', 'julianaeorganizada'] },
+        { id: 13, match: ['quantovoceseachaorganizado', 'quantoachaorganizado'] },
+        { id: 14, match: ['tenhocuriosidadesobreassuntosquenaoconheco'] },
+        { id: 15, match: ['pref manteraminharotinadoqueexperimentaronovo', 'prefiroaminharotina'] },
+        { id: 16, match: ['gostodeconhecerlugaresecostumesdiferentes'] },
+        { id: 17, match: ['tenhofacilidadeemimaginarnovasformasdefazerascoisas'] },
+        { id: 18, match: ['marcossemprefazomesmocaminhoparaaescola', 'marcoseabertoaonovo'] },
+        { id: 19, match: ['sofiaadoraexperimentarcomidasdeoutrospaises', 'sofiaeabertaaonovo'] },
+        { id: 20, match: ['quantovoceseachaabertoaonovo', 'quantoachaabertoaonovo'] }
+      ];
+
+      const autoDir = path.join(process.cwd(), 'public', 'audio', 'autoavaliacao');
+      if (!fs.existsSync(autoDir)) {
+        fs.mkdirSync(autoDir, { recursive: true });
+      }
+
+      // 1. Tenta encontrar nos 20 áudios locais da autoavaliação
+      for (const item of autoavaliacaoMap) {
+        const matches = item.match.some(m => cleanInput.includes(m) || m.includes(cleanInput));
+        if (matches) {
+          const possibleNames = [
+            `Audio_${item.id}.mp3`,
+            `audio_${item.id}.mp3`,
+            `Audio${item.id}.mp3`,
+            `audio${item.id}.mp3`,
+            `${item.id}.mp3`
+          ];
+          for (const name of possibleNames) {
+            const filePath = path.join(autoDir, name);
+            if (fs.existsSync(filePath)) {
+              return res.json({ audioUrl: `/audio/autoavaliacao/${name}` });
+            }
+          }
+        }
+      }
+
+      // 2. Cache geral por MD5
       const crypto = require('crypto');
       const hash = crypto.createHash('md5').update(text).digest('hex');
-      const audioPath = path.join(process.cwd(), 'public', 'audio', hash + '.mp3');
-      const audioUrl = '/audio/' + hash + '.mp3';
-
-      const audioDir = path.dirname(audioPath);
+      const audioDir = path.join(process.cwd(), 'public', 'audio');
       if (!fs.existsSync(audioDir)) {
         fs.mkdirSync(audioDir, { recursive: true });
       }
+      const audioPath = path.join(audioDir, hash + '.mp3');
+      const audioUrl = '/audio/' + hash + '.mp3';
 
       if (fs.existsSync(audioPath)) {
         return res.json({ audioUrl });
       }
 
+      // 3. Fallback para OpenAI TTS caso exista a chave
       const openaiKey = process.env.OPENAI_API_KEY;
       if (!openaiKey) {
-        throw new Error('OPENAI_API_KEY is not set');
+        console.warn('[TTS]: Áudio local não encontrado e OPENAI_API_KEY não configurada.');
+        return res.status(404).json({ error: 'Áudio não encontrado no servidor' });
       }
-      
+
       const ttsRes = await fetch('https://api.openai.com/v1/audio/speech', {
         method: 'POST',
         headers: {
