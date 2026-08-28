@@ -2286,7 +2286,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             background: rgba(7, 17, 49, 0.72);
             backdrop-filter: blur(6px);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 24px;
             overflow-y: auto;
@@ -2294,19 +2294,11 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .welcome-card {
             background: white;
             border-radius: 28px;
-            max-width: 620px;
+            max-width: 680px;
             width: 100%;
-            padding: 36px 40px;
+            padding: 40px 44px;
             box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
             margin: auto;
-          }
-          .welcome-eyebrow {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
           }
           .welcome-title {
             font-size: 26px;
@@ -2316,42 +2308,43 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             margin-bottom: 18px;
           }
           .welcome-card p {
-            font-size: 14.5px;
+            font-size: 14px;
             color: #334155;
             line-height: 1.6;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
           }
           .welcome-card ol,
           .welcome-card ul {
-            margin: 0 0 18px 20px;
-            font-size: 14.5px;
+            margin: 0 0 14px 20px;
+            font-size: 14px;
             color: #334155;
-            line-height: 1.7;
+            line-height: 1.65;
           }
           .welcome-card ol li,
           .welcome-card ul li {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
           }
           .welcome-important {
             background: #FFFBEB;
             border: 1px solid #FDE68A;
             border-left: 4px solid #FBB800;
             border-radius: 0 14px 14px 0;
-            padding: 16px 18px;
-            margin-bottom: 22px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
           }
           .welcome-important p {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #7C4A03;
+            font-size: 13.5px;
           }
           .welcome-important p:last-child {
             margin-bottom: 0;
             font-weight: 700;
           }
           .welcome-signature {
-            font-size: 14.5px;
+            font-size: 14px;
             color: #334155;
-            margin-bottom: 26px;
+            margin-bottom: 20px;
           }
           .welcome-signature strong {
             display: block;
@@ -2360,7 +2353,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .welcome-form {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
           }
           .welcome-field label {
             display: block;
@@ -2373,11 +2366,11 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           }
           .welcome-field input {
             width: 100%;
-            height: 48px;
+            height: 46px;
             padding: 0 16px;
             border-radius: 12px;
             border: 1.5px solid #E2E8F0;
-            font-size: 14.5px;
+            font-size: 14px;
             font-family: 'Manrope', sans-serif;
             color: #0B1226;
             outline: none;
@@ -2413,7 +2406,6 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
       <body>
         <div class="welcome-overlay" id="welcome-overlay">
           <div class="welcome-card">
-            <div class="welcome-eyebrow">Instituto Ayrton Senna</div>
             <h1 class="welcome-title">Olá, avaliador(a)!</h1>
 
             <p>Seja bem-vindo ao Portal IAS.</p>
@@ -2432,6 +2424,25 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               <li>IA contextualizada</li>
               <li>Personalização</li>
             </ul>
+
+            <div class="welcome-credentials">
+              <div class="welcome-credentials-title">🔐 Credenciais do protótipo de login</div>
+              <div class="welcome-credentials-grid">
+                <div class="credential-chip">
+                  <span class="credential-chip-label">Usuário</span>
+                  <span class="credential-chip-value">Aluno</span>
+                </div>
+                <div class="credential-chip">
+                  <span class="credential-chip-label">Usuário</span>
+                  <span class="credential-chip-value">Professor</span>
+                </div>
+                <div class="credential-chip">
+                  <span class="credential-chip-label">Usuário</span>
+                  <span class="credential-chip-value">Gestor</span>
+                </div>
+              </div>
+              <p class="credential-password">Senha para todos: <span>1234</span></p>
+            </div>
 
             <div class="welcome-important">
               <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
@@ -2453,7 +2464,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                 <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
               </div>
               <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp válidos para continuar.</div>
-              <button type="submit" class="welcome-submit-btn">Acessar Portal</button>
+              <button type="submit" class="welcome-submit-btn">Continuar</button>
             </form>
           </div>
         </div>
