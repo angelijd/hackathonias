@@ -85,7 +85,7 @@ export default function App() {
                   <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-xl mb-4">🏛️</div>
                   <h3 className="text-lg font-bold mb-2">Logins & Dashboards</h3>
                   <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                    Acesso para Educadores, Gestores e Estudantes. Contém os gráficos de turmas, sugestões da BNCC do Prof. Cláudio e recuperação real de senha.
+                    Acesso para Professores, Gestores e Estudantes. Contém os gráficos de turmas, sugestões da BNCC do Prof. Cláudio e recuperação real de senha.
                   </p>
                 </div>
                 <span className="text-xs font-black text-blue-500">Acessar módulo &rarr;</span>

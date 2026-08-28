@@ -2161,31 +2161,6 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             font-weight: 800;
             color: #FBB800;
           }
-          .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            background: white;
-            border: 1px solid #E2E8F0;
-            border-radius: 20px;
-            padding: 24px 30px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.02);
-          }
-          .hero-col p {
-            font-size: 13.5px;
-            color: #475569;
-            line-height: 1.6;
-            margin-bottom: 12px;
-          }
-          .hero-col p:last-child {
-            margin-bottom: 0;
-          }
-          .hero-col h4 {
-            font-size: 14px;
-            font-weight: 800;
-            color: #0E477A;
-            margin-bottom: 8px;
-          }
           .main-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -2217,22 +2192,19 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             margin-bottom: 16px;
             flex-shrink: 0;
           }
-          .icon {
-            font-size: 26px;
-            width: 46px;
-            height: 46px;
-            background: #F8FAFC;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .credentials-chip {
+            font-size: 10px;
+            font-weight: 800;
+            color: #0E477A;
+            background: #EFF6FF;
+            border: 1px solid #DBEAFE;
+            border-radius: 8px;
+            padding: 5px 10px;
+            margin-bottom: 14px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
           }
-          .card:nth-child(1) .icon { background: rgba(11, 124, 251, 0.08); }
-          .card:nth-child(2) .icon { background: rgba(253, 195, 0, 0.08); }
-          .card:nth-child(3) .icon { background: rgba(5, 184, 91, 0.08); }
-          .card:nth-child(4) .icon { background: rgba(139, 92, 246, 0.08); }
-          .card:nth-child(5) .icon { background: rgba(239, 68, 68, 0.08); }
-          
           h3 {
             font-size: 15px;
             font-weight: 800;
@@ -2315,54 +2287,35 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             <h1 class="hero-title">O que avaliamos quando avaliamos?</h1>
             <div class="hero-subtitle">Cinco propostas para que a avaliação chegue, engaje e mova.</div>
           </div>
-          
-          <div class="hero-content">
-            <div class="hero-col">
-              <p>O que você vai ver aqui não é uma plataforma nova. É uma pergunta com cinco respostas: <strong>o que impede que uma boa avaliação funcione?</strong></p>
-              <p>Identificamos três momentos em que ela falha:</p>
-              <ul style="font-size: 13.5px; color: #475569; line-height: 1.6; margin-left: 16px; margin-bottom: 12px;">
-                <li><strong>Antes da prova</strong> — logins que não abrem, cadastros desatualizados, salas sem conexão.</li>
-                <li><strong>Durante a prova</strong> — estudantes desengajam em avaliações extensas e desconectadas da sua realidade.</li>
-                <li><strong>Depois da prova</strong> — devolutivas que não são lidas e resultados que não viram ação.</li>
-              </ul>
-              <p>Cada protótipo abaixo se propõe a resolver um desses momentos, a partir dos pilares de intencionalidade pedagógica e inovação com IA.</p>
-            </div>
-            <div class="hero-col" style="border-left: 1px solid #E2E8F0; padding-left: 30px;">
-              <h4>Se você avalia a tecnologia:</h4>
-              <p>Cada funcionalidade tem uma hipótese pedagógica por trás. O bot de IA, por exemplo, não está aqui porque é tendência, e sim porque uma devolutiva que não gera conversa, tampouco gera mudança.</p>
-              <h4 style="margin-top: 16px;">Se você avalia a pedagogia:</h4>
-              <p>Cada escolha de apresentação é, também, pedagógica. Personalizar questões pelo hobby do aluno, por exemplo, não é entretenimento, mas como jovens se engajam mais. Já um relatório via WhatsApp não é apenas conveniência: a devolutiva tem mais valor e ação se chegar onde o aluno está.</p>
-            </div>
-          </div>
         </div>
-        
+
         <div class="main-grid">
           <!-- CARD 1: Logins & Dashboards -->
           <a href="/login/" class="card">
             <div class="card-header">
-              <div class="icon">🏛️</div>
               <div>
                 <h3>Logins e relatórios</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
+              <div class="section-title">Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-frictional">👥 Cadastro Friccional</span><br>
-                  Coletamos mais dados do(a) professor(a) para que ele tenha mais canais para recuperar sua senha.
+                  <span class="pain-badge badge-frictional">Cadastro Friccional</span><br>
+                  <strong>Solução proposta:</strong> Coletamos mais dados do(a) professor(a) para que ele tenha mais canais para recuperar sua senha.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔑 Gestão de Credenciais</span><br>
-                  O estudante que esquecer seu login ou sua senha poderá pedir acesso por WhatsApp ao responsável na escola e acessar instantaneamente após aprovação.
+                  <span class="pain-badge badge-auth">Gestão de Credenciais</span><br>
+                  <strong>Solução proposta:</strong> O estudante que esquecer seu login ou sua senha poderá pedir acesso por WhatsApp ao responsável na escola e acessar instantaneamente após aprovação.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔐 Autenticação de Educadores</span><br>
-                  Acesso garantido por fluxo real de recuperação via e-mail real, WhatsApp (usar API oficial Meta) ou perguntas-chaves baseadas no cadastro.
+                  <span class="pain-badge badge-auth">Autenticação de Professores</span><br>
+                  <strong>Solução proposta:</strong> Acesso garantido por fluxo real de recuperação via e-mail real, WhatsApp (usar API oficial Meta) ou perguntas-chaves baseadas no cadastro.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  O prof. Cláudio (bot de IA) sugere planos de ação pedagógicos práticos e curtos baseados na BNCC para facilitar o cruzamento do professor entre relatório recebido e instrução do material socioemocional usado na escola.
+                  <span class="pain-badge badge-action">Da Avaliação à Ação</span><br>
+                  <strong>Solução proposta:</strong> O prof. Cláudio (bot de IA) sugere planos de ação pedagógicos práticos e curtos baseados na BNCC para facilitar o cruzamento do professor entre relatório recebido e instrução do material socioemocional usado na escola.
                 </li>
               </ul>
             </div>
@@ -2374,25 +2327,25 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           <!-- CARD 2: Senna Teste -->
           <a href="/teste/" class="card">
             <div class="card-header">
-              <div class="icon">🧬</div>
               <div>
                 <h3>Senna</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="section-title">Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
+                  <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
+                  <strong>Solução proposta:</strong> Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado.
+                  <span class="pain-badge badge-action">Dados na Gaveta</span><br>
+                  <strong>Solução proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">Da Avaliação à Ação</span><br>
+                  <strong>Solução proposta:</strong> Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2404,25 +2357,25 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           <!-- CARD 3: Autoavaliação -->
           <a href="/autoavaliacao/" class="card">
             <div class="card-header">
-              <div class="icon">📝</div>
               <div>
                 <h3>Autoavaliação socioemocional</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="section-title">Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
+                  <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
+                  <strong>Solução proposta:</strong> Jornada guiada pelo mentor Béco com marcos inspirados no universo dos estudantes. Monitora desatenção (Fast-Click) e sugere exercícios de desaceleração e respiração, mas sem travar o progresso do estudante.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele.
+                  <span class="pain-badge badge-action">Dados na Gaveta</span><br>
+                  <strong>Solução proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">Da Avaliação à Ação</span><br>
+                  <strong>Solução proposta:</strong> Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático e com bloqueios mandatórios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2434,25 +2387,25 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           <!-- CARD 4: Criatividade & Crítico -->
           <a href="/hackathon/" class="card">
             <div class="card-header">
-              <div class="icon">🧠</div>
               <div>
                 <h3>Criatividade e pensamento crítico</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="section-title">Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-engagement">🎮 Engajamento de Jovens</span><br>
-                  Personalização com IA: a inteligência artificial gera enunciados dinâmicos baseados nos hobbies e interesses do aluno.
+                  <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
+                  <strong>Solução proposta:</strong> Personalização com IA: a inteligência artificial gera enunciados dinâmicos baseados nos hobbies e interesses do aluno.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🏆 Dados na Gaveta</span><br>
-                  Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado
+                  <span class="pain-badge badge-action">Dados na Gaveta</span><br>
+                  <strong>Solução proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arquétipos que fazem parte do universo dele e que pode ser exportado
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-action">🌱 Da Avaliação à Ação</span><br>
-                  Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático, e para criar planos de desenvolvimento. Inclui bloqueios mandatórios para evitar desvios para outros assuntos.
+                  <span class="pain-badge badge-action">Da Avaliação à Ação</span><br>
+                  <strong>Solução proposta:</strong> Béco (mentor de IA) para acompanhá-lo no WhatsApp nas dúvidas surgidas posteriormente ao teste, utilizando raciocínio socrático, e para criar planos de desenvolvimento. Inclui bloqueios mandatórios para evitar desvios para outros assuntos.
                 </li>
               </ul>
             </div>
@@ -2464,21 +2417,20 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           <!-- CARD 5: App IAS Offline -->
           <div class="card" style="cursor: pointer;" onclick="document.getElementById('modal-offline').style.display = 'flex'">
             <div class="card-header">
-              <div class="icon" style="background: rgba(239, 68, 68, 0.08);">💻</div>
               <div>
                 <h3 style="font-size: 14px;">App IAS offline first</h3>
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">🎯 Dores do Edital Atacadas</div>
+              <div class="section-title">Dores do Edital Atacadas</div>
               <ul class="pain-list">
                 <li class="pain-item">
-                  <span class="pain-badge badge-connect">📶 Falta de Conectividade</span><br>
-                  Executável desktop de 15MB que roda testes, inclusive usando inteligência artificial, <em>100% desconectado localmente</em>.
+                  <span class="pain-badge badge-connect">Falta de Conectividade</span><br>
+                  <strong>Solução proposta:</strong> Executável desktop de 15MB que roda testes, inclusive usando inteligência artificial, <em>100% desconectado localmente</em>.
                 </li>
                 <li class="pain-item">
-                  <span class="pain-badge badge-auth">🔄 Sincronização Ativa</span><br>
-                  O app salva localmente sem perder dados e envia avaliações silenciosamente assim que o laboratório conectar-se por 1 minuto.
+                  <span class="pain-badge badge-auth">Sincronização Ativa</span><br>
+                  <strong>Solução proposta:</strong> O app salva localmente sem perder dados e envia avaliações silenciosamente assim que o laboratório conectar-se por 1 minuto.
                 </li>
               </ul>
             </div>
@@ -2492,9 +2444,8 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
         <div id="modal-offline" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(11, 18, 38, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
           <div style="background: white; border-radius: 24px; padding: 40px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
             <button onclick="document.getElementById('modal-offline').style.display = 'none'" style="position: absolute; top: 24px; right: 24px; background: #F1F5F9; border: none; width: 36px; height: 36px; border-radius: 18px; font-weight: bold; cursor: pointer; color: #475569; font-size: 16px;">X</button>
-            
+
             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
-              <div class="icon" style="background: rgba(239, 68, 68, 0.1); width: 54px; height: 54px; font-size: 32px; border-radius: 16px;">💻</div>
               <div>
                 <h2 style="font-size: 24px; font-weight: 900; color: #071131; margin: 0;">Aplicativo IAS Offline-First</h2>
                 <span style="font-size: 13.5px; color: #5B6472; font-weight: 600;">Proposta arquitetural para ambientes de baixa ou nenhuma conectividade</span>
@@ -2502,14 +2453,14 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             </div>
 
             <div style="background: #F8FAFC; border-left: 4px solid #FBB800; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">🖥️ Como funciona na prática</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Como funciona na prática</h4>
               <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0;">
                 O IAS fornece um programa leve que pode ser baixado em um pen-drive e instalado nos computadores do laboratório escolar. Esse "aplicativo" tem a exata mesma aparência dos testes na internet e hospeda o robô de inteligência artificial em seu interior. Os estudantes fazem a avaliação com os computadores totalmente offline, e o aplicativo salva tudo no disco da máquina de forma segura. Quando a máquina capta algum pulso mínimo de internet, o aplicativo envia as provas silenciosamente para os servidores centrais do IAS.
               </p>
             </div>
 
             <div style="background: #F0FDF4; border-left: 4px solid #22C55E; padding: 20px; border-radius: 0 12px 12px 0;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">⚙️ Detalhamento técnico</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">Detalhamento técnico</h4>
               <ul style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px;">
                 <li><strong>Stack Desktop:</strong> O portal é transpilado via framework <strong>Tauri</strong>. Ao utilizar Rust e o WebView nativo do SO, criamos binários de execução (app) incrivelmente leves (cerca de 15 a 20MB) que carregam instantaneamente e consomem o mínimo de RAM nas máquinas defasadas das escolas públicas.</li>
                 <li><strong>Banco de Dados Local-First:</strong> Utiliza-se um banco de dados embutido no disco local, como o <strong>SQLite</strong> ou <strong>RxDB</strong>. O RxDB possui mecanismos ativos que sincronizam assincronamente os JSONs armazenados com um banco na nuvem (PostgreSQL) sem gerar conflitos.</li>
