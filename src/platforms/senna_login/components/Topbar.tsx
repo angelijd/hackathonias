@@ -22,12 +22,14 @@ export const Topbar: React.FC<TopbarProps> = ({
       darkMode ? 'bg-[#040E2B] text-white border-b border-[#ffffff10]' : 'bg-white text-slate-800 border-b border-slate-200'
     }`}>
       <div className="flex items-center gap-3">
-        {/* Main Logo */}
-        <img 
-          src={darkMode ? logoEscuro : logoClaro} 
-          alt="Logo" 
-          className="h-[28px] w-auto object-contain"
-        />
+        {/* Main Logo (link para o hub) */}
+        <a href="/" aria-label="Voltar para a tela inicial" className="flex items-center">
+          <img
+            src={darkMode ? logoEscuro : logoClaro}
+            alt="Logo"
+            className="h-[28px] w-auto object-contain"
+          />
+        </a>
 
         <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-[5px] tracking-[0.02em] uppercase ${
           darkMode ? 'text-[#8791A8] bg-white/6' : 'text-slate-500 bg-slate-100'

@@ -14,6 +14,8 @@ interface Message {
   text: string;
 }
 
+const RECOVERY_WAIT_SECONDS = 600;
+
 export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, onLoginSuccess }) => {
   const [instance, setInstance] = useState<UserInstance>('aluno');
   const [identifier, setIdentifier] = useState('');
@@ -43,7 +45,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   const [studentName, setStudentName] = useState('');
   const [studentClass, setStudentClass] = useState('');
   const [testPhoneNumber, setTestPhoneNumber] = useState('');
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(RECOVERY_WAIT_SECONDS);
   const [requestId, setRequestId] = useState<string | null>(null);
   const [recoveryStep, setRecoveryStep] = useState<'form' | 'waiting' | 'approved' | 'rejected'>('form');
 
@@ -79,17 +81,17 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
     let pollingInterval: any = null;
 
     if (recoveryStep === 'waiting' && requestId) {
-      setElapsedTime(0);
-      
-      // Cronômetro progressivo
+      setRemainingSeconds(RECOVERY_WAIT_SECONDS);
+
+      // Cronômetro regressivo
       timerInterval = setInterval(() => {
-        setElapsedTime((prev) => {
-          // Se passar de 10 minutos (600 segundos), expira automaticamente
-          if (prev >= 600) {
+        setRemainingSeconds((prev) => {
+          // Ao chegar a 0, expira automaticamente
+          if (prev <= 1) {
             setRecoveryStep('rejected');
-            return prev;
+            return 0;
           }
-          return prev + 1;
+          return prev - 1;
         });
       }, 1000);
 
@@ -179,7 +181,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
     if (!studentName || !studentClass || !testPhoneNumber) return;
     setRecoveryStep('waiting');
     setRequestId(null);
-    setElapsedTime(0);
+    setRemainingSeconds(RECOVERY_WAIT_SECONDS);
 
     try {
       const response = await fetch('/api/auth-recovery/request', {
@@ -548,7 +550,9 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsRecoveryModalOpen(false)}
+                aria-label="Fechar"
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border transition-all ${
                   darkMode ? 'border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
                 }`}
@@ -660,20 +664,31 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                       </div>
                       <div className="space-y-2">
                         <h4 className="text-base font-black text-slate-800 dark:text-slate-100">
-                          Aguardando resposta do professor responsável
+                          Pedido de entrada enviado
                         </h4>
                         <p className={`text-xs font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Um pedido de autorização de acesso foi disparado no WhatsApp informado.
+                          Aguardando aprovação.
                         </p>
                       </div>
                       <div className={`px-4 py-2 rounded-full text-sm font-black border ${
                         darkMode ? 'bg-slate-950 border-slate-800 text-amber-500' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}>
-                        ⏱️ Tempo decorrido: {formatTime(elapsedTime)}
+                        ⏱️ Tempo restante: {formatTime(remainingSeconds)}
                       </div>
-                      <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch] pt-2">
-                        Nota: Se a liberação demorar mais do que 10 minutos, o estudante deve fechar esta tela e procurar a Secretaria para regularizar seus dados.
-                      </p>
+                      <div className="pt-2 w-full">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsRecoveryModalOpen(false);
+                            setRecoveryStep('form');
+                          }}
+                          className={`w-full py-3 rounded-full text-xs font-black border cursor-pointer transition-all ${
+                            darkMode ? 'border-slate-800 text-slate-400 hover:bg-slate-800' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -1004,7 +1019,9 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsFirstAccessModalOpen(false)}
+                aria-label="Fechar"
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border transition-all ${
                   darkMode ? 'border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
                 }`}
@@ -1059,15 +1076,6 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                           : 'bg-white border-slate-200 text-[#0B1226] focus:border-[#FBB800] shadow-sm'
                       }`}
                     />
-                  </div>
-
-                  {/* Dica da Sofia */}
-                  <div className={`p-4 rounded-2xl border transition-all ${
-                    darkMode ? 'bg-slate-950/60 border-amber-500/20' : 'bg-amber-50/50 border-amber-200 shadow-sm'
-                  }`}>
-                    <p className={`text-xs font-semibold leading-relaxed ${darkMode ? 'text-slate-300' : 'text-[#5B6472]'}`}>
-                      💡 <strong>Dica da Sofia:</strong> Para evitar esquecer o seu acesso e não ter que pedir ajuda ao professor responsável, escolha uma senha que você <strong>já costuma usar no seu dia a dia</strong> e que seja <strong>fácil de você se lembrar</strong>!
-                    </p>
                   </div>
 
                   {studentPasswordError && (
