@@ -28,7 +28,6 @@ export const BecoIntroModal: React.FC<Props> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [showCC, setShowCC] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -69,13 +68,6 @@ export const BecoIntroModal: React.FC<Props> = ({
       const duration = videoRef.current.duration;
       setCurrentTime(current);
       setProgress((current / duration) * 100);
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
     }
   };
 
@@ -142,16 +134,6 @@ export const BecoIntroModal: React.FC<Props> = ({
                 title={showCC ? "Desativar legendas (CC)" : "Ativar legendas (CC)"}
               >
                 CC
-              </button>
-
-              {/* Sound Toggle */}
-              <button
-                type="button"
-                onClick={toggleMute}
-                className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center text-xs transition-colors backdrop-blur-xs cursor-pointer"
-                title={isMuted ? "Ativar som" : "Desativar som"}
-              >
-                {isMuted ? '🔇' : '🔊'}
               </button>
 
               {/* Close Button */}
