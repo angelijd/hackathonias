@@ -2278,9 +2278,186 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .card:hover .btn-access {
             color: #FBB800;
           }
+
+          .welcome-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(7, 17, 49, 0.72);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+          }
+          .welcome-card {
+            background: white;
+            border-radius: 28px;
+            max-width: 620px;
+            width: 100%;
+            padding: 36px 40px;
+            box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
+            margin: auto;
+          }
+          .welcome-eyebrow {
+            font-size: 11px;
+            font-weight: 900;
+            color: #FBB800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+          }
+          .welcome-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #071131;
+            letter-spacing: -0.5px;
+            margin-bottom: 18px;
+          }
+          .welcome-card p {
+            font-size: 14.5px;
+            color: #334155;
+            line-height: 1.6;
+            margin-bottom: 14px;
+          }
+          .welcome-card ol,
+          .welcome-card ul {
+            margin: 0 0 18px 20px;
+            font-size: 14.5px;
+            color: #334155;
+            line-height: 1.7;
+          }
+          .welcome-card ol li,
+          .welcome-card ul li {
+            margin-bottom: 4px;
+          }
+          .welcome-important {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-left: 4px solid #FBB800;
+            border-radius: 0 14px 14px 0;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+          }
+          .welcome-important p {
+            margin-bottom: 8px;
+            color: #7C4A03;
+          }
+          .welcome-important p:last-child {
+            margin-bottom: 0;
+            font-weight: 700;
+          }
+          .welcome-signature {
+            font-size: 14.5px;
+            color: #334155;
+            margin-bottom: 26px;
+          }
+          .welcome-signature strong {
+            display: block;
+            color: #071131;
+          }
+          .welcome-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+          }
+          .welcome-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: #7C879C;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+          }
+          .welcome-field input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border-radius: 12px;
+            border: 1.5px solid #E2E8F0;
+            font-size: 14.5px;
+            font-family: 'Manrope', sans-serif;
+            color: #0B1226;
+            outline: none;
+            transition: border-color 0.15s ease;
+          }
+          .welcome-field input:focus {
+            border-color: #FBB800;
+          }
+          .welcome-error {
+            display: none;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #DC2626;
+            margin-top: -4px;
+          }
+          .welcome-submit-btn {
+            margin-top: 6px;
+            height: 54px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #FDC300, #FBB800);
+            color: #071131;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 25px -5px rgba(253,195,0,0.4);
+          }
+          .welcome-submit-btn:hover {
+            filter: brightness(1.03);
+          }
         </style>
       </head>
       <body>
+        <div class="welcome-overlay" id="welcome-overlay">
+          <div class="welcome-card">
+            <div class="welcome-eyebrow">Instituto Ayrton Senna</div>
+            <h1 class="welcome-title">Olá, avaliador(a)!</h1>
+
+            <p>Seja bem-vindo ao Portal IAS.</p>
+            <p>Nosso time pensou na melhor experiência de uso para você acessar os protótipos.</p>
+            <p><strong>O que você precisa saber:</strong></p>
+
+            <ol>
+              <li>Todas as 8 dores do edital foram resolvidas;</li>
+              <li>Desenvolvemos 5 protótipos para essas dores. Em cada protótipo, temos nome, dor e como resolvemos.</li>
+              <li>Clique em "Acessar protótipo" para navegar em cada um deles.</li>
+              <li>Todos os protótipos seguem os 3 pilares abaixo:</li>
+            </ol>
+
+            <ul>
+              <li>Intencionalidade pedagógica</li>
+              <li>IA contextualizada</li>
+              <li>Personalização</li>
+            </ul>
+
+            <div class="welcome-important">
+              <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
+              <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
+            </div>
+
+            <p class="welcome-signature">
+              Boa jornada!
+              <strong>Time Cris Miura</strong>
+            </p>
+
+            <form class="welcome-form" id="welcome-form">
+              <div class="welcome-field">
+                <label for="welcome-email">E-mail</label>
+                <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
+              </div>
+              <div class="welcome-field">
+                <label for="welcome-whatsapp">WhatsApp</label>
+                <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
+              </div>
+              <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp válidos para continuar.</div>
+              <button type="submit" class="welcome-submit-btn">Acessar Portal</button>
+            </form>
+          </div>
+        </div>
+
         <div class="hub-hero">
           <div>
             <div class="logo-ias">Instituto Ayrton Senna</div>
@@ -2320,7 +2497,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar Portal &rarr;</span>
+              <span class="btn-access">Acessar protótipo &rarr;</span>
             </div>
           </a>
 
@@ -2350,7 +2527,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar Portal &rarr;</span>
+              <span class="btn-access">Acessar protótipo &rarr;</span>
             </div>
           </a>
 
@@ -2380,7 +2557,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar Portal &rarr;</span>
+              <span class="btn-access">Acessar protótipo &rarr;</span>
             </div>
           </a>
 
@@ -2410,7 +2587,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar Portal &rarr;</span>
+              <span class="btn-access">Acessar protótipo &rarr;</span>
             </div>
           </a>
 
@@ -2435,7 +2612,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Abrir Proposta &rarr;</span>
+              <span class="btn-access">Acessar protótipo &rarr;</span>
             </div>
           </div>
         </div>
@@ -2470,6 +2647,28 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           </div>
         </div>
         <script>
+          // Tela 0: bloqueia o scroll até o avaliador informar e-mail/WhatsApp.
+          // Nenhum dado é enviado ao servidor — some da memória ao fechar a página.
+          document.body.style.overflow = 'hidden';
+          document.getElementById('welcome-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.getElementById('welcome-email').value.trim();
+            var whatsapp = document.getElementById('welcome-whatsapp').value.trim();
+            var errorEl = document.getElementById('welcome-error');
+
+            var emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            var digits = whatsapp.replace(/\D/g, '');
+            var whatsappValid = digits.length >= 10 && digits.length <= 13;
+
+            if (!emailValid || !whatsappValid) {
+              errorEl.style.display = 'block';
+              return;
+            }
+            errorEl.style.display = 'none';
+            document.getElementById('welcome-overlay').style.display = 'none';
+            document.body.style.overflow = '';
+          });
+
           document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', () => {
               const url = card.getAttribute('href') || 'modal-offline';
