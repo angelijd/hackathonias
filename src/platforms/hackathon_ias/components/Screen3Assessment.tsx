@@ -360,7 +360,7 @@ export const Screen3Assessment: React.FC<Props> = ({
                     Desafio {testStep}/2: {activeTestType === 'critical_thinking' ? 'Pensamento Crítico' : 'Criatividade'}
                   </span>
                   <span className="text-xs sm:text-sm font-extrabold text-slate-600 dark:text-slate-200">
-                    Questão {currentIdx + 1} de {totalQ}
+                    Pergunta {currentIdx + 1} de {totalQ}
                   </span>
                 </div>
 
