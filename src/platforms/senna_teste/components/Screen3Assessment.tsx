@@ -789,7 +789,7 @@ export const Screen3Assessment: React.FC<Props> = ({
         <div className="mb-8">
           <div className={`p-6 sm:p-8 rounded-3xl border ${theme.statementBox}`}>
             <span className={`text-xs uppercase block mb-2 ${theme.statementEyebrow}`}>
-              Leia a frase abaixo:
+              Pergunta {currentIdx + 1} de {FIXED_QUESTIONS.length} — Leia a frase abaixo:
             </span>
             <p className={`text-[20px] sm:text-[24px] leading-snug ${theme.statementText}`}>
               "{FIXED_QUESTIONS[currentIdx]}"

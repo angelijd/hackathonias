@@ -14,6 +14,8 @@ interface Message {
   text: string;
 }
 
+const RECOVERY_WAIT_SECONDS = 600;
+
 export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, onLoginSuccess }) => {
   const [instance, setInstance] = useState<UserInstance>('aluno');
   const [identifier, setIdentifier] = useState('');
@@ -43,9 +45,9 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   const [studentName, setStudentName] = useState('');
   const [studentClass, setStudentClass] = useState('');
   const [testPhoneNumber, setTestPhoneNumber] = useState('');
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(RECOVERY_WAIT_SECONDS);
   const [requestId, setRequestId] = useState<string | null>(null);
-  const [recoveryStep, setRecoveryStep] = useState<'form' | 'waiting' | 'approved' | 'rejected'>('form');
+  const [recoveryStep, setRecoveryStep] = useState<'form' | 'waiting' | 'approved' | 'rejected' | 'timeout'>('form');
 
   // Estados para Recuperação do Professor / Gestor
   const [teacherRecoveryCode, setTeacherRecoveryCode] = useState('');
@@ -60,7 +62,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   // Preenchimento Automático dos Campos de Login ao Trocar de Aba (Testador só clica em Acessar)
   React.useEffect(() => {
     if (instance === 'aluno') {
-      setIdentifier('Ayrton');
+      setIdentifier('Aluno');
       setPassword('1234');
     } else if (instance === 'professor') {
       setIdentifier('Professor');
@@ -79,17 +81,17 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
     let pollingInterval: any = null;
 
     if (recoveryStep === 'waiting' && requestId) {
-      setElapsedTime(0);
-      
-      // Cronômetro progressivo
+      setRemainingSeconds(RECOVERY_WAIT_SECONDS);
+
+      // Cronômetro regressivo
       timerInterval = setInterval(() => {
-        setElapsedTime((prev) => {
-          // Se passar de 10 minutos (600 segundos), expira automaticamente
-          if (prev >= 600) {
-            setRecoveryStep('rejected');
-            return prev;
+        setRemainingSeconds((prev) => {
+          // Ao chegar a 0, expira automaticamente
+          if (prev <= 1) {
+            setRecoveryStep('timeout');
+            return 0;
           }
-          return prev + 1;
+          return prev - 1;
         });
       }, 1000);
 
@@ -131,11 +133,11 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
         const cleanId = identifier.trim().toLowerCase();
         const cleanPass = password.trim();
 
-        if (cleanId === 'ayrton' && cleanPass === '1234') {
+        if (cleanId === 'aluno' && cleanPass === '1234') {
           setFirstAccessRole('aluno');
           setIsFirstAccessModalOpen(true);
         } else {
-          setLoginError(`Código ou senha de acesso inválidos. Utilize os dados de teste correspondentes:\n\n🎒 Estudante: Ayrton | Senha: 1234`);
+          setLoginError(`Código ou senha de acesso inválidos. Utilize os dados de teste correspondentes:\n\n🎒 Estudante: Aluno | Senha: 1234`);
         }
       }, 800);
       return;
@@ -179,7 +181,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
     if (!studentName || !studentClass || !testPhoneNumber) return;
     setRecoveryStep('waiting');
     setRequestId(null);
-    setElapsedTime(0);
+    setRemainingSeconds(RECOVERY_WAIT_SECONDS);
 
     try {
       const response = await fetch('/api/auth-recovery/request', {
@@ -207,10 +209,10 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
 
   // Conclui o fluxo preenchendo automaticamente as credenciais e fechando o modal
   const handleConfirmApprovedEntrance = () => {
-    setIdentifier('Ayrton');
+    setIdentifier('Aluno');
     setPassword('1234');
     setIsRecoveryModalOpen(false);
-    setLoginSuccess('Acesso liberado via professor! Bem-vindo, Ayrton.');
+    setLoginSuccess('Acesso liberado via professor! Bem-vindo, Aluno.');
   };
 
   const handleTeacherCheckOptions = async () => {
@@ -350,18 +352,9 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
         {/* Título de Boas-vindas */}
         <h1 className="text-[28px] sm:text-[34px] lg:text-[38px] leading-[1.15] font-black tracking-[-0.015em]">
           <span className={darkMode ? 'text-white' : 'text-[#0B1226]'}>
-            Portal de Acesso{' '}
-          </span>
-          <span className="text-[#FBB800] block mt-1">
-            Educação &amp; Desenvolvimento
+            Portal de Acesso
           </span>
         </h1>
-
-        <p className={`text-[14px] sm:text-[15px] leading-relaxed mt-3.5 max-w-[46ch] font-semibold ${
-          darkMode ? 'text-slate-300' : 'text-[#5B6472]'
-        }`}>
-          Selecione o seu perfil para acessar a plataforma de competências socioemocionais.
-        </p>
 
         {/* Instâncias de Acesso (Tabs Aluno / Professor / Gestor) */}
         <div className={`flex p-1 rounded-2xl mt-8 mb-6 border transition-all ${
@@ -373,7 +366,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
             const isActive = instance === tab;
             const labels: Record<UserInstance, string> = {
               aluno: 'Estudante',
-              professor: 'Educador',
+              professor: 'Professor',
               gestor: 'Gestor'
             };
             const icons: Record<UserInstance, string> = {
@@ -416,13 +409,13 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
               darkMode ? 'text-slate-400' : 'text-slate-500'
             }`}>
               {instance === 'aluno' && 'Código de Estudante'}
-              {instance === 'professor' && 'Código de Educador'}
+              {instance === 'professor' && 'Código de Professor'}
               {instance === 'gestor' && 'Código de Gestor'}
             </label>
             <input
               type="text"
               required
-              placeholder="Digite seu código de acesso (Ex: Ayrton)"
+              placeholder="Digite seu código de acesso (Ex: Aluno)"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               className={`w-full h-[52px] px-4 rounded-xl text-sm font-bold border transition-all outline-none ${
@@ -435,35 +428,11 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
 
           {/* Senha */}
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className={`text-xs font-black uppercase tracking-wider ${
-                darkMode ? 'text-slate-400' : 'text-slate-500'
-              }`}>
-                Senha
-              </label>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsRecoveryModalOpen(true);
-                  if (instance === 'aluno') {
-                    setRecoveryStep('form');
-                    setStudentName('');
-                    setStudentClass('');
-                  } else {
-                    setTeacherRecoveryCode(identifier || (instance === 'professor' ? 'Professor' : 'Gestor'));
-                    setTeacherRecoveryStep('input_code');
-                    setRecoveryOptions(null);
-                    setSelectedRecoveryMethod(null);
-                    setSecurityAnswerInput('');
-                    setRecoveryResultMsg(null);
-                    setRecoveryErrorMsg(null);
-                  }
-                }}
-                className="text-xs font-black text-[#FBB800] hover:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20 px-3.5 py-1.5 rounded-full border border-amber-500/30 transition-all cursor-pointer shadow-sm hover:scale-[1.03] active:scale-[0.97]"
-              >
-                🔒 Esqueci minha senha
-              </button>
-            </div>
+            <label className={`block text-xs font-black uppercase tracking-wider mb-2 ${
+              darkMode ? 'text-slate-400' : 'text-slate-500'
+            }`}>
+              Senha
+            </label>
             <input
               type="password"
               required
@@ -476,14 +445,29 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                   : 'bg-white border-slate-200 text-[#0B1226] focus:border-[#FBB800] focus:ring-1 focus:ring-[#FBB800] shadow-sm'
               }`}
             />
+            <button
+              type="button"
+              onClick={() => {
+                setIsRecoveryModalOpen(true);
+                if (instance === 'aluno') {
+                  setRecoveryStep('form');
+                  setStudentName('');
+                  setStudentClass('');
+                } else {
+                  setTeacherRecoveryCode(identifier || (instance === 'professor' ? 'Professor' : 'Gestor'));
+                  setTeacherRecoveryStep('input_code');
+                  setRecoveryOptions(null);
+                  setSelectedRecoveryMethod(null);
+                  setSecurityAnswerInput('');
+                  setRecoveryResultMsg(null);
+                  setRecoveryErrorMsg(null);
+                }
+              }}
+              className="mt-2.5 text-xs font-black text-[#FBB800] hover:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20 px-3.5 py-1.5 rounded-full border border-amber-500/30 transition-all cursor-pointer shadow-sm hover:scale-[1.03] active:scale-[0.97]"
+            >
+              🔒 Não consigo entrar
+            </button>
           </div>
-
-          {/* Toast / Alerta de Erro */}
-          {loginError && (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs sm:text-sm font-bold leading-relaxed animate-in fade-in slide-in-from-top-2 duration-200">
-              {loginError}
-            </div>
-          )}
 
           {/* Toast / Alerta de Sucesso */}
           {loginSuccess && (
@@ -543,12 +527,14 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                 <div>
                   <h3 className="text-lg font-black leading-tight">Recuperar Acesso</h3>
                   <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    {instance === 'aluno' ? 'Perfil Estudante' : instance === 'professor' ? 'Perfil Educador' : 'Perfil Gestor'}
+                    {instance === 'aluno' ? 'Perfil Estudante' : instance === 'professor' ? 'Perfil Professor' : 'Perfil Gestor'}
                   </p>
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsRecoveryModalOpen(false)}
+                aria-label="Fechar"
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border transition-all ${
                   darkMode ? 'border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
                 }`}
@@ -660,20 +646,54 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                       </div>
                       <div className="space-y-2">
                         <h4 className="text-base font-black text-slate-800 dark:text-slate-100">
-                          Aguardando resposta do professor responsável
+                          Aguardando resposta
                         </h4>
-                        <p className={`text-xs font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Um pedido de autorização de acesso foi disparado no WhatsApp informado.
-                        </p>
                       </div>
                       <div className={`px-4 py-2 rounded-full text-sm font-black border ${
                         darkMode ? 'bg-slate-950 border-slate-800 text-amber-500' : 'bg-slate-50 border-slate-200 text-slate-800'
                       }`}>
-                        ⏱️ Tempo decorrido: {formatTime(elapsedTime)}
+                        ⏱️ Tempo restante: {formatTime(remainingSeconds)}
                       </div>
-                      <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch] pt-2">
-                        Nota: Se a liberação demorar mais do que 10 minutos, o estudante deve fechar esta tela e procurar a Secretaria para regularizar seus dados.
+                      <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch]">
+                        Se demorar mais do que 10 minutos, procure a Secretaria para regularizar seus dados.
                       </p>
+                      <div className="pt-2 w-full">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsRecoveryModalOpen(false);
+                            setRecoveryStep('form');
+                          }}
+                          className={`w-full py-3 rounded-full text-xs font-black border cursor-pointer transition-all ${
+                            darkMode ? 'border-slate-800 text-slate-400 hover:bg-slate-800' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TIMEOUT: CRONÔMETRO ZEROU SEM RESPOSTA */}
+                  {recoveryStep === 'timeout' && (
+                    <div className="flex flex-col items-center py-6 space-y-5 text-center animate-in zoom-in-95 duration-200">
+                      <div className="w-16 h-16 rounded-full bg-rose-500/10 flex items-center justify-center text-3xl">
+                        ⚠️
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-base font-black text-rose-600 dark:text-rose-400">
+                          Sem resposta. Procure a secretaria
+                        </h4>
+                      </div>
+                      <div className="pt-2 w-full">
+                        <button
+                          type="button"
+                          onClick={() => setIsRecoveryModalOpen(false)}
+                          className="w-full py-3 rounded-full text-xs font-black bg-rose-600 hover:bg-rose-700 text-white shadow-md cursor-pointer transition-all"
+                        >
+                          Fechar
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -688,7 +708,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                           Acesso não autorizado
                         </h4>
                         <p className={`text-xs font-semibold leading-relaxed max-w-[38ch] ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          O professor responsável recusou ou a solicitação de acesso expirou. Por favor, procure a Secretaria da sua escola.
+                          O professor responsável recusou a solicitação de acesso. Por favor, procure a Secretaria da sua escola.
                         </p>
                       </div>
                       <div className="pt-2 w-full">
@@ -999,12 +1019,14 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                 <div>
                   <h3 className="text-lg font-black leading-tight">Configuração de Primeiro Acesso</h3>
                   <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    {firstAccessRole === 'aluno' ? 'Perfil Estudante' : firstAccessRole === 'professor' ? 'Perfil Educador' : 'Perfil Gestor'}
+                    {firstAccessRole === 'aluno' ? 'Perfil Estudante' : firstAccessRole === 'professor' ? 'Perfil Professor' : 'Perfil Gestor'}
                   </p>
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsFirstAccessModalOpen(false)}
+                aria-label="Fechar"
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border transition-all ${
                   darkMode ? 'border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
                 }`}
@@ -1020,7 +1042,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
               {firstAccessRole === 'aluno' && (
                 <div className="space-y-4 animate-in fade-in duration-200">
                   <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                    👋 Olá, <strong>Ayrton</strong>! Este é seu primeiro acesso à plataforma. Escolha uma nova senha para proteger sua conta.
+                    👋 Olá, <strong>Aluno</strong>! Este é seu primeiro acesso à plataforma. Escolha uma nova senha para proteger sua conta.
                   </div>
 
                   <div>
@@ -1061,15 +1083,6 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                     />
                   </div>
 
-                  {/* Dica da Sofia */}
-                  <div className={`p-4 rounded-2xl border transition-all ${
-                    darkMode ? 'bg-slate-950/60 border-amber-500/20' : 'bg-amber-50/50 border-amber-200 shadow-sm'
-                  }`}>
-                    <p className={`text-xs font-semibold leading-relaxed ${darkMode ? 'text-slate-300' : 'text-[#5B6472]'}`}>
-                      💡 <strong>Dica da Sofia:</strong> Para evitar esquecer o seu acesso e não ter que pedir ajuda ao professor responsável, escolha uma senha que você <strong>já costuma usar no seu dia a dia</strong> e que seja <strong>fácil de você se lembrar</strong>!
-                    </p>
-                  </div>
-
                   {studentPasswordError && (
                     <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold leading-normal">
                       ⚠️ {studentPasswordError}
@@ -1091,7 +1104,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         setStudentPasswordError(null);
                         setIsFirstAccessModalOpen(false);
                         if (onLoginSuccess) {
-                          onLoginSuccess('Ayrton', 'aluno');
+                          onLoginSuccess('Aluno', 'aluno');
                         }
                       }}
                       className="w-full h-[56px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-md text-[15px] font-black text-[#0B1226] active:scale-[0.98] transition-all cursor-pointer"
@@ -1226,6 +1239,16 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                       onClick={async () => {
                         if (!personalEmail || !personalWhatsapp || !securityAnswer) {
                           setTeacherFormError('Por favor, preencha todos os campos obrigatórios (*).');
+                          return;
+                        }
+                        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personalEmail.trim());
+                        if (!isEmailValid) {
+                          setTeacherFormError('Informe um e-mail válido.');
+                          return;
+                        }
+                        const whatsappDigits = personalWhatsapp.replace(/\D/g, '');
+                        if (whatsappDigits.length < 10 || whatsappDigits.length > 13) {
+                          setTeacherFormError('Informe um número de WhatsApp válido, com DDD.');
                           return;
                         }
                         setTeacherFormError(null);
