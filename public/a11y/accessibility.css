@@ -243,7 +243,6 @@ body.ias-a11y-mode [aria-selected="true"]::after {
 }
 
 /* No modo original, mostrar APENAS nos titulos (H1, H2, H3 - que normalmente sao as perguntas) e menorzinho */
-h1 .ias-tts-btn, 
 h2 .ias-tts-btn, 
 h3 .ias-tts-btn,
 .enunciado .ias-tts-btn {
