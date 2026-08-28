@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface LostPasswordLog {
   id: string;
@@ -107,11 +107,38 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
   const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'model'; text: string }>>([
     {
       role: 'model',
-      text: 'Olá! Sou o Prof. Cláudio, seu mentor de análise socioemocional da BNCC. Selecione uma turma ou estudante na árvore de relatórios ao lado para eu analisar a evolução histórica de competências automaticamente!'
+      text: 'Oi! Sou o Prof. Cláudio 👋 Selecione uma turma ou estudante ao lado que eu já trago uma análise, ou me chame se tiver alguma dúvida!'
     }
   ]);
   const [userInput, setUserInput] = useState('');
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  // Estado do widget flutuante do Cláudio (inicia fechado, como o Béco)
+  const [isClaudioOpen, setIsClaudioOpen] = useState(false);
+  const claudioMountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const claudioInactivityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cláudio surge sozinho após 10s de tela aberta ou 1min de inatividade, o que vier primeiro
+  useEffect(() => {
+    const popUp = () => setIsClaudioOpen((prev) => prev || true);
+
+    claudioMountTimerRef.current = setTimeout(popUp, 10000);
+
+    const resetInactivityTimer = () => {
+      if (claudioInactivityTimerRef.current) clearTimeout(claudioInactivityTimerRef.current);
+      claudioInactivityTimerRef.current = setTimeout(popUp, 60000);
+    };
+    resetInactivityTimer();
+
+    const activityEvents: Array<keyof WindowEventMap> = ['mousemove', 'keydown', 'click', 'scroll'];
+    activityEvents.forEach((evt) => window.addEventListener(evt, resetInactivityTimer));
+
+    return () => {
+      if (claudioMountTimerRef.current) clearTimeout(claudioMountTimerRef.current);
+      if (claudioInactivityTimerRef.current) clearTimeout(claudioInactivityTimerRef.current);
+      activityEvents.forEach((evt) => window.removeEventListener(evt, resetInactivityTimer));
+    };
+  }, []);
 
   // 1. Dados do Educador: Turma -> Aluno -> Competências (Com Histórico PrevScore)
   const classReportsData: ClassData[] = [
@@ -251,7 +278,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     setChatMessages([
       {
         role: 'model',
-        text: `Olá! Vejo que você selecionou o(a) estudante **${student.name}** (Turma **${className}**). Gostaria de ajuda para analisar os resultados socioemocionais dele(a) ou planejar alguma intervenção pedagógica baseada na BNCC?`
+        text: `Vi que você selecionou **${student.name}** (${className}) 👋 Quer ajuda para analisar os resultados dele(a)?`
       }
     ]);
   };
@@ -265,7 +292,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     setChatMessages([
       {
         role: 'model',
-        text: `Olá! Analisei as médias de desenvolvimento socioemocional da turma **${classData.name}**. Gostaria de ajuda para interpretar as médias socioemocionais ou gostaria que eu sugerisse intervenções pedagógicas para a turma?`
+        text: `Vi que você selecionou a turma **${classData.name}** 👋 Quer ajuda para interpretar as médias ou sugestões de intervenção?`
       }
     ]);
   };
@@ -406,14 +433,16 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
       {/* HEADER DO PAINEL */}
       <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <span className="text-[11px] font-black tracking-wider uppercase text-amber-500">Instituto Ayrton Senna</span>
+          <span className="text-lg font-extrabold text-amber-500">
+            {role === 'gestor' ? 'Olá, gestor(a)! Bem-vindo ao' : 'Olá, professor(a)! Bem-vindo ao'}
+          </span>
           <h1 className="text-3xl font-black tracking-tight mt-1 flex items-center gap-2">
             {role === 'gestor' ? '🏛️ Painel de Controle do Gestor' : '🧑‍🏫 Painel de Controle do Professor'}
           </h1>
           <p className={`text-sm font-semibold mt-1.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-            {role === 'gestor' 
-              ? 'Acompanhe as médias socioemocionais por escolas e turmas da rede escolar.' 
-              : 'Acompanhe as solicitações de acessos e os relatórios socioemocionais de seus estudantes.'}
+            {role === 'gestor'
+              ? 'Acompanhe as médias socioemocionais por escolas e turmas da rede escolar.'
+              : 'Aqui você irá acompanhar as solicitações de acesso e os relatórios dos seus estudantes.'}
           </p>
         </div>
 
@@ -538,9 +567,9 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
 
       {/* ABA RELATÓRIOS (Diferenciado entre Educador e Gestor) */}
       {(activeTab === 'reports' || role === 'gestor') && (
-        <section className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 animate-in fade-in duration-200">
-          
-          {/* COLUNA ESQUERDA: RELATÓRIO EM ÁRVORE */}
+        <section className="grid grid-cols-1 gap-8 animate-in fade-in duration-200">
+
+          {/* RELATÓRIO EM ÁRVORE */}
           <div className={`p-6 rounded-3xl border flex flex-col ${
             darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
           }`}>
@@ -601,11 +630,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
                                         <div key={c.name} className="space-y-1.5">
                                           <div className="flex justify-between text-xs font-bold items-center">
                                             <span>{c.name}</span>
-                                            <div className="flex items-center gap-1.5">
-                                              {isEvolved && <span className="text-emerald-500 text-[10px] font-black">▲ Evoluiu</span>}
-                                              {isDropped && <span className="text-rose-500 text-[10px] font-black">▼ Atenção</span>}
-                                              <span className="text-amber-500 font-black">{c.score} <span className="text-slate-400 font-normal">({c.prevScore} ant.)</span></span>
-                                            </div>
+                                            <span className="text-amber-500 font-black">{c.score}</span>
                                           </div>
                                           {/* Barra de Progresso Atual */}
                                           <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-805 overflow-hidden relative">
@@ -706,143 +731,131 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
               </div>
             )}
 
-            {/* SE NADA SELECIONADO NA ÁRVORE */}
-            {!selectedStudent && !selectedClass && (
-              <div className="mt-8 p-6 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl">
-                <span className="text-2xl block mb-1">👈</span>
-                <p className="text-xs font-bold text-slate-400">Selecione uma pasta ou estudante para carregar a análise comparativa automaticamente.</p>
-              </div>
-            )}
-          </div>
-
-          {/* COLUNA DIREITA: BOT DE IA - PROFESSOR CLÁUDIO */}
-          <div className={`p-6 rounded-3xl border flex flex-col h-[700px] ${
-            darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
-          }`}>
-            
-            {/* Header do Bot com Selo de Rastreabilidade (Combate a Barreira 2) */}
-            <div className="flex justify-between items-start pb-4 border-b border-slate-100 dark:border-slate-800">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-2xl border border-amber-500/20">
-                  👨‍🏫
-                </div>
-                <div>
-                  <h3 className="text-sm font-black">Prof. Cláudio</h3>
-                  <span className="text-[10px] font-black uppercase text-amber-500">Mentor Socioemocional (IAS)</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[8.5px] font-black bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 uppercase tracking-wide">
-                  🛡️ Rastreável BNCC
-                </span>
-              </div>
-            </div>
-
-            {/* Caixa de Mensagens do Chat */}
-            <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1 scrollbar-thin flex flex-col">
-              {chatMessages.map((msg, idx) => {
-                const isModel = msg.role === 'model';
-                return (
-                  <div 
-                    key={idx} 
-                    className={`flex flex-col max-w-[90%] ${
-                      isModel ? 'self-start mr-auto' : 'self-end ml-auto'
-                    }`}
-                  >
-                    <span className="text-[9px] font-bold text-slate-400 mb-1 ml-2">
-                      {isModel ? 'Prof. Cláudio' : 'Você'}
-                    </span>
-                    <div className={`p-4 rounded-[22px] text-xs font-semibold leading-relaxed shadow-sm ${
-                      isModel 
-                        ? darkMode ? 'bg-slate-950 text-slate-100 border border-slate-850' : 'bg-slate-50 text-slate-800 border border-slate-100'
-                        : 'bg-[#FBB800] text-[#0b1226]'
-                    }`}>
-                      {formatMarkdownText(msg.text, darkMode)}
-
-                      {/* Ações de Exportação Rápida no Rodapé do Balão do Mentor (Combate a Barreira 3 / Item 6) */}
-                      {isModel && idx > 0 && (
-                        <div className="mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/50 flex flex-col sm:flex-row gap-2 justify-end text-[10px]">
-                          <button
-                            onClick={() => handleExport('email', msg.text)}
-                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-900 hover:bg-slate-300 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all cursor-pointer font-bold"
-                          >
-                            ✉️ Enviar para meu E-mail ({currentEmail})
-                          </button>
-                          <button
-                            onClick={() => handleExport('whatsapp', msg.text)}
-                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-[#FBB800] border border-amber-500/20 transition-all cursor-pointer font-bold"
-                          >
-                            📱 Enviar para meu WhatsApp (+{currentWhatsapp})
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-              {isSendingMessage && (
-                <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold ml-2 py-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce delay-100" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce delay-200" />
-                  <span>Prof. Cláudio está analisando os dados...</span>
-                </div>
-              )}
-            </div>
-
-            {/* Dicas e Atalhos Rápidos para Evitar "Não sei o que perguntar" (Combate a Barreira 1) */}
-            <div className="px-1 py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-              <span className="block text-[9px] font-black uppercase text-slate-400 tracking-wider">Ações de Análise Rápida</span>
-              <div className="flex gap-2">
-                {selectedClass && (
-                  <button
-                    type="button"
-                    onClick={handleRequestGroupDetails}
-                    disabled={isSendingMessage}
-                    className="flex-1 py-2 px-3 rounded-xl text-[10px] font-black bg-amber-500/10 hover:bg-amber-500/20 text-[#FBB800] border border-amber-500/20 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    👥 Listar os grupos desta turma
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={handleTriggerBNCCSuggestion}
-                  disabled={isSendingMessage}
-                  className="flex-1 py-2 px-3 rounded-xl text-[10px] font-black bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-all cursor-pointer disabled:opacity-50"
-                >
-                  📚 Sugestão Socioemocional BNCC
-                </button>
-              </div>
-            </div>
-
-            {/* Input de Mensagem Manual (Caso precise de mais detalhes) */}
-            <form onSubmit={handleSendMessage} className="pt-3 flex gap-2">
-              <input
-                type="text"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                placeholder="Qual sua dúvida sobre os relatórios?"
-                disabled={isSendingMessage}
-                className={`flex-1 h-[42px] px-3.5 rounded-xl text-xs font-bold border transition-all outline-none ${
-                  darkMode
-                    ? 'bg-slate-950 border-slate-800 text-white focus:border-[#FBB800]'
-                    : 'bg-white border-slate-200 text-[#0B1226] focus:border-[#FBB800]'
-                }`}
-              />
-              <button
-                type="submit"
-                disabled={isSendingMessage || !userInput.trim()}
-                className="h-[42px] px-4 rounded-xl bg-[#FBB800] hover:bg-amber-500 transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50"
-              >
-                <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4 stroke-[#0b1226] stroke-[2.5]">
-                  <path d="M2.5 10h15M12.5 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </form>
-
           </div>
 
         </section>
+      )}
+
+      {/* WIDGET FLUTUANTE: PROFESSOR CLÁUDIO (mesmo canto do Béco, inicia fechado) */}
+      {(activeTab === 'reports' || role === 'gestor') && (
+        <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end pointer-events-none">
+          {isClaudioOpen && (
+            <div className={`pointer-events-auto mb-4 flex flex-col w-[340px] sm:w-[380px] h-[560px] rounded-3xl border shadow-2xl overflow-hidden ${
+              darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+            }`}>
+              <div className={`p-5 flex justify-between items-center border-b ${
+                darkMode ? 'border-slate-800' : 'border-slate-100'
+              }`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-full bg-amber-500/10 flex items-center justify-center text-xl border border-amber-500/20">
+                    👨‍🏫
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black">Prof. Cláudio</h3>
+                    <span className="text-[10px] font-black uppercase text-amber-500">Mentor Socioemocional (IAS)</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsClaudioOpen(false)}
+                  aria-label="Fechar"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border transition-all ${
+                    darkMode ? 'border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white' : 'border-slate-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Caixa de Mensagens do Chat */}
+              <div className="flex-1 overflow-y-auto p-5 space-y-4 pr-1 scrollbar-thin flex flex-col">
+                {chatMessages.map((msg, idx) => {
+                  const isModel = msg.role === 'model';
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex flex-col max-w-[90%] ${
+                        isModel ? 'self-start mr-auto' : 'self-end ml-auto'
+                      }`}
+                    >
+                      <span className="text-[9px] font-bold text-slate-400 mb-1 ml-2">
+                        {isModel ? 'Prof. Cláudio' : 'Você'}
+                      </span>
+                      <div className={`p-4 rounded-[22px] text-xs font-semibold leading-relaxed shadow-sm ${
+                        isModel
+                          ? darkMode ? 'bg-slate-950 text-slate-100 border border-slate-850' : 'bg-slate-50 text-slate-800 border border-slate-100'
+                          : 'bg-[#FBB800] text-[#0b1226]'
+                      }`}>
+                        {formatMarkdownText(msg.text, darkMode)}
+
+                        {/* Ações de Exportação Rápida no Rodapé do Balão do Mentor (Combate a Barreira 3 / Item 6) */}
+                        {isModel && idx > 0 && (
+                          <div className="mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/50 flex flex-col sm:flex-row gap-2 justify-end text-[10px]">
+                            <button
+                              onClick={() => handleExport('email', msg.text)}
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-900 hover:bg-slate-300 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all cursor-pointer font-bold"
+                            >
+                              ✉️ Enviar para meu E-mail ({currentEmail})
+                            </button>
+                            <button
+                              onClick={() => handleExport('whatsapp', msg.text)}
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-[#FBB800] border border-amber-500/20 transition-all cursor-pointer font-bold"
+                            >
+                              📱 Enviar para meu WhatsApp (+{currentWhatsapp})
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+                {isSendingMessage && (
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold ml-2 py-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce delay-100" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce delay-200" />
+                    <span>Prof. Cláudio está analisando os dados...</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Input de Mensagem Manual */}
+              <form onSubmit={handleSendMessage} className={`p-4 pt-3 flex gap-2 border-t ${darkMode ? 'border-slate-800' : 'border-slate-100'}`}>
+                <input
+                  type="text"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  placeholder="Qual sua dúvida sobre os relatórios?"
+                  disabled={isSendingMessage}
+                  className={`flex-1 h-[42px] px-3.5 rounded-xl text-xs font-bold border transition-all outline-none ${
+                    darkMode
+                      ? 'bg-slate-950 border-slate-800 text-white focus:border-[#FBB800]'
+                      : 'bg-white border-slate-200 text-[#0B1226] focus:border-[#FBB800]'
+                  }`}
+                />
+                <button
+                  type="submit"
+                  disabled={isSendingMessage || !userInput.trim()}
+                  className="h-[42px] px-4 rounded-xl bg-[#FBB800] hover:bg-amber-500 transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50"
+                >
+                  <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4 stroke-[#0b1226] stroke-[2.5]">
+                    <path d="M2.5 10h15M12.5 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* Avatar de Alternância (Abrir/Fechar) */}
+          <button
+            type="button"
+            onClick={() => setIsClaudioOpen((prev) => !prev)}
+            aria-label={isClaudioOpen ? 'Fechar Prof. Cláudio' : 'Abrir Prof. Cláudio'}
+            className="pointer-events-auto w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/30 shadow-xl flex items-center justify-center text-3xl cursor-pointer hover:scale-105 active:scale-95 transition-all"
+          >
+            👨‍🏫
+          </button>
+        </div>
       )}
 
     </main>
