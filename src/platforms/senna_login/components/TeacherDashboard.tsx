@@ -408,7 +408,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
         <div>
           <span className="text-[11px] font-black tracking-wider uppercase text-amber-500">Instituto Ayrton Senna</span>
           <h1 className="text-3xl font-black tracking-tight mt-1 flex items-center gap-2">
-            {role === 'gestor' ? '🏛️ Painel de Controle do Gestor' : '🧑‍🏫 Painel de Controle do Educador'}
+            {role === 'gestor' ? '🏛️ Painel de Controle do Gestor' : '🧑‍🏫 Painel de Controle do Professor'}
           </h1>
           <p className={`text-sm font-semibold mt-1.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
             {role === 'gestor' 
