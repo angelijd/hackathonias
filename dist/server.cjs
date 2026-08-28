@@ -2278,14 +2278,68 @@ ${mem.summaryMemory ? `- Mem\xC3\xB3ria executiva das conversas anteriores: ${me
     try {
       const { text, isDynamic } = req.body;
       if (!text) return res.status(400).json({ error: "Texto ausente" });
+      const clean = (str) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+      const cleanInput = clean(text);
+      const autoavaliacaoMap = [
+        { id: 1, match: ["conhecerasimesmopodearirnovoscaminhos", "ayrtonconhecerasimesmo"] },
+        { id: 2, match: ["bemvindoaoseutestedeautoavaliacaosocioemocional", "autoavaliacaosocioemocional"] },
+        { id: 3, match: ["estetestedesenvolvimentodassuascompetenciassocioemocionais", "mapearoniveldedesenvolvimento"] },
+        { id: 4, match: ["atencaoeastenaoeumtestedeescola", "suaverdadeemprimeirolugar", "obecoeataracomvoce"] },
+        { id: 5, match: ["qualuniversocombinamaiscomvoce", "escolhaumadasseriesabaixo"] },
+        { id: 6, match: ["souumapessoaorganizada"] },
+        { id: 7, match: ["mesintofeliz"] },
+        { id: 8, match: ["facominhastarefasdamelhormaneiraqueconsigo"] },
+        { id: 9, match: ["colocopoucoesforcoetemponasminhastarefas"] },
+        { id: 10, match: ["costumodeixarminhascoisasarrumadas"] },
+        { id: 11, match: ["alinecostumadeixar", "alineeorganizada"] },
+        { id: 12, match: ["julianaebastantecuidadosa", "julianaeorganizada"] },
+        { id: 13, match: ["quantovoceseachaorganizado", "quantoachaorganizado"] },
+        { id: 14, match: ["tenhocuriosidadesobreassuntosquenaoconheco"] },
+        { id: 15, match: ["pref manteraminharotinadoqueexperimentaronovo", "prefiroaminharotina"] },
+        { id: 16, match: ["gostodeconhecerlugaresecostumesdiferentes"] },
+        { id: 17, match: ["tenhofacilidadeemimaginarnovasformasdefazerascoisas"] },
+        { id: 18, match: ["marcossemprefazomesmocaminhoparaaescola", "marcoseabertoaonovo"] },
+        { id: 19, match: ["sofiaadoraexperimentarcomidasdeoutrospaises", "sofiaeabertaaonovo"] },
+        { id: 20, match: ["quantovoceseachaabertoaonovo", "quantoachaabertoaonovo"] }
+      ];
+      const autoDir = import_path.default.join(process.cwd(), "public", "audio", "autoavaliacao");
+      if (!import_fs.default.existsSync(autoDir)) {
+        import_fs.default.mkdirSync(autoDir, { recursive: true });
+      }
+      for (const item of autoavaliacaoMap) {
+        const matches = item.match.some((m) => cleanInput.includes(m) || m.includes(cleanInput));
+        if (matches) {
+          const possibleNames = [
+            `Audio_${item.id}.mp3`,
+            `audio_${item.id}.mp3`,
+            `Audio${item.id}.mp3`,
+            `audio${item.id}.mp3`,
+            `${item.id}.mp3`
+          ];
+          for (const name of possibleNames) {
+            const filePath = import_path.default.join(autoDir, name);
+            if (import_fs.default.existsSync(filePath)) {
+              return res.json({ audioUrl: `/audio/autoavaliacao/${name}` });
+            }
+          }
+        }
+      }
       const crypto = require("crypto");
       const hash = crypto.createHash("md5").update(text).digest("hex");
-      const audioPath = import_path.default.join(process.cwd(), "public", "audio", hash + ".mp3");
+      const audioDir = import_path.default.join(process.cwd(), "public", "audio");
+      if (!import_fs.default.existsSync(audioDir)) {
+        import_fs.default.mkdirSync(audioDir, { recursive: true });
+      }
+      const audioPath = import_path.default.join(audioDir, hash + ".mp3");
       const audioUrl = "/audio/" + hash + ".mp3";
       if (import_fs.default.existsSync(audioPath)) {
         return res.json({ audioUrl });
       }
       const openaiKey = process.env.OPENAI_API_KEY;
+      if (!openaiKey) {
+        console.warn("[TTS]: \xC1udio local n\xE3o encontrado e OPENAI_API_KEY n\xE3o configurada.");
+        return res.status(404).json({ error: "\xC1udio n\xE3o encontrado no servidor" });
+      }
       const ttsRes = await fetch("https://api.openai.com/v1/audio/speech", {
         method: "POST",
         headers: {
@@ -2299,14 +2353,15 @@ ${mem.summaryMemory ? `- Mem\xC3\xB3ria executiva das conversas anteriores: ${me
         })
       });
       if (!ttsRes.ok) {
-        throw new Error("Falha na API da OpenAI");
+        const errText = await ttsRes.text();
+        throw new Error("Falha na API da OpenAI: " + errText);
       }
       const buffer = await ttsRes.arrayBuffer();
       import_fs.default.writeFileSync(audioPath, Buffer.from(buffer));
       return res.json({ audioUrl });
     } catch (error) {
       console.error("[TTS Error]:", error);
-      res.status(500).json({ error: "Falha na geracao de voz" });
+      res.status(500).json({ error: "Falha na geracao de voz", details: error.message || error });
     }
   });
   app.get("/sandbox-live", (req, res) => {

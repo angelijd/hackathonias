@@ -78,38 +78,6 @@ export const FeaturesList: React.FC<Props> = ({ darkMode }) => {
         </div>
       </div>
 
-      {/* Feature 3: O Beco como parceiro */}
-      <div className="flex items-start gap-3.5 group">
-        <div
-          className={`w-[38px] h-[38px] rounded-[11px] shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${
-            darkMode ? 'bg-blue-950/70 border border-blue-500/20' : 'bg-[#D3E7FC]'
-          }`}
-        >
-          <svg viewBox="0 0 20 20" fill="none" className="w-[18px] h-[18px]">
-            <path
-              d="M10 2l1.6 4.9L16.5 8l-4.9 1.6L10 14.5 8.4 9.6 3.5 8l4.9-1.1z"
-              fill="#0B7CFB"
-            />
-          </svg>
-        </div>
-        <div className="pt-0.5">
-          <b
-            className={`block text-[14.5px] font-extrabold tracking-tight ${
-              darkMode ? 'text-white' : 'text-[#0B1226]'
-            }`}
-          >
-            Afirmações e Casos Práticos
-          </b>
-          <span
-            className={`text-[13px] leading-[1.4] block mt-0.5 ${
-              darkMode ? 'text-slate-400' : 'text-[#5B6472]'
-            }`}
-          >
-            Você avaliará afirmações sobre si e personagens fictícios (vinhetas).
-          </span>
-        </div>
-      </div>
-
       {/* Feature 4: O Beco como parceiro */}
       <div className="flex items-start gap-3.5 group">
         <div
