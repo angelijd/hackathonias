@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Topbar } from './components/Topbar';
 import { InstitutoAyrtonSennaBadge } from './components/InstitutoAyrtonSennaBadge';
-import { FeaturesList } from './components/FeaturesList';
 import { HeroIllustration } from './components/HeroIllustration';
 import { Screen2Preferences } from './components/Screen2Preferences';
 import { Screen2bTestSelection } from './components/Screen2bTestSelection';
@@ -27,7 +26,6 @@ export default function App() {
   const [tempGrade, setTempGrade] = useState('9º ano');
   const [tempCity, setTempCity] = useState('São Paulo');
   const [tempSchool, setTempSchool] = useState('Escola Estadual Dr. Ytrio Correia');
-  const [activeDot, setActiveDot] = useState(0);
 
   const handleSaveName = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,40 +39,22 @@ export default function App() {
 
   const handleStartWelcome = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
   };
 
   const handleBackToWelcome = () => {
     setScreenStep('welcome');
-    setActiveDot(0);
   };
 
   const handleProceedToTestSelection = () => {
     setScreenStep('test_selection');
-    setActiveDot(2);
   };
 
   const handleBackToPreferences = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
   };
 
   const handleProceedToLab = () => {
     setScreenStep('assessment');
-    setActiveDot(3);
-  };
-
-  const handleDotClick = (dotIndex: number) => {
-    setActiveDot(dotIndex);
-    if (dotIndex === 0) {
-      setScreenStep('welcome');
-    } else if (dotIndex === 1) {
-      setScreenStep('preferences');
-    } else if (dotIndex === 2) {
-      setScreenStep('test_selection');
-    } else {
-      setScreenStep('assessment');
-    }
   };
 
   return (
@@ -161,18 +141,6 @@ export default function App() {
                   <span className="text-[#0B7CFB] font-extrabold">Criatividade.</span>
                 </p>
 
-                {/* Body Description */}
-                <p
-                  className={`text-[14px] sm:text-[14.5px] leading-[1.6] mt-3.5 max-w-[46ch] ${
-                    darkMode ? 'text-slate-300' : 'text-[#5B6472]'
-                  }`}
-                >
-                  Este teste foi criado para entender como você analisa ideias, resolve problemas e
-                  imagina soluções criativas para os desafios do mundo real.
-                </p>
-
-                {/* Features List */}
-                <FeaturesList darkMode={darkMode} />
               </section>
 
               {/* Right Column: Hero Illustration */}
@@ -217,29 +185,6 @@ export default function App() {
                     </svg>
                   </span>
                 </button>
-
-                {/* Pagination Indicator */}
-                <div
-                  className="flex justify-center items-center gap-2 mt-5 sm:mt-6"
-                  role="tablist"
-                  aria-label="Progresso da introdução"
-                >
-                  {[0, 1, 2, 3].map((dot) => (
-                    <button
-                      key={dot}
-                      type="button"
-                      onClick={() => handleDotClick(dot)}
-                      aria-label={`Slide ${dot + 1}`}
-                      className={`h-[7px] transition-all duration-300 rounded-full cursor-pointer ${
-                        activeDot === dot
-                          ? 'w-[22px] bg-[#FDC300]'
-                          : darkMode
-                          ? 'w-[7px] bg-slate-700 hover:bg-slate-600'
-                          : 'w-[7px] bg-[#040E2B] opacity-60 hover:opacity-100'
-                      }`}
-                    />
-                  ))}
-                </div>
               </div>
             </section>
           </div>
