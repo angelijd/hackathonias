@@ -600,21 +600,6 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         />
                       </div>
 
-                      {/* WhatsApp reaproveitado da tela inicial (tela 0) */}
-                      <div className={`p-4 rounded-2xl border transition-all ${
-                        darkMode ? 'bg-slate-950/60 border-amber-500/20' : 'bg-amber-50/50 border-amber-200 shadow-sm'
-                      }`}>
-                        {evaluatorWhatsapp ? (
-                          <p className={`text-xs font-semibold leading-relaxed ${darkMode ? 'text-slate-300' : 'text-[#5B6472]'}`}>
-                            📢 Vamos enviar a solicitação para o WhatsApp informado na tela inicial: <strong>+{evaluatorWhatsapp}</strong>
-                          </p>
-                        ) : (
-                          <p className="text-xs font-semibold leading-relaxed text-rose-500">
-                            ⚠️ Não encontramos o WhatsApp informado na tela inicial. Volte para a tela inicial do Portal IAS e informe seus dados antes de continuar.
-                          </p>
-                        )}
-                      </div>
-
                       <div className="pt-2">
                         <button
                           type="button"
@@ -997,7 +982,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                           onClick={() => setIsRecoveryModalOpen(false)}
                           className="w-full py-3 rounded-full text-xs font-black bg-slate-600 hover:bg-rose-700 text-white shadow-md cursor-pointer transition-all"
                         >
-                          Fechar Modal
+                          Fechar
                         </button>
                       </div>
                     </div>
@@ -1124,7 +1109,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
               {(firstAccessRole === 'professor' || firstAccessRole === 'gestor') && (
                 <div className="space-y-4 animate-in fade-in duration-200">
                   <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                    👋 Seja bem-vindo(a) ao portal! Confirme os dados pré-cadastrados abaixo e complemente o seu cadastro para facilitar resets futuros de senha.
+                    👋 Seja bem-vindo(a)! Confirme os dados pré-cadastrados abaixo e complemente o seu cadastro.
                   </div>
 
                   {/* Dados Hidratados Pré-cadastrados (Somente Leitura) */}
@@ -1135,7 +1120,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div>
                         <span className="block text-slate-400 font-bold">Nome Completo:</span>
-                        <span className="font-extrabold">{firstAccessRole === 'professor' ? 'Professor' : 'Gestor'}</span>
+                        <span className="font-extrabold">{firstAccessRole === 'professor' ? 'Fernanda Ribeiro' : 'Marcelo Andrade'}</span>
                       </div>
                       <div>
                         <span className="block text-slate-400 font-bold">Escola:</span>
