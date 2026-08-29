@@ -2332,6 +2332,25 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             margin-bottom: 4px;
             font-weight: 600;
           }
+          .welcome-important {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-left: 4px solid #FBB800;
+            border-radius: 0 12px 12px 0;
+            padding: 10px 14px;
+            margin-top: 14px;
+            margin-bottom: 4px;
+          }
+          .welcome-important p {
+            margin-bottom: 3px !important;
+            color: #7C4A03 !important;
+            font-size: 13px !important;
+            line-height: 1.45 !important;
+          }
+          .welcome-important p:last-child {
+            margin-bottom: 0 !important;
+            font-weight: 700;
+          }
           .welcome-signature {
             font-size: 14.5px;
             color: #475569;
@@ -2502,6 +2521,11 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                       </ul>
                     </li>
                   </ol>
+
+                  <div class="welcome-important">
+                    <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
+                    <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
+                  </div>
                 </div>
 
                 <div class="welcome-signature">
@@ -2517,9 +2541,9 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                     <span>🔐</span> Credenciais do protótipo de login
                   </div>
                   <div class="welcome-credentials-chips">
-                    <div class="user-role-chip">👤 Aluno</div>
-                    <div class="user-role-chip">👨‍🏫 Professor</div>
-                    <div class="user-role-chip">👔 Gestor</div>
+                    <div class="user-role-chip">Aluno</div>
+                    <div class="user-role-chip">Professor</div>
+                    <div class="user-role-chip">Gestor</div>
                   </div>
                   <div class="credential-pwd-chip">
                     <span>🔑 Senha para todos:</span> <strong>1234</strong>
