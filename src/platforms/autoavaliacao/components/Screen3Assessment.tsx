@@ -26,7 +26,7 @@ interface Props {
   interestDetail?: string;
   selectedExpectation?: string | null;
   testType?: string;
-  onBackToWelcome: () => void;
+  onBackToPreferences: () => void;
 }
 
 // 15 Perguntas Oficiais Padronizadas
@@ -85,7 +85,7 @@ export const Screen3Assessment: React.FC<Props> = ({
   userName,
   darkMode,
   selectedInterests = [],
-  onBackToWelcome,
+  onBackToPreferences,
 }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -311,12 +311,16 @@ export const Screen3Assessment: React.FC<Props> = ({
     setCurrentIdx((prev) => prev + 1);
   };
 
+  // Só é possível voltar para a tela de universos antes de responder a 1ª pergunta.
+  // Depois disso, o aluno só pode voltar para revisar/trocar uma resposta anterior.
+  const hasAnsweredFirstQuestion = answers[0] !== undefined;
+
   const handlePrevQuestion = () => {
     if (currentIdx > 0) {
       setCurrentIdx((prev) => prev - 1);
       setQuestionStartTime(Date.now());
-    } else {
-      onBackToWelcome();
+    } else if (!hasAnsweredFirstQuestion) {
+      onBackToPreferences();
     }
   };
 
@@ -338,6 +342,7 @@ export const Screen3Assessment: React.FC<Props> = ({
     if (!whatsappNumber.trim()) return;
 
     setIsSendingWhatsApp(true);
+    setWhatsappStatus('idle');
     const studentScores = calculateStudentSocioEmotional(answers);
     const matchResult = matchCharacter(universeKey, studentScores);
     const character = matchResult.character;
@@ -350,24 +355,25 @@ export const Screen3Assessment: React.FC<Props> = ({
       `🎯 *Papel:* ${character.role}\n\n` +
       `*Frase-chave:*\n"${character.quote}"\n\n` +
       `*Principais Forças em Destaque:*\n${character.strengths.map(s => `• ${s}`).join('\n')}\n\n` +
-      `_Parabéns pelo seu autoconhecimento!_`;
+      `_Parabéns pelo seu autoconhecimento! Qualquer dúvida, é só me chamar por aqui. — Béco_`;
 
     const cleanNum = whatsappNumber.replace(/\D/g, '');
     const fullNum = cleanNum.startsWith('55') ? cleanNum : `55${cleanNum}`;
 
+    // Envia de verdade pelo backend (Evolution API) — nunca abre o WhatsApp Web como fallback.
     try {
-      await fetch('/api/whatsapp/send', {
+      const res = await fetch('/api/ai/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ number: fullNum, text: message })
       });
+      setWhatsappStatus(res.ok ? 'success' : 'error');
     } catch (err) {
-      console.warn('Fallback para WhatsApp Web:', err);
+      console.error('Erro ao enviar relatório via WhatsApp:', err);
+      setWhatsappStatus('error');
+    } finally {
+      setIsSendingWhatsApp(false);
     }
-
-    window.open(`https://wa.me/${fullNum}?text=${encodeURIComponent(message)}`, '_blank');
-    setIsSendingWhatsApp(false);
-    setWhatsappStatus('success');
   };
 
   if (isCompleted) {
@@ -379,20 +385,17 @@ export const Screen3Assessment: React.FC<Props> = ({
     const characterPhoto = getCharacterImage(character.id);
 
     return (
-      <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-8 pt-4 pb-14 z-10 animate-in fade-in duration-300">
-        <div className={`rounded-3xl p-6 sm:p-10 border shadow-[0_25px_60px_rgba(4,20,43,0.09)] ${
+      <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-8 pt-2 pb-3 z-10 animate-in fade-in duration-300">
+        <div className={`rounded-3xl p-4 sm:p-6 border shadow-[0_25px_60px_rgba(4,20,43,0.09)] ${
           darkMode ? 'bg-slate-900/95 border-slate-800 text-white' : 'bg-white border-slate-200 text-[#0B1226]'
         }`}>
-          
-
-            
 
           {/* Character Highlight Card with Uniform Photo */}
-          <div className={`p-6 sm:p-8 rounded-3xl border mb-8 flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative overflow-hidden ${
+          <div className={`p-4 sm:p-5 rounded-3xl border mb-4 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative overflow-hidden ${
             darkMode ? 'bg-slate-800/80 border-slate-700' : 'bg-gradient-to-br from-slate-50 to-[#F8FAFC] border-slate-200/90'
           }`}>
             {/* Uniform Photo Container (Object Cover & Center Focus) */}
-            <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white/20 dark:ring-slate-700 shrink-0 relative bg-black/20 flex items-center justify-center">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white/20 dark:ring-slate-700 shrink-0 relative bg-black/20 flex items-center justify-center">
               {characterPhoto ? (
                 <img
                   src={characterPhoto}
@@ -407,7 +410,7 @@ export const Screen3Assessment: React.FC<Props> = ({
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
                 <span className="text-xs font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-300/40">
                   {character.role}
                 </span>
@@ -416,21 +419,21 @@ export const Screen3Assessment: React.FC<Props> = ({
                 </span>
               </div>
 
-              <h2 className="text-[28px] sm:text-[34px] font-black text-[#0B1226] dark:text-white leading-tight">
+              <h2 className="text-[22px] sm:text-[27px] font-black text-[#0B1226] dark:text-white leading-tight">
                 {character.name}
               </h2>
 
-              <p className="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 mt-1 mb-3">
+              <p className="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
                 {character.tagline}
               </p>
 
-              <p className="text-[14.5px] sm:text-[15.5px] text-[#475569] dark:text-slate-300 leading-relaxed font-medium">
+              <p className="text-[13px] sm:text-[14px] text-[#475569] dark:text-slate-300 leading-snug font-medium">
                 {character.description}
               </p>
 
               {/* Quote */}
-              <div className="mt-4 p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                <span className="block text-[10.5px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 not-italic mb-1">
+              <div className="mt-2.5 p-2.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <span className="block text-[10.5px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 not-italic mb-0.5">
                   Frase-chave
                 </span>
                 <p className="italic">
@@ -441,14 +444,14 @@ export const Screen3Assessment: React.FC<Props> = ({
           </div>
 
           {/* Grid de Forças Socioemocionais e Superpoderes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             {/* Forças Socioemocionais */}
-            <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
-              <h3 className="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
+            <div className={`p-3.5 rounded-3xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
+              <h3 className="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 flex items-center gap-2">
                 <span>🌟</span>
                 <span>Suas principais forças em destaque:</span>
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-1.5">
                 {character.strengths.map((str, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
@@ -463,12 +466,12 @@ export const Screen3Assessment: React.FC<Props> = ({
             </div>
 
             {/* Superpoderes em Ação */}
-            <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
-              <h3 className="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
+            <div className={`p-3.5 rounded-3xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
+              <h3 className="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 flex items-center gap-2">
                 <span>⚡</span>
                 <span>Seus Superpoderes na Prática:</span>
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-1.5">
                 {character.superpowers.map((pwr, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
@@ -483,22 +486,23 @@ export const Screen3Assessment: React.FC<Props> = ({
             </div>
           </div>
 
-          
-          {/* Exportar Resultado para WhatsApp */}
-          <div className={`p-6 sm:p-8 rounded-3xl border text-center ${
+          {/* Béco se despede e oferece enviar o relatório pelo WhatsApp */}
+          <div className={`p-4 sm:p-5 rounded-3xl border ${
             darkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-gradient-to-br from-emerald-50/70 to-emerald-100/30 border-emerald-200'
           }`}>
-            <div className="max-w-md mx-auto">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-3">
-                📲
+            <div className="max-w-lg mx-auto">
+              {/* Fala do Béco (avatar + balão) */}
+              <div className="flex items-start gap-3 mb-3.5 text-left">
+                <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 border-2 border-[#FBB800] shadow-md">
+                  <img src={becoAvatar} alt="Béco" className="w-full h-full object-cover" />
+                </div>
+                <div className={`flex-1 p-4 rounded-2xl rounded-tl-sm text-[13.5px] sm:text-sm font-semibold leading-relaxed ${
+                  darkMode ? 'bg-slate-900 text-slate-100 border border-slate-700' : 'bg-white text-slate-700 border border-slate-200 shadow-sm'
+                }`}>
+                  Mandou muito bem, {userName}! 🎉 Seu personagem, <strong>{character.name}</strong>, é show de bola — combina muito com você! Vou continuar por aqui no WhatsApp se quiser bater um papo ou tirar alguma dúvida depois. Quer que eu já mande seu relatório completo pra lá?
+                </div>
               </div>
-              <h3 className="text-base sm:text-lg font-extrabold text-[#0B1226] dark:text-white mb-1">
-                Receber resultado no WhatsApp
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
-                Digite seu número para enviar o resumo das suas forças socioemocionais para o seu celular.
-              </p>
-              
+
               <form onSubmit={handleSendWhatsApp} className="flex flex-col sm:flex-row gap-2.5">
                 <input
                   type="tel"
@@ -506,8 +510,8 @@ export const Screen3Assessment: React.FC<Props> = ({
                   value={whatsappNumber}
                   onChange={(e) => setWhatsappNumber(e.target.value)}
                   className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
-                    darkMode 
-                      ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500' 
+                    darkMode
+                      ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500'
                       : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400 focus:border-emerald-500'
                   }`}
                   required
@@ -517,13 +521,18 @@ export const Screen3Assessment: React.FC<Props> = ({
                   disabled={isSendingWhatsApp}
                   className="px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                 >
-                  {isSendingWhatsApp ? 'Enviando...' : 'Exportar para WhatsApp →'}
+                  {isSendingWhatsApp ? 'Enviando...' : 'Sim, enviar →'}
                 </button>
               </form>
 
               {whatsappStatus === 'success' && (
                 <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2.5">
-                  ✅ Resultado enviado com sucesso para o WhatsApp!
+                  ✅ Prontinho! O Béco te mandou o relatório no WhatsApp.
+                </p>
+              )}
+              {whatsappStatus === 'error' && (
+                <p className="text-xs font-bold text-rose-500 mt-2.5">
+                  ❌ Não conseguimos enviar agora. Tente novamente em instantes.
                 </p>
               )}
             </div>
@@ -843,7 +852,7 @@ export const Screen3Assessment: React.FC<Props> = ({
 
         {/* Footer Navigation: Back to Previous Question */}
         <div className={`flex items-center justify-between pt-6 border-t ${theme.footerBorder}`}>
-          {currentIdx > 0 ? (
+          {(currentIdx > 0 || !hasAnsweredFirstQuestion) ? (
             <button
               type="button"
               onClick={handlePrevQuestion}
@@ -853,10 +862,10 @@ export const Screen3Assessment: React.FC<Props> = ({
                 <path d="M19 12H5" />
                 <path d="M12 19l-7-7 7-7" />
               </svg>
-              <span>Pergunta anterior</span>
+              <span>{currentIdx === 0 ? 'Voltar para o universo' : 'Pergunta anterior'}</span>
             </button>
           ) : (
-            <div></div>
+            <span />
           )}
 
           <span className={`text-xs hidden sm:inline-block opacity-60 ${theme.helperText}`}>
