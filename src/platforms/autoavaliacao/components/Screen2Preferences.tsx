@@ -87,9 +87,9 @@ export const Screen2Preferences: React.FC<Props> = ({
   };
 
   return (
-    <div className="relative w-full max-w-[1360px] mx-auto px-4 sm:px-8 pt-2 sm:pt-3 pb-3 sm:pb-4 z-10 flex flex-col justify-center min-h-[calc(100vh-90px)]">
+    <div className="relative w-full max-w-[1360px] 2xl:max-w-[1700px] mx-auto px-4 sm:px-8 pt-2 sm:pt-3 pb-3 sm:pb-4 z-10 flex flex-col justify-center min-h-[calc(100vh-90px)]">
       {/* Top Header Section */}
-      <div className="flex flex-col items-center text-center max-w-[760px] mx-auto mb-3 sm:mb-4">
+      <div className="flex flex-col items-center text-center max-w-[760px] 2xl:max-w-[900px] mx-auto mb-3 sm:mb-4">
         {/* Eyebrow Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FDC300]/15 border border-[#FDC300]/40 rounded-full mb-2">
           <span className="w-2 h-2 rounded-full bg-[#FDC300] animate-pulse" />
@@ -99,7 +99,7 @@ export const Screen2Preferences: React.FC<Props> = ({
         </div>
 
         {/* Title */}
-        <h1 className="text-[20px] sm:text-[25px] lg:text-[28px] font-extrabold leading-[1.18] tracking-tight">
+        <h1 className="text-[20px] sm:text-[25px] lg:text-[28px] 2xl:text-[34px] font-extrabold leading-[1.18] tracking-tight">
           <span className={darkMode ? 'text-white' : 'text-[#0B1226]'}>
             Qual universo combina mais com{' '}
           </span>
@@ -107,7 +107,7 @@ export const Screen2Preferences: React.FC<Props> = ({
         </h1>
 
         {/* Description */}
-        <p className={`text-[12.5px] sm:text-[13.5px] leading-relaxed mt-1.5 max-w-[62ch] font-medium ${
+        <p className={`text-[12.5px] sm:text-[13.5px] 2xl:text-[16px] leading-relaxed mt-1.5 max-w-[62ch] font-medium ${
           darkMode ? 'text-slate-300' : 'text-[#5B6472]'
         }`}>
           Escolha uma das séries abaixo. Conforme você responder às questões, o teste revelará qual personagem reflete o seu perfil e as suas forças socioemocionais!
@@ -115,7 +115,7 @@ export const Screen2Preferences: React.FC<Props> = ({
       </div>
 
       {/* 3 Portrait Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 items-stretch max-w-[1000px] mx-auto w-full mb-3 sm:mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 2xl:gap-8 items-stretch max-w-[1000px] 2xl:max-w-[1500px] mx-auto w-full mb-3 sm:mb-4">
         {series.map((item) => {
           const isSelected = selectedUniverse === item.id;
 
@@ -124,7 +124,7 @@ export const Screen2Preferences: React.FC<Props> = ({
               key={item.id}
               type="button"
               onClick={() => handleSelect(item.id)}
-              className={`group relative flex flex-col rounded-2xl p-2 sm:p-2.5 text-left transition-all duration-300 cursor-pointer overflow-hidden border ${
+              className={`group relative flex flex-col rounded-2xl p-2 sm:p-2.5 2xl:p-4 text-left transition-all duration-300 cursor-pointer overflow-hidden border ${
                 isSelected
                   ? 'bg-white dark:bg-slate-900 border-[#FDC300] shadow-[0_16px_36px_rgba(253,195,0,0.28)] scale-[1.02] ring-2 ring-[#FDC300]/80'
                   : 'bg-white/80 dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-lg hover:-translate-y-1'
@@ -150,8 +150,8 @@ export const Screen2Preferences: React.FC<Props> = ({
                 </svg>
               </div>
 
-              {/* Portrait Image Container (altura fixa e compacta para caber sem scroll) */}
-              <div className="relative w-full h-[110px] sm:h-[140px] lg:h-[160px] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/50 mb-2 flex items-center justify-center group-hover:shadow-md transition-shadow">
+              {/* Portrait Image Container (altura fixa e compacta para caber sem scroll; cresce em telas largas) */}
+              <div className="relative w-full h-[110px] sm:h-[140px] lg:h-[160px] 2xl:h-[240px] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/50 mb-2 2xl:mb-3 flex items-center justify-center group-hover:shadow-md transition-shadow">
                 <img
                   src={item.imageSrc}
                   alt={item.alt}
@@ -182,17 +182,17 @@ export const Screen2Preferences: React.FC<Props> = ({
               {/* Card Body */}
               <div className="flex-1 flex flex-col justify-between px-1 pb-1">
                 <div>
-                  <span className={`inline-block text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border mb-1 ${item.tagColor}`}>
+                  <span className={`inline-block text-[10px] 2xl:text-[12px] font-extrabold uppercase tracking-wider px-2 py-0.5 2xl:px-3 2xl:py-1 rounded-full border mb-1 2xl:mb-2 ${item.tagColor}`}>
                     {item.tag}
                   </span>
 
-                  <h3 className={`text-[13px] sm:text-[14px] font-extrabold leading-snug tracking-tight mb-0.5 ${
+                  <h3 className={`text-[13px] sm:text-[14px] 2xl:text-[18px] font-extrabold leading-snug tracking-tight mb-0.5 2xl:mb-1 ${
                     isSelected ? 'text-[#0B1226] dark:text-white' : 'text-[#0B1226] dark:text-slate-100'
                   }`}>
                     {item.title}
                   </h3>
 
-                  <p className="text-[11px] text-[#5B6472] dark:text-slate-400 leading-snug">
+                  <p className="text-[11px] 2xl:text-[13.5px] text-[#5B6472] dark:text-slate-400 leading-snug">
                     {item.subtitle}
                   </p>
                 </div>
@@ -210,7 +210,7 @@ export const Screen2Preferences: React.FC<Props> = ({
       )}
 
       {/* Action Footer Navigation Bar */}
-      <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-3 sm:pt-4 border-t border-slate-200/80 dark:border-slate-800 max-w-[1000px] mx-auto w-full">
+      <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-3 sm:pt-4 border-t border-slate-200/80 dark:border-slate-800 max-w-[1000px] 2xl:max-w-[1500px] mx-auto w-full">
         {/* Back Button */}
         <button
           type="button"
@@ -228,15 +228,15 @@ export const Screen2Preferences: React.FC<Props> = ({
         <button
           type="button"
           onClick={handleContinue}
-          className="group relative w-full sm:w-auto min-w-[260px] h-[46px] pl-7 pr-3 rounded-full bg-gradient-to-r from-[#FDC300] to-[#FBB800] flex items-center justify-between gap-6 shadow-[0_10px_24px_rgba(253,195,0,0.34)] hover:shadow-[0_14px_28px_rgba(253,195,0,0.45)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/60"
+          className="group relative w-full sm:w-auto min-w-[260px] 2xl:min-w-[300px] h-[46px] 2xl:h-[56px] pl-7 2xl:pl-9 pr-3 rounded-full bg-gradient-to-r from-[#FDC300] to-[#FBB800] flex items-center justify-between gap-6 shadow-[0_10px_24px_rgba(253,195,0,0.34)] hover:shadow-[0_14px_28px_rgba(253,195,0,0.45)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/60"
         >
           <span className="absolute top-0 -left-[60%] w-[38%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-sheen pointer-events-none" />
 
-          <span className="text-[15px] font-extrabold text-[#0B1226] tracking-tight whitespace-nowrap">
+          <span className="text-[15px] 2xl:text-[17px] font-extrabold text-[#0B1226] tracking-tight whitespace-nowrap">
             Começar o teste
           </span>
 
-          <span className="w-7 h-7 rounded-full bg-[#040E2B] flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 shadow ml-2">
+          <span className="w-7 h-7 2xl:w-9 2xl:h-9 rounded-full bg-[#040E2B] flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 shadow ml-2">
             <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" />
               <path d="M12 5l7 7-7 7" />
