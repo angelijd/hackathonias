@@ -1,14 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-interface LostPasswordLog {
-  id: string;
-  studentName: string;
-  studentClass: string;
-  teacherPhone: string;
-  status: 'APROVADO' | 'REPROVADO';
-  timestamp: number;
-}
-
 interface TeacherContact {
   email: string;
   whatsapp: string;
@@ -84,9 +75,6 @@ const formatMarkdownText = (text: string, darkMode: boolean) => {
 };
 
 export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, role, teacherContact, onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'logins' | 'reports'>('reports');
-  const [logs, setLogs] = useState<LostPasswordLog[]>([]);
-  const [isLoadingLogs, setIsLoadingLogs] = useState(true);
 
   // Contatos reais cadastrados ou valores de fallback
   const currentEmail = teacherContact?.email || 'professor.silva@escola.ias.org.br';
@@ -211,29 +199,6 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
       ]
     }
   ];
-
-  // Polling para os logs de senha perdida
-  useEffect(() => {
-    if (role !== 'professor') return;
-    const fetchLogs = async () => {
-      try {
-        const res = await fetch('/api/logs/senha-perdida');
-        if (res.ok) {
-          const data = await res.json();
-          const sorted = data.sort((a: any, b: any) => b.timestamp - a.timestamp);
-          setLogs(sorted);
-        }
-      } catch (err) {
-        console.warn('Erro ao carregar logs:', err);
-      } finally {
-        setIsLoadingLogs(false);
-      }
-    };
-
-    fetchLogs();
-    const interval = setInterval(fetchLogs, 2500);
-    return () => clearInterval(interval);
-  }, [role]);
 
   // Função central para envio de mensagens para a IA com suporte a exibição de texto limpo para o usuário
   const sendAutoMessage = async (msgText: string, displayUserText?: string) => {
@@ -405,11 +370,6 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
     setExpandedItems(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const formatDateTime = (timestamp: number) => {
-    const d = new Date(timestamp);
-    return d.toLocaleString('pt-BR');
-  };
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim() || isSendingMessage) return;
@@ -458,116 +418,8 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
         </button>
       </section>
 
-      {/* ABAS DO PAINEL */}
-      <div className="flex border-b border-slate-200 dark:border-slate-800 mb-8">
-        {role === 'professor' && (
-          <button
-            onClick={() => setActiveTab('logins')}
-            className={`py-3.5 px-6 text-sm font-black border-b-2 transition-all cursor-pointer ${
-              activeTab === 'logins'
-                ? 'border-amber-500 text-amber-500'
-                : 'border-transparent text-slate-400 hover:text-slate-600'
-            }`}
-          >
-            📋 Aba Logins
-          </button>
-        )}
-        <button
-          onClick={() => setActiveTab('reports')}
-          className={`py-3.5 px-6 text-sm font-black border-b-2 transition-all cursor-pointer ${
-            activeTab === 'reports' || role === 'gestor'
-              ? 'border-amber-500 text-amber-500'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
-            }`}
-        >
-          📊 Aba Relatórios
-        </button>
-      </div>
-
-      {/* CONTEÚDO DAS ABAS */}
-      
-      {/* ABA LOGINS (Exclusivo Educador) */}
-      {role === 'professor' && activeTab === 'logins' && (
-        <section className={`rounded-3xl border overflow-hidden animate-in fade-in duration-200 ${
-          darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
-        }`}>
-          <div className="p-6 border-b border-slate-200/50 dark:border-slate-800/50 flex justify-between items-center">
-            <div>
-              <h2 className="text-lg font-black">📋 Log de Senha Perdida</h2>
-              <p className={`text-xs font-semibold mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Histórico em tempo real de alunos que solicitaram reset de acesso pelo WhatsApp.
-              </p>
-            </div>
-            {isLoadingLogs && (
-              <span className="w-5 h-5 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
-            )}
-          </div>
-
-          <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className={`border-b border-slate-200/50 dark:border-slate-800/50 text-[10px] font-black uppercase tracking-wider ${
-                  darkMode ? 'bg-slate-950/40 text-slate-400' : 'bg-slate-50 text-slate-500'
-                }`}>
-                  <th className="py-4 px-6">Data / Hora</th>
-                  <th className="py-4 px-6">Estudante</th>
-                  <th className="py-4 px-6">Turma</th>
-                  <th className="py-4 px-6">Telefone Responsável</th>
-                  <th className="py-4 px-6 text-right">Status da Ação</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-850">
-                {logs.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-12 px-6 text-center">
-                      <div className="text-3xl mb-2">📭</div>
-                      <p className={`text-sm font-black ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                        Nenhum registro no log de senha perdida no momento.
-                      </p>
-                      <p className="text-xs text-slate-400 mt-1">
-                        As solicitações respondidas pelo WhatsApp aparecerão aqui em tempo real.
-                      </p>
-                    </td>
-                  </tr>
-                ) : (
-                  logs.map((log) => (
-                    <tr 
-                      key={log.id} 
-                      className={`text-sm font-semibold hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors`}
-                    >
-                      <td className="py-4 px-6 text-xs text-slate-500 dark:text-slate-400">
-                        {formatDateTime(log.timestamp)}
-                      </td>
-                      <td className="py-4 px-6 font-extrabold">
-                        {log.studentName}
-                      </td>
-                      <td className="py-4 px-6 text-slate-600 dark:text-slate-300">
-                        {log.studentClass}
-                      </td>
-                      <td className="py-4 px-6 font-mono text-xs text-slate-500">
-                        +{log.teacherPhone}
-                      </td>
-                      <td className="py-4 px-6 text-right">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black ${
-                          log.status === 'APROVADO'
-                            ? 'bg-emerald-550/10 text-emerald-550'
-                            : 'bg-rose-550/10 text-rose-500'
-                        }`}>
-                          {log.status === 'APROVADO' ? '✅ APROVADO' : '❌ REPROVADO'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-
-      {/* ABA RELATÓRIOS (Diferenciado entre Educador e Gestor) */}
-      {(activeTab === 'reports' || role === 'gestor') && (
-        <section className="grid grid-cols-1 gap-8 animate-in fade-in duration-200">
+      {/* RELATÓRIOS (Diferenciado entre Professor e Gestor) */}
+      <section className="grid grid-cols-1 gap-8 animate-in fade-in duration-200">
 
           {/* RELATÓRIO EM ÁRVORE */}
           <div className={`p-6 rounded-3xl border flex flex-col ${
@@ -734,10 +586,8 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
           </div>
 
         </section>
-      )}
 
       {/* WIDGET FLUTUANTE: PROFESSOR CLÁUDIO (mesmo canto do Béco, inicia fechado) */}
-      {(activeTab === 'reports' || role === 'gestor') && (
         <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end pointer-events-none">
           {isClaudioOpen && (
             <div className={`pointer-events-auto mb-4 flex flex-col w-[340px] sm:w-[380px] h-[560px] rounded-3xl border shadow-2xl overflow-hidden ${
@@ -856,7 +706,6 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
             👨‍🏫
           </button>
         </div>
-      )}
 
     </main>
   );

@@ -992,10 +992,45 @@ Gere uma síntese formativa com mindset de crescimento (sem julgamento punitivo,
     studentName: string;
     studentClass: string;
     teacherPhone: string;
-    status: 'waiting' | 'approved' | 'rejected';
+    status: 'waiting' | 'approved' | 'rejected' | 'expired';
     createdAt: number;
   }
   const activeAccessRequests = new Map<string, AccessRecoveryRequest>();
+  const RECOVERY_REQUEST_TTL_MS = 10 * 60 * 1000;
+
+  // Marca uma solicitação como expirada e avisa o professor por WhatsApp que ela não aceita mais respostas
+  const expireRecoveryRequest = async (request: AccessRecoveryRequest) => {
+    request.status = 'expired';
+    activeAccessRequests.set(request.id, request);
+
+    const evolutionUrl = process.env.EVOLUTION_API_URL;
+    const evolutionKey = process.env.EVOLUTION_API_KEY;
+    const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
+    if (!evolutionUrl || !evolutionKey) return;
+
+    try {
+      await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
+        body: JSON.stringify({
+          number: request.teacherPhone,
+          text: `⏰ *Solicitação Expirada*\n\nA solicitação de acesso de *${request.studentName}* (turma *${request.studentClass}*) expirou após 10 minutos sem resposta e não aceita mais aprovação ou recusa.`,
+          delay: 500
+        })
+      });
+    } catch (err) {
+      console.warn('[Recuperação de Acesso] Falha ao notificar expiração:', err);
+    }
+  };
+
+  // Varre periodicamente os pedidos pendentes e expira os que passaram de 10 minutos sem resposta
+  setInterval(() => {
+    for (const request of activeAccessRequests.values()) {
+      if (request.status === 'waiting' && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+        expireRecoveryRequest(request);
+      }
+    }
+  }, 30000);
 
   // Estrutura do Log de Senha Perdida para persistência do Painel do Professor
   interface LostPasswordLog {
@@ -1633,7 +1668,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
   });
 
   // 2. Endpoint para verificar o status do pedido (polling do frontend)
-  app.get('/api/auth-recovery/status/:id', (req, res) => {
+  app.get('/api/auth-recovery/status/:id', async (req, res) => {
     const { id } = req.params;
     const request = activeAccessRequests.get(id);
     if (!request) {
@@ -1641,8 +1676,11 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     }
 
     // Expira em 10 minutos
-    if (Date.now() - request.createdAt > 10 * 60 * 1000) {
-      activeAccessRequests.delete(id);
+    if (request.status === 'waiting' && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+      await expireRecoveryRequest(request);
+    }
+
+    if (request.status === 'expired') {
       return res.json({ status: 'rejected', reason: 'expired' });
     }
 
@@ -1884,6 +1922,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
                 foundRequest = reqObj;
               }
             }
+          }
+
+          // Não aceita mais respostas se a solicitação encontrada já passou dos 10 minutos
+          if (foundRequest && Date.now() - foundRequest.createdAt > RECOVERY_REQUEST_TTL_MS) {
+            await expireRecoveryRequest(foundRequest);
+            foundRequest = null;
           }
 
             if (foundRequest) {
@@ -2665,6 +2709,10 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               return;
             }
             errorEl.style.display = 'none';
+            try {
+              sessionStorage.setItem('ias_evaluator_email', email);
+              sessionStorage.setItem('ias_evaluator_whatsapp', digits);
+            } catch (err) {}
             document.getElementById('welcome-overlay').style.display = 'none';
             document.body.style.overflow = '';
           });
