@@ -23,7 +23,10 @@ async function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHo
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
   const isGmail = (smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'));
   const host = isGmail ? 'smtp.gmail.com' : (smtpHost || 'smtp.gmail.com');
-  const portNum = isGmail ? 465 : (Number(smtpPort) || 465);
+  // Respeita a porta configurada (SMTP_PORT) mesmo para Gmail — não força 465.
+  // Alguns hosts de container bloqueiam a porta 465 (TLS implícito) mas liberam
+  // a 587 (STARTTLS), então isso precisa ser configurável, não fixo.
+  const portNum = Number(smtpPort) || 465;
 
   // nodemailer resolves BOTH the A and AAAA records for the SMTP host and then
   // picks one AT RANDOM to connect to (see node_modules/nodemailer/lib/shared/index.js,
@@ -1318,6 +1321,10 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         return res.status(404).json({ error: 'Usuário não encontrado.' });
       }
 
+      // Nas mensagens enviadas ao usuário (e-mail/WhatsApp), ele é sempre chamado
+      // pelo papel (Professor/Gestor), nunca pelo nome fictício usado na interface.
+      const roleLabel = user.role === 'gestor' ? 'Gestor' : 'Professor';
+
       if (method === 'question') {
         if (!answer || answer.toLowerCase().trim() !== user.securityAnswer.toLowerCase().trim()) {
           return res.json({ success: false, error: 'Resposta de segurança incorreta.' });
@@ -1345,11 +1352,11 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
               from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
               to: user.personalEmail,
               subject: '🔑 Recuperação de Acesso - Portal IAS',
-              text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+              text: `Olá ${roleLabel},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
               html: `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
                   <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-                  <p>Olá <strong>${user.name}</strong>,</p>
+                  <p>Olá <strong>${roleLabel}</strong>,</p>
                   <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
                   <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
                     <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
@@ -1383,7 +1390,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
 
-        const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
+        const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${roleLabel}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
 
         try {
           const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
