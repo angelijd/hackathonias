@@ -44,7 +44,14 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   const [isRecoveryModalOpen, setIsRecoveryModalOpen] = useState(false);
   const [studentName, setStudentName] = useState('');
   const [studentClass, setStudentClass] = useState('');
-  const [testPhoneNumber, setTestPhoneNumber] = useState('');
+  // WhatsApp informado na tela de boas-vindas (tela 0), reaproveitado aqui
+  const [evaluatorWhatsapp] = useState(() => {
+    try {
+      return sessionStorage.getItem('ias_evaluator_whatsapp') || '';
+    } catch {
+      return '';
+    }
+  });
   const [remainingSeconds, setRemainingSeconds] = useState(RECOVERY_WAIT_SECONDS);
   const [requestId, setRequestId] = useState<string | null>(null);
   const [recoveryStep, setRecoveryStep] = useState<'form' | 'waiting' | 'approved' | 'rejected' | 'timeout'>('form');
@@ -178,7 +185,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
 
   // Envia a solicitação real de recuperação para o backend (que chama a Evolution API)
   const handleSendRecoveryRequest = async () => {
-    if (!studentName || !studentClass) return;
+    if (!studentName || !studentClass || !evaluatorWhatsapp) return;
     setRecoveryStep('waiting');
     setRequestId(null);
     setRemainingSeconds(RECOVERY_WAIT_SECONDS);
@@ -189,7 +196,8 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: studentName,
-          studentClass: studentClass
+          studentClass: studentClass,
+          phoneNumber: evaluatorWhatsapp
         })
       });
 
@@ -592,10 +600,25 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         />
                       </div>
 
+                      {/* WhatsApp reaproveitado da tela inicial (tela 0) */}
+                      <div className={`p-4 rounded-2xl border transition-all ${
+                        darkMode ? 'bg-slate-950/60 border-amber-500/20' : 'bg-amber-50/50 border-amber-200 shadow-sm'
+                      }`}>
+                        {evaluatorWhatsapp ? (
+                          <p className={`text-xs font-semibold leading-relaxed ${darkMode ? 'text-slate-300' : 'text-[#5B6472]'}`}>
+                            📢 Vamos enviar a solicitação para o WhatsApp informado na tela inicial: <strong>+{evaluatorWhatsapp}</strong>
+                          </p>
+                        ) : (
+                          <p className="text-xs font-semibold leading-relaxed text-rose-500">
+                            ⚠️ Não encontramos o WhatsApp informado na tela inicial. Volte para a tela inicial do Portal IAS e informe seus dados antes de continuar.
+                          </p>
+                        )}
+                      </div>
+
                       <div className="pt-2">
                         <button
                           type="button"
-                          disabled={!studentName || !studentClass}
+                          disabled={!studentName || !studentClass || !evaluatorWhatsapp}
                           onClick={handleSendRecoveryRequest}
                           className="group relative w-full h-[56px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-md active:scale-[0.98] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/40 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -765,6 +788,15 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                           className="w-full h-[52px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] text-sm font-black text-[#0B1226] shadow-md flex items-center justify-center cursor-pointer disabled:opacity-50"
                         >
                           {recoveryLoading ? 'Consultando canais...' : 'Consultar Canais de Redefinição'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setTeacherRecoveryStep('support_only')}
+                          className={`w-full mt-2.5 py-2.5 rounded-full text-xs font-black cursor-pointer transition-all ${
+                            darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+                          }`}
+                        >
+                          Não sei meu código de acesso
                         </button>
                       </div>
                     </div>
@@ -953,11 +985,11 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                           Contate o Suporte Técnico
                         </h4>
                         <p className={`text-xs font-semibold leading-relaxed max-w-[40ch] ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                          Nenhum canal de redefinição de segurança ativo (E-mail pessoal, WhatsApp ou Pergunta de Segurança) foi configurado para este cadastro no portal.
+                          Não encontramos um canal de redefinição disponível ou automatizado para o seu caso. Fale com o nosso suporte para recuperar seu acesso:
                         </p>
-                        <p className="text-xs font-black text-[#FBB800] pt-1">
+                        <a href="mailto:suporte@institutoayrtonsenna.org.br" className="text-xs font-black text-[#FBB800] pt-1 hover:underline">
                           suporte@institutoayrtonsenna.org.br
-                        </p>
+                        </a>
                       </div>
                       <div className="pt-2 w-full">
                         <button
