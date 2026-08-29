@@ -2240,7 +2240,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                   <p><strong>O que voc\xEA precisa saber:</strong></p>
                   <ol>
                     <li>Todas as 8 dores do edital foram resolvidas;</li>
-                    <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada card, apresentamos nome, dor e solu\xE7\xE3o;</li>
+                    <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada um, apresentamos nome, dor e solu\xE7\xE3o;</li>
                     <li>Clique em <strong>"Acessar prot\xF3tipo"</strong> para navegar em cada um deles;</li>
                     <li>Todos os prot\xF3tipos seguem os 3 pilares fundamentais:
                       <ul class="welcome-pillars-bullets">

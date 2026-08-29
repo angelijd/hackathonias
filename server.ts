@@ -2511,7 +2511,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                   <p><strong>O que você precisa saber:</strong></p>
                   <ol>
                     <li>Todas as 8 dores do edital foram resolvidas;</li>
-                    <li>Desenvolvemos 5 protótipos para essas dores. Em cada card, apresentamos nome, dor e solução;</li>
+                    <li>Desenvolvemos 5 protótipos para essas dores. Em cada um, apresentamos nome, dor e solução;</li>
                     <li>Clique em <strong>"Acessar protótipo"</strong> para navegar em cada um deles;</li>
                     <li>Todos os protótipos seguem os 3 pilares fundamentais:
                       <ul class="welcome-pillars-bullets">
