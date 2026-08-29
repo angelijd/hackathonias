@@ -1,8 +1,8 @@
 
 import dns from 'dns';
-// Muitos hosts de container (Railway incluso) anunciam um endereço IPv6 para
-// smtp.gmail.com que não tem rota de saída, causando ENETUNREACH. Forçar IPv4
-// evita que o Node tente esse endereço primeiro.
+// Defesa geral para chamadas que usam dns.lookup (fetch/net padrão) em hosts como o
+// Railway, que não têm rota de saída IPv6. Não cobre o nodemailer, que resolve o
+// SMTP com dns.resolve4/resolve6 por conta própria — ver createEmailTransporter.
 dns.setDefaultResultOrder('ipv4first');
 
 // Normaliza números de WhatsApp brasileiros, adicionando o DDI 55 quando ausente.
@@ -19,27 +19,38 @@ function formatWhatsAppNumber(phone: string): string {
   return clean;
 }
 
-function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
+async function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
-  const portNum = Number(smtpPort) || 465;
-  if ((smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'))) {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: smtpUser, pass: cleanPass },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000
-    });
+  const isGmail = (smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'));
+  const host = isGmail ? 'smtp.gmail.com' : (smtpHost || 'smtp.gmail.com');
+  const portNum = isGmail ? 465 : (Number(smtpPort) || 465);
+
+  // nodemailer resolves BOTH the A and AAAA records for the SMTP host and then
+  // picks one AT RANDOM to connect to (see node_modules/nodemailer/lib/shared/index.js,
+  // formatDNSValue) — dns.setDefaultResultOrder has no effect on this, since
+  // nodemailer calls dns.resolve4/dns.resolve6 directly instead of dns.lookup.
+  // On hosts like Railway with no outbound IPv6 route, that random pick regularly
+  // lands on an IPv6 address and the connection fails with ENETUNREACH. Resolve
+  // to a literal IPv4 address ourselves so nodemailer never has an IPv6 address
+  // to pick, and keep the real hostname as tls.servername so SNI/certificate
+  // validation still works when connecting by IP.
+  let connectHost = host;
+  try {
+    const addresses = await dns.promises.resolve4(host);
+    if (addresses[0]) connectHost = addresses[0];
+  } catch (err) {
+    console.warn(`[SMTP] Falha ao resolver IPv4 para ${host}, conectando pelo hostname:`, err);
   }
+
   return nodemailer.createTransport({
-    host: smtpHost || 'smtp.gmail.com',
+    host: connectHost,
     port: portNum,
     secure: portNum === 465,
     auth: { user: smtpUser, pass: cleanPass },
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 20000,
-    tls: { rejectUnauthorized: false }
+    tls: { servername: host, rejectUnauthorized: false }
   });
 }
 
@@ -1328,7 +1339,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         if (smtpUser && smtpPass) {
           try {
-            const transporter = createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
+            const transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
 
             const info = await transporter.sendMail({
               from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
@@ -1586,7 +1597,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
       if (smtpUser && smtpPass) {
         // Usa credenciais reais configuradas pelo usuário no .env.local
-        transporter = createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
+        transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
       } else {
         // Gera uma conta de teste Ethereal descartável em tempo de execução
         throw new Error('Ethereal desativado (502 Timeout)');
