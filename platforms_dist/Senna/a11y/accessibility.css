@@ -1,0 +1,113 @@
+﻿/* ==== Botões Flutuantes em Posição Inferior (Bottom-Right) ==== */
+/* Evita sobrepor o toggle de Modo Claro/Escuro no topo */
+
+#ias-a11y-widget {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 999999;
+  background-color: #04142B;
+  color: #fff;
+  border: 2px solid #FDC300;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+#ias-a11y-widget:hover, #ias-a11y-widget:focus {
+  transform: scale(1.1);
+  outline: 3px solid #FDC300;
+  outline-offset: 2px;
+}
+
+#ias-a11y-menu {
+  position: fixed;
+  bottom: 90px;
+  left: 25px;
+  z-index: 999998;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding: 15px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 230px;
+  border: 2px solid #e2e8f0;
+}
+
+#ias-a11y-menu.active {
+  display: flex;
+}
+
+.ias-a11y-btn {
+  background: #f4f5f8;
+  border: 2px solid #cbd5e1;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #0b1226;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.ias-a11y-btn:hover, .ias-a11y-btn:focus {
+  background: #e2e8f0;
+  border-color: #04142b;
+}
+
+/* ==== Modo de Acessibilidade: Alto Contraste e Letras Grandes ==== */
+body.ias-a11y-mode {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  font-size: 130% !important;
+}
+
+body.ias-a11y-mode * {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #FDC300 !important;
+}
+
+body.ias-a11y-mode button, 
+body.ias-a11y-mode input, 
+body.ias-a11y-mode select {
+  background-color: #1a1a1a !important;
+  color: #FDC300 !important;
+  border: 3px solid #FFFFFF !important;
+  font-size: 110% !important;
+}
+
+*:focus-visible {
+  outline: 4px solid #FDC300 !important;
+  outline-offset: 4px !important;
+  border-radius: 4px;
+}
+
+body.ias-a11y-mode .selected, 
+body.ias-a11y-mode [aria-selected="true"],
+body.ias-a11y-mode [aria-checked="true"] {
+  border: 4px solid #00FF00 !important;
+  position: relative;
+}
+
+body.ias-a11y-mode .selected::after,
+body.ias-a11y-mode [aria-selected="true"]::after {
+  content: "✔️ SELECIONADO";
+  display: block;
+  font-weight: 900;
+  color: #00FF00;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
