@@ -5,6 +5,20 @@ import dns from 'dns';
 // evita que o Node tente esse endereço primeiro.
 dns.setDefaultResultOrder('ipv4first');
 
+// Normaliza números de WhatsApp brasileiros, adicionando o DDI 55 quando ausente.
+// Sem isso, um número como "16981875080" (DDD 16 + celular) é interpretado pelo
+// WhatsApp como pertencente ao DDI +1 (EUA/Canadá), e a Evolution API rejeita o
+// envio com "exists": false.
+function formatWhatsAppNumber(phone: string): string {
+  let clean = (phone || '').replace(/\D/g, '');
+  if (!clean) return '';
+  // Números brasileiros sem DDI têm 10 (fixo) ou 11 (celular) dígitos
+  if ((clean.length === 10 || clean.length === 11) && !clean.startsWith('55')) {
+    clean = `55${clean}`;
+  }
+  return clean;
+}
+
 function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
   const portNum = Number(smtpPort) || 465;
@@ -1127,10 +1141,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       }
 
       // Normaliza o número para o formato correto
-      let formattedNumber = number.replace(/\D/g, '');
-      if (!formattedNumber.endsWith('@s.whatsapp.net')) {
-        formattedNumber = `${formattedNumber}@s.whatsapp.net`;
-      }
+      const formattedNumber = `${formatWhatsAppNumber(number)}@s.whatsapp.net`;
 
       // Dispara a mensagem para a Evolution API
       const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
@@ -1246,7 +1257,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     }
 
     user.personalEmail = personalEmail;
-    user.personalWhatsapp = personalWhatsapp;
+    user.personalWhatsapp = formatWhatsAppNumber(personalWhatsapp);
     user.securityQuestion = securityQuestion;
     user.securityAnswer = securityAnswer;
     user.isFirstAccess = false;
@@ -1359,8 +1370,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
         const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
 
-        const rawNumber = user.personalWhatsapp.replace(/\D/g, '');
-        const formattedNumber = rawNumber.endsWith('@s.whatsapp.net') ? rawNumber : `${rawNumber}@s.whatsapp.net`;
+        const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
 
         const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
 
@@ -1616,9 +1626,8 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       }
 
       const reqId = Date.now().toString() + Math.random().toString(36).substring(2, 5);
-      const cleanPhone = phoneNumber.replace(/\D/g, '');
-      const formattedPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
-      
+      const formattedPhone = formatWhatsAppNumber(phoneNumber);
+
       // Registra a solicitação com o telefone do professor
       activeAccessRequests.set(reqId, {
         id: reqId,
@@ -1802,8 +1811,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         desafioDesenvolvimento 
       } = req.body;
       
-      const cleanPhone = (phoneNumber || '').replace(/\D/g, '');
-      const formattedPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+      const formattedPhone = formatWhatsAppNumber(phoneNumber);
 
       // Initialize / Update Student WhatsApp Profile & Memory
       const existing = whatsAppMemoryStore.get(formattedPhone) || { history: [] };

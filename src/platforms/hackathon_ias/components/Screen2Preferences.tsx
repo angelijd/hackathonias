@@ -82,17 +82,17 @@ export const Screen2Preferences: React.FC<Props> = ({
   };
 
   return (
-    <div className="relative w-full max-w-[1340px] mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-12 z-10 flex flex-col justify-between">
+    <div className="relative w-full max-w-[1340px] mx-auto px-4 sm:px-8 pt-2 sm:pt-3 pb-3 sm:pb-4 z-10 flex flex-col justify-between">
       {/* Top Section: Header Text + Floating 3D Elements */}
-      <div className="relative flex flex-col lg:flex-row items-start justify-between gap-6 mb-6">
-        <div className="pt-2 max-w-[620px]">
+      <div className="relative flex flex-col lg:flex-row items-start justify-between gap-4 mb-3 sm:mb-4">
+        <div className="pt-1 max-w-[620px]">
           {/* Eyebrow */}
-          <p className="text-[12px] sm:text-[13px] font-extrabold tracking-[0.08em] text-[#0B45D8] dark:text-[#3B82F6] uppercase mb-2">
+          <p className="text-[11px] sm:text-[12px] font-extrabold tracking-[0.08em] text-[#0B45D8] dark:text-[#3B82F6] uppercase mb-1.5">
             ANTES DE COMEÇAR
           </p>
 
           {/* Heading */}
-          <h1 className="text-[30px] sm:text-[38px] lg:text-[44px] font-extrabold leading-[1.12] tracking-[-0.02em]">
+          <h1 className="text-[22px] sm:text-[27px] lg:text-[30px] font-extrabold leading-[1.15] tracking-[-0.02em]">
             <span className={darkMode ? 'text-white' : 'text-[#04142B]'}>
               Vamos deixar o{' '}
             </span>
@@ -106,7 +106,7 @@ export const Screen2Preferences: React.FC<Props> = ({
 
         {/* Top Right Decorative Illustration Cluster */}
         <div className="relative w-full lg:w-auto flex justify-center lg:justify-end lg:pr-8">
-          <div className="relative w-[230px] sm:w-[270px] lg:w-[310px] pointer-events-none">
+          <div className="relative w-[140px] sm:w-[165px] lg:w-[190px] pointer-events-none">
             {/* Paper Airplane & Dotted Paths Doodle */}
             <svg
               className="absolute -top-3 -left-12 w-28 h-20 text-[#0B7CFB]/40 hidden sm:block pointer-events-none"
@@ -139,7 +139,7 @@ export const Screen2Preferences: React.FC<Props> = ({
 
       {/* Main Elevated Card Container */}
       <div
-        className={`w-full rounded-[24px] sm:rounded-[28px] p-6 sm:p-9 shadow-[0_18px_45px_rgba(4,20,43,0.06)] border transition-all duration-300 ${
+        className={`w-full rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-[0_18px_45px_rgba(4,20,43,0.06)] border transition-all duration-300 ${
           darkMode
             ? 'bg-[#0B1426] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.4)]'
             : 'bg-white border-slate-200/90'
@@ -163,8 +163,8 @@ export const Screen2Preferences: React.FC<Props> = ({
         )}
 
         {/* SECTION 1: Interesses (escolha 1) */}
-        <div className="mb-8 sm:mb-9">
-          <div className="flex items-center gap-2 mb-4 sm:mb-5">
+        <div className="mb-5 sm:mb-6">
+          <div className="flex items-center gap-2 mb-3">
             <h2 className="text-[15px] sm:text-[17px] font-extrabold tracking-tight">
               <span className={darkMode ? 'text-white' : 'text-[#04142B]'}>
                 O que você curte?{' '}
@@ -195,7 +195,7 @@ export const Screen2Preferences: React.FC<Props> = ({
                   key={item.id}
                   type="button"
                   onClick={() => handleToggleInterest(item.id)}
-                  className={`relative flex items-center justify-start gap-2.5 px-3.5 py-3 rounded-[14px] border text-left transition-all duration-150 select-none cursor-pointer group ${
+                  className={`relative flex items-center justify-start gap-2.5 px-3 py-2.5 rounded-[14px] border text-left transition-all duration-150 select-none cursor-pointer group ${
                     isShaking ? 'animate-shake' : ''
                   } ${
                     isSelected
@@ -232,11 +232,11 @@ export const Screen2Preferences: React.FC<Props> = ({
 
           {/* Custom Input for Selected Interest */}
           {selectedInterests.length > 0 && (
-            <div className="mt-5 space-y-3.5 animate-in fade-in duration-200">
+            <div className="mt-3 space-y-2 animate-in fade-in duration-200">
               <p className="text-xs sm:text-sm font-extrabold text-[#0B45D8] dark:text-[#3B82F6]">
                 🎯 Especifique o seu favorito:
               </p>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {selectedInterests.map((interestId) => {
                   const itemObj = INTEREST_OPTIONS.find((opt) => opt.id === interestId);
@@ -280,8 +280,8 @@ export const Screen2Preferences: React.FC<Props> = ({
         </div>
 
         {/* SECTION 2: Objetivos (escolha apenas 1) */}
-        <div className="mb-8 sm:mb-9">
-          <div className="flex items-center gap-2 mb-4 sm:mb-5">
+        <div className="mb-5 sm:mb-6">
+          <div className="flex items-center gap-2 mb-3">
             <h2 className="text-[15px] sm:text-[17px] font-extrabold tracking-tight">
               <span className={darkMode ? 'text-white' : 'text-[#04142B]'}>
                 O que você espera encontrar aqui?{' '}
@@ -312,7 +312,7 @@ export const Screen2Preferences: React.FC<Props> = ({
                   key={item.id}
                   type="button"
                   onClick={() => handleToggleExpectation(item.id)}
-                  className={`relative flex items-center justify-start gap-3 px-4 py-3.5 rounded-[14px] border text-left transition-all duration-150 select-none cursor-pointer group ${
+                  className={`relative flex items-center justify-start gap-3 px-3.5 py-3 rounded-[14px] border text-left transition-all duration-150 select-none cursor-pointer group ${
                     isShaking ? 'animate-shake' : ''
                   } ${
                     isSelected
@@ -349,7 +349,7 @@ export const Screen2Preferences: React.FC<Props> = ({
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="pt-4 sm:pt-6 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Voltar Button */}
           <button
             type="button"
