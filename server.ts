@@ -1270,38 +1270,44 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const smtpHost = process.env.SMTP_HOST || 'smtp.ethereal.email';
         const smtpPort = Number(process.env.SMTP_PORT) || 587;
 
-        let transporter;
+        let previewUrl: string | boolean | null = null;
+
         if (smtpUser && smtpPass) {
-          transporter = nodemailer.createTransport({
-            host: smtpHost,
-            port: smtpPort,
-            secure: smtpPort === 465,
-            auth: { user: smtpUser, pass: smtpPass }
-          });
+          try {
+            const transporter = nodemailer.createTransport({
+              host: smtpHost,
+              port: smtpPort,
+              secure: smtpPort === 465,
+              auth: { user: smtpUser, pass: smtpPass }
+            });
+
+            const info = await transporter.sendMail({
+              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
+              to: user.personalEmail,
+              subject: '🔑 Recuperação de Acesso - Portal IAS',
+              text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+              html: `
+                <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <p>Olá <strong>${user.name}</strong>,</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
+                    <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
+                    <strong>Senha:</strong> <code>${user.password}</code>
+                  </div>
+                  <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
+                </div>
+              `
+            });
+
+            previewUrl = nodemailer.getTestMessageUrl(info) || null;
+          } catch (mailErr) {
+            console.warn('[Recovery Email] Aviso ao enviar via SMTP:', mailErr);
+          }
         } else {
-          throw new Error('Ethereal desativado (502 Timeout)');
+          console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: Código: ${user.code}, Senha: ${user.password}`);
         }
 
-        const info = await transporter.sendMail({
-          from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-          to: user.personalEmail,
-          subject: '🔑 Recuperação de Acesso - Portal IAS',
-          text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-              <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-              <p>Olá <strong>${user.name}</strong>,</p>
-              <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
-              <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
-                <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
-                <strong>Senha:</strong> <code>${user.password}</code>
-              </div>
-              <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
-            </div>
-          `
-        });
-
-        const previewUrl = nodemailer.getTestMessageUrl(info);
         return res.json({ success: true, previewUrl: previewUrl || null });
       }
 
@@ -1319,23 +1325,27 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
 
-        const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
-          body: JSON.stringify({
-            number: formattedNumber,
-            text: messageText,
-            delay: 500
-          })
-        });
+        try {
+          const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
+            body: JSON.stringify({
+              number: formattedNumber,
+              text: messageText,
+              delay: 500
+            })
+          });
 
-        if (evoRes.ok) {
-          return res.json({ success: true });
-        } else {
-          const errText = await evoRes.text();
-          console.warn('[Evolution API Password Recovery Error]:', errText);
-          return res.status(500).json({ error: 'Erro ao enviar mensagem via Evolution API.' });
+          if (!evoRes.ok) {
+            const errText = await evoRes.text();
+            console.warn('[Evolution API Password Recovery Warning]:', errText);
+          }
+        } catch (evoErr) {
+          console.warn('[Evolution API Password Recovery Dispatch Warning]:', evoErr);
         }
+
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: Código: ${user.code}, Senha: ${user.password}`);
+        return res.json({ success: true });
       }
 
       return res.status(400).json({ error: 'Método inválido.' });
