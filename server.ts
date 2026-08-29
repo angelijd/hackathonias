@@ -2338,7 +2338,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .welcome-card {
             background: white;
             border-radius: 28px;
-            max-width: 680px;
+            max-width: 920px;
             width: 100%;
             padding: 40px 44px;
             box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
@@ -2349,24 +2349,90 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
-            margin-bottom: 18px;
+            margin-bottom: 8px;
           }
-          .welcome-card p {
+          .welcome-subtitle {
             font-size: 14px;
             color: #334155;
             line-height: 1.6;
-            margin-bottom: 12px;
+            margin-bottom: 24px;
           }
-          .welcome-card ol,
-          .welcome-card ul {
-            margin: 0 0 14px 20px;
+          .welcome-layout-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 36px;
+          }
+          .welcome-info-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .welcome-info-col p {
             font-size: 14px;
             color: #334155;
-            line-height: 1.65;
+            line-height: 1.6;
+            margin-bottom: 10px;
           }
-          .welcome-card ol li,
-          .welcome-card ul li {
-            margin-bottom: 3px;
+          .welcome-info-col ol {
+            margin: 0 0 0 18px;
+            font-size: 13.5px;
+            color: #334155;
+            line-height: 1.7;
+          }
+          .welcome-info-col ol li {
+            margin-bottom: 6px;
+          }
+          .welcome-pillars-bullets {
+            margin: 6px 0 0 18px;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+          }
+          .welcome-action-col {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+          }
+          .welcome-credentials-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 16px 18px;
+          }
+          .welcome-credentials-header {
+            font-size: 12px;
+            font-weight: 800;
+            color: #0E477A;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .welcome-credentials-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+          }
+          .user-role-chip {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #334155;
+          }
+          .credential-pwd-chip {
+            font-size: 13px;
+            color: #7C4A03;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: inline-block;
           }
           .welcome-important {
             background: #FFFBEB;
@@ -2374,12 +2440,12 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             border-left: 4px solid #FBB800;
             border-radius: 0 14px 14px 0;
             padding: 14px 16px;
-            margin-bottom: 16px;
           }
           .welcome-important p {
             margin-bottom: 6px;
             color: #7C4A03;
             font-size: 13.5px;
+            line-height: 1.5;
           }
           .welcome-important p:last-child {
             margin-bottom: 0;
@@ -2388,7 +2454,6 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .welcome-signature {
             font-size: 14px;
             color: #334155;
-            margin-bottom: 20px;
           }
           .welcome-signature strong {
             display: block;
@@ -2445,71 +2510,81 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           .welcome-submit-btn:hover {
             filter: brightness(1.03);
           }
+          @media (max-width: 760px) {
+            .welcome-card {
+              padding: 28px 24px;
+            }
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 24px;
+            }
+          }
         </style>
       </head>
       <body>
         <div class="welcome-overlay" id="welcome-overlay">
           <div class="welcome-card">
             <h1 class="welcome-title">Olá, avaliador(a)!</h1>
+            <p class="welcome-subtitle">Seja bem-vindo ao Portal IAS. Nosso time pensou na melhor experiência de uso para você acessar os protótipos.</p>
 
-            <p>Seja bem-vindo ao Portal IAS.</p>
-            <p>Nosso time pensou na melhor experiência de uso para você acessar os protótipos.</p>
-            <p><strong>O que você precisa saber:</strong></p>
-
-            <ol>
-              <li>Todas as 8 dores do edital foram resolvidas;</li>
-              <li>Desenvolvemos 5 protótipos para essas dores. Em cada protótipo, temos nome, dor e como resolvemos.</li>
-              <li>Clique em "Acessar protótipo" para navegar em cada um deles.</li>
-              <li>Todos os protótipos seguem os 3 pilares abaixo:</li>
-            </ol>
-
-            <ul>
-              <li>Intencionalidade pedagógica</li>
-              <li>IA contextualizada</li>
-              <li>Personalização</li>
-            </ul>
-
-            <div class="welcome-credentials">
-              <div class="welcome-credentials-title">🔐 Credenciais do protótipo de login</div>
-              <div class="welcome-credentials-grid">
-                <div class="credential-chip">
-                  <span class="credential-chip-label">Usuário</span>
-                  <span class="credential-chip-value">Aluno</span>
+            <div class="welcome-layout-grid">
+              <div class="welcome-info-col">
+                <div>
+                  <p><strong>O que você precisa saber:</strong></p>
+                  <ol>
+                    <li>Todas as 8 dores do edital foram resolvidas;</li>
+                    <li>Desenvolvemos 5 protótipos para essas dores. Em cada card, apresentamos nome, dor e solução;</li>
+                    <li>Clique em <strong>"Acessar protótipo"</strong> para navegar em cada um deles;</li>
+                    <li>Todos os protótipos seguem os 3 pilares fundamentais:
+                      <ul class="welcome-pillars-bullets">
+                        <li>Intencionalidade pedagógica</li>
+                        <li>IA contextualizada</li>
+                        <li>Personalização</li>
+                      </ul>
+                    </li>
+                  </ol>
                 </div>
-                <div class="credential-chip">
-                  <span class="credential-chip-label">Usuário</span>
-                  <span class="credential-chip-value">Professor</span>
-                </div>
-                <div class="credential-chip">
-                  <span class="credential-chip-label">Usuário</span>
-                  <span class="credential-chip-value">Gestor</span>
-                </div>
+
+                <p class="welcome-signature">
+                  Boa jornada!
+                  <strong>Time Cris Miura</strong>
+                </p>
               </div>
-              <p class="credential-password">Senha para todos: <span>1234</span></p>
+
+              <div class="welcome-action-col">
+                <div class="welcome-credentials-box">
+                  <div class="welcome-credentials-header">
+                    <span>🔐</span> Credenciais do protótipo de login
+                  </div>
+                  <div class="welcome-credentials-chips">
+                    <div class="user-role-chip">👤 Aluno</div>
+                    <div class="user-role-chip">👨‍🏫 Professor</div>
+                    <div class="user-role-chip">👔 Gestor</div>
+                  </div>
+                  <div class="credential-pwd-chip">
+                    <span>🔑 Senha para todos:</span> <strong>1234</strong>
+                  </div>
+                </div>
+
+                <div class="welcome-important">
+                  <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
+                  <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
+                </div>
+
+                <form class="welcome-form" id="welcome-form">
+                  <div class="welcome-field">
+                    <label for="welcome-email">Seu E-mail</label>
+                    <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
+                  </div>
+                  <div class="welcome-field">
+                    <label for="welcome-whatsapp">Seu WhatsApp</label>
+                    <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
+                  </div>
+                  <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp válidos para continuar.</div>
+                  <button type="submit" class="welcome-submit-btn">Acessar Protótipos →</button>
+                </form>
+              </div>
             </div>
-
-            <div class="welcome-important">
-              <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
-              <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
-            </div>
-
-            <p class="welcome-signature">
-              Boa jornada!
-              <strong>Time Cris Miura</strong>
-            </p>
-
-            <form class="welcome-form" id="welcome-form">
-              <div class="welcome-field">
-                <label for="welcome-email">E-mail</label>
-                <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
-              </div>
-              <div class="welcome-field">
-                <label for="welcome-whatsapp">WhatsApp</label>
-                <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
-              </div>
-              <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp válidos para continuar.</div>
-              <button type="submit" class="welcome-submit-btn">Continuar</button>
-            </form>
           </div>
         </div>
 
@@ -2711,8 +2786,8 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             var whatsapp = document.getElementById('welcome-whatsapp').value.trim();
             var errorEl = document.getElementById('welcome-error');
 
-            var emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            var digits = whatsapp.replace(/\D/g, '');
+            var emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+            var digits = whatsapp.replace(/\\D/g, '');
             var whatsappValid = digits.length >= 10 && digits.length <= 13;
 
             if (!emailValid || !whatsappValid) {
