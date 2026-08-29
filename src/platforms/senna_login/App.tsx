@@ -13,7 +13,7 @@ import { ScreenStep } from './types';
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [activePlatform, setActivePlatform] = useState<'descoberta' | 'login' | 'professor_panel'>('login');
-  const [userName, setUserName] = useState('Aluno');
+  const [userName, setUserName] = useState('Estudante');
   const [userRole, setUserRole] = useState<'aluno' | 'professor' | 'gestor'>('aluno');
   const [teacherContact, setTeacherContact] = useState<{ email: string; whatsapp: string }>({ email: '', whatsapp: '' });
   const [userAge, setUserAge] = useState('14 anos');
@@ -27,12 +27,11 @@ export default function App() {
   const [selectedTestType, setSelectedTestType] = useState<'critical_thinking' | 'creativity' | null>(null);
 
   const [isEditingName, setIsEditingName] = useState(false);
-  const [tempName, setTempName] = useState('Aluno');
+  const [tempName, setTempName] = useState('Estudante');
   const [tempAge, setTempAge] = useState('14 anos');
   const [tempGrade, setTempGrade] = useState('9º ano');
   const [tempCity, setTempCity] = useState('São Paulo');
   const [tempSchool, setTempSchool] = useState('Escola Estadual Dr. Ytrio Correia');
-  const [activeDot, setActiveDot] = useState(0);
 
   const handleSaveName = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,33 +45,18 @@ export default function App() {
 
   const handleStartWelcome = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
   };
 
   const handleBackToWelcome = () => {
     setScreenStep('welcome');
-    setActiveDot(0);
   };
 
   const handleProceedToAssessment = () => {
     setScreenStep('assessment');
-    setActiveDot(2);
   };
 
   const handleBackToPreferences = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
-  };
-
-  const handleDotClick = (dotIndex: number) => {
-    setActiveDot(dotIndex);
-    if (dotIndex === 0) {
-      setScreenStep('welcome');
-    } else if (dotIndex === 1) {
-      setScreenStep('preferences');
-    } else {
-      setScreenStep('assessment');
-    }
   };
 
   return (
@@ -232,29 +216,6 @@ export default function App() {
                         </svg>
                       </span>
                     </button>
-
-                    {/* Pagination Indicator */}
-                    <div
-                      className="flex justify-center items-center gap-2 mt-5 sm:mt-6"
-                      role="tablist"
-                      aria-label="Progresso da introdução"
-                    >
-                      {[0, 1, 2].map((dot) => (
-                        <button
-                          key={dot}
-                          type="button"
-                          onClick={() => handleDotClick(dot)}
-                          aria-label={`Slide ${dot + 1}`}
-                          className={`h-[7px] transition-all duration-300 rounded-full cursor-pointer ${
-                            activeDot === dot
-                              ? 'w-[22px] bg-[#FDC300]'
-                              : darkMode
-                              ? 'w-[7px] bg-slate-700 hover:bg-slate-600'
-                              : 'w-[7px] bg-[#040E2B] opacity-60 hover:opacity-100'
-                          }`}
-                        />
-                      ))}
-                    </div>
                   </div>
                 </section>
               </div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Topbar } from './components/Topbar';
 import { InstitutoAyrtonSennaBadge } from './components/InstitutoAyrtonSennaBadge';
-import { FeaturesList } from './components/FeaturesList';
 import { HeroIllustration } from './components/HeroIllustration';
 import { Screen2Preferences } from './components/Screen2Preferences';
 import { Screen2bTestSelection } from './components/Screen2bTestSelection';
@@ -10,7 +9,7 @@ import { ScreenStep } from './types';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const [userName, setUserName] = useState('Aluno');
+  const [userName, setUserName] = useState('Estudante');
   const [userAge, setUserAge] = useState('14 anos');
   const [userGrade, setUserGrade] = useState('9º ano');
   const [userCity, setUserCity] = useState('São Paulo');
@@ -22,12 +21,11 @@ export default function App() {
   const [selectedTestType, setSelectedTestType] = useState<'critical_thinking' | 'creativity' | null>(null);
 
   const [isEditingName, setIsEditingName] = useState(false);
-  const [tempName, setTempName] = useState('Aluno');
+  const [tempName, setTempName] = useState('Estudante');
   const [tempAge, setTempAge] = useState('14 anos');
   const [tempGrade, setTempGrade] = useState('9º ano');
   const [tempCity, setTempCity] = useState('São Paulo');
   const [tempSchool, setTempSchool] = useState('Escola Estadual Dr. Ytrio Correia');
-  const [activeDot, setActiveDot] = useState(0);
 
   const handleSaveName = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,38 +39,22 @@ export default function App() {
 
   const handleStartWelcome = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
   };
 
   const handleBackToWelcome = () => {
     setScreenStep('welcome');
-    setActiveDot(0);
   };
 
   const handleProceedToTestSelection = () => {
     setScreenStep('test_selection');
-    setActiveDot(2);
   };
 
   const handleBackToPreferences = () => {
     setScreenStep('preferences');
-    setActiveDot(1);
   };
 
   const handleProceedToLab = () => {
     setScreenStep('assessment');
-    setActiveDot(3);
-  };
-
-  const handleDotClick = (dotIndex: number) => {
-    setActiveDot(dotIndex);
-    if (dotIndex === 0) {
-      setScreenStep('welcome');
-    } else if (dotIndex === 1) {
-      setScreenStep('preferences');
-    } else {
-      setScreenStep('assessment');
-    }
   };
 
   return (
@@ -158,17 +140,6 @@ export default function App() {
                   <span className="text-[#0B7CFB] font-extrabold">Socioemocional.</span>
                 </p>
 
-                {/* Body Description */}
-                <p
-                  className={`text-[14px] sm:text-[14.5px] leading-[1.6] mt-3.5 max-w-[46ch] ${
-                    darkMode ? 'text-slate-300' : 'text-[#5B6472]'
-                  }`}
-                >
-                  Este teste foi criado para mapear o nível de desenvolvimento das suas competências socioemocionais, identificando características cruciais tanto para o desempenho escolar quanto para o seu futuro.
-                </p>
-
-                {/* Features List */}
-                <FeaturesList darkMode={darkMode} />
               </section>
 
               {/* Right Column: Hero Illustration */}
@@ -213,29 +184,6 @@ export default function App() {
                     </svg>
                   </span>
                 </button>
-
-                {/* Pagination Indicator */}
-                <div
-                  className="flex justify-center items-center gap-2 mt-5 sm:mt-6"
-                  role="tablist"
-                  aria-label="Progresso da introdução"
-                >
-                  {[0, 1, 2].map((dot) => (
-                    <button
-                      key={dot}
-                      type="button"
-                      onClick={() => handleDotClick(dot)}
-                      aria-label={`Slide ${dot + 1}`}
-                      className={`h-[7px] transition-all duration-300 rounded-full cursor-pointer ${
-                        activeDot === dot
-                          ? 'w-[22px] bg-[#FDC300]'
-                          : darkMode
-                          ? 'w-[7px] bg-slate-700 hover:bg-slate-600'
-                          : 'w-[7px] bg-[#040E2B] opacity-60 hover:opacity-100'
-                      }`}
-                    />
-                  ))}
-                </div>
               </div>
             </section>
           </div>
