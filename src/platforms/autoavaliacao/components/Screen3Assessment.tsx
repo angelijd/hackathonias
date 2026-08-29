@@ -385,17 +385,19 @@ export const Screen3Assessment: React.FC<Props> = ({
     const characterPhoto = getCharacterImage(character.id);
 
     return (
-      <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-8 pt-2 pb-3 z-10 animate-in fade-in duration-300">
+      <div className="w-full max-w-[1100px] 2xl:max-w-[1500px] mx-auto px-4 sm:px-8 pt-2 pb-3 z-10 animate-in fade-in duration-300">
         <div className={`rounded-3xl p-4 sm:p-6 border shadow-[0_25px_60px_rgba(4,20,43,0.09)] ${
           darkMode ? 'bg-slate-900/95 border-slate-800 text-white' : 'bg-white border-slate-200 text-[#0B1226]'
         }`}>
 
-          {/* Character Highlight Card with Uniform Photo */}
-          <div className={`p-4 sm:p-5 rounded-3xl border mb-4 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative overflow-hidden ${
-            darkMode ? 'bg-slate-800/80 border-slate-700' : 'bg-gradient-to-br from-slate-50 to-[#F8FAFC] border-slate-200/90'
+          {/* Character Highlight Card — tratamento de destaque, é o resultado principal do teste */}
+          <div className={`p-4 sm:p-5 2xl:p-8 rounded-3xl border-2 mb-4 2xl:mb-6 flex flex-col md:flex-row items-center gap-4 sm:gap-6 2xl:gap-8 relative overflow-hidden ${
+            darkMode
+              ? 'bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-800/80 border-amber-500/30 shadow-[0_20px_50px_rgba(253,195,0,0.08)]'
+              : 'bg-gradient-to-br from-amber-50 via-white to-amber-50/60 border-[#FBB800]/40 shadow-[0_20px_50px_rgba(253,195,0,0.15)]'
           }`}>
             {/* Uniform Photo Container (Object Cover & Center Focus) */}
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white/20 dark:ring-slate-700 shrink-0 relative bg-black/20 flex items-center justify-center">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 2xl:w-40 2xl:h-40 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-[#FBB800]/40 dark:ring-[#FBB800]/30 shrink-0 relative bg-black/20 flex items-center justify-center">
               {characterPhoto ? (
                 <img
                   src={characterPhoto}
@@ -410,30 +412,30 @@ export const Screen3Assessment: React.FC<Props> = ({
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
-                <span className="text-xs font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-300/40">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5 2xl:mb-2.5">
+                <span className="text-xs 2xl:text-sm font-black uppercase tracking-wider px-3.5 2xl:px-4 py-1 2xl:py-1.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-300/40">
                   {character.role}
                 </span>
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-300/40">
+                <span className="text-xs 2xl:text-sm font-extrabold px-3 2xl:px-4 py-1 2xl:py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-300/40">
                   {matchPercentage}% de Compatibilidade
                 </span>
               </div>
 
-              <h2 className="text-[22px] sm:text-[27px] font-black text-[#0B1226] dark:text-white leading-tight">
+              <h2 className="text-[22px] sm:text-[27px] 2xl:text-[40px] font-black text-[#0B1226] dark:text-white leading-tight">
                 {character.name}
               </h2>
 
-              <p className="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+              <p className="text-xs sm:text-sm 2xl:text-base font-bold text-slate-500 dark:text-slate-400 mt-0.5 mb-2 2xl:mb-3">
                 {character.tagline}
               </p>
 
-              <p className="text-[13px] sm:text-[14px] text-[#475569] dark:text-slate-300 leading-snug font-medium">
+              <p className="text-[13px] sm:text-[14px] 2xl:text-[16px] text-[#475569] dark:text-slate-300 leading-snug font-medium">
                 {character.description}
               </p>
 
               {/* Quote */}
-              <div className="mt-2.5 p-2.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                <span className="block text-[10.5px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 not-italic mb-0.5">
+              <div className="mt-2.5 2xl:mt-4 p-2.5 2xl:p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs sm:text-sm 2xl:text-[15px] text-slate-700 dark:text-slate-300">
+                <span className="block text-[10.5px] 2xl:text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 not-italic mb-0.5">
                   Frase-chave
                 </span>
                 <p className="italic">
