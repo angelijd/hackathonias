@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   var isOpeningScreen = window.location.pathname.includes("/login");
 
-  // 1. Widget Flutuante ♿ (canto inferior direito)
+  // Widget Flutuante ♿ (canto inferior direito)
   var widget = document.createElement('button');
   widget.id = 'ias-a11y-widget';
   widget.innerHTML = '♿';
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (btnContrast) {
     btnContrast.addEventListener('click', function() {
       document.body.classList.toggle('ias-a11y-mode');
-      btnContrast.innerHTML = document.body.classList.contains('ias-a11y-mode') ? 
+      btnContrast.innerHTML = document.body.classList.contains('ias-a11y-mode') ?
         '👁️ Desativar Modo Adaptado' : '👁️ Modo adaptado';
     });
   }

@@ -928,6 +928,37 @@ Gere uma s\xEDntese formativa com mindset de crescimento (sem julgamento punitiv
   });
   const whatsAppMemoryStore = /* @__PURE__ */ new Map();
   const activeAccessRequests = /* @__PURE__ */ new Map();
+  const RECOVERY_REQUEST_TTL_MS = 10 * 60 * 1e3;
+  const expireRecoveryRequest = async (request) => {
+    request.status = "expired";
+    activeAccessRequests.set(request.id, request);
+    const evolutionUrl = process.env.EVOLUTION_API_URL;
+    const evolutionKey = process.env.EVOLUTION_API_KEY;
+    const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
+    if (!evolutionUrl || !evolutionKey) return;
+    try {
+      await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": evolutionKey },
+        body: JSON.stringify({
+          number: request.teacherPhone,
+          text: `\u23F0 *Solicita\xE7\xE3o Expirada*
+
+A solicita\xE7\xE3o de acesso de *${request.studentName}* (turma *${request.studentClass}*) expirou ap\xF3s 10 minutos sem resposta e n\xE3o aceita mais aprova\xE7\xE3o ou recusa.`,
+          delay: 500
+        })
+      });
+    } catch (err) {
+      console.warn("[Recupera\xE7\xE3o de Acesso] Falha ao notificar expira\xE7\xE3o:", err);
+    }
+  };
+  setInterval(() => {
+    for (const request of activeAccessRequests.values()) {
+      if (request.status === "waiting" && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+        expireRecoveryRequest(request);
+      }
+    }
+  }, 3e4);
   const logDeSenhaPerdida = [];
   app.get("/api/logs/senha-perdida", (req, res) => {
     return res.json(logDeSenhaPerdida);
@@ -1471,14 +1502,16 @@ _Esta solicita\xE7\xE3o expirar\xE1 automaticamente se n\xE3o for respondida em 
       return res.status(500).json({ error: err.message || "Erro ao registrar solicita\xE7\xE3o" });
     }
   });
-  app.get("/api/auth-recovery/status/:id", (req, res) => {
+  app.get("/api/auth-recovery/status/:id", async (req, res) => {
     const { id } = req.params;
     const request = activeAccessRequests.get(id);
     if (!request) {
       return res.json({ status: "rejected", reason: "expired_or_not_found" });
     }
-    if (Date.now() - request.createdAt > 10 * 60 * 1e3) {
-      activeAccessRequests.delete(id);
+    if (request.status === "waiting" && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+      await expireRecoveryRequest(request);
+    }
+    if (request.status === "expired") {
       return res.json({ status: "rejected", reason: "expired" });
     }
     return res.json({ status: request.status });
@@ -1673,6 +1706,10 @@ Vi aqui que seu perfil no laborat\xF3rio foi *${arquetipo || "Inovador Estrat\xE
               }
             }
           }
+          if (foundRequest && Date.now() - foundRequest.createdAt > RECOVERY_REQUEST_TTL_MS) {
+            await expireRecoveryRequest(foundRequest);
+            foundRequest = null;
+          }
           if (foundRequest) {
             const statusText = isApprove ? "APROVADO" : "REPROVADO";
             foundRequest.status = isApprove ? "approved" : "rejected";
@@ -1702,7 +1739,7 @@ O acesso do estudante *${foundRequest.studentName}* foi bloqueado. Ele foi instr
               })
             });
             const logMessage = `\u{1F4CB} *Registro de Log - Recupera\xE7\xE3o de Senha*
-- Aluno: ${foundRequest.studentName}
+- Estudante: ${foundRequest.studentName}
 - Turma: ${foundRequest.studentClass}
 - Status: ${statusText}`;
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
@@ -2061,7 +2098,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             font-size: 15.5px;
             color: #0F172A;
             line-height: 1.6;
-            margin-bottom: 12px;
+            margin-bottom: 24px;
           }
           .welcome-info-col ol {
             margin: 0 0 16px 22px;
@@ -2246,6 +2283,15 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               gap: 20px;
             }
           }
+          @media (max-width: 760px) {
+            .welcome-card {
+              padding: 28px 24px;
+            }
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 24px;
+            }
+          }
         </style>
       </head>
       <body>
@@ -2291,7 +2337,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                     <span>\u{1F510}</span> Credenciais do prot\xF3tipo de login
                   </div>
                   <div class="welcome-credentials-chips">
-                    <div class="user-role-chip">Aluno</div>
+                    <div class="user-role-chip">Estudante</div>
                     <div class="user-role-chip">Professor</div>
                     <div class="user-role-chip">Gestor</div>
                   </div>
@@ -2331,7 +2377,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
+              <div class="credentials-chip">Credenciais: Estudante, Professor e Gestor</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2365,7 +2411,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2395,7 +2441,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2425,7 +2471,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2512,8 +2558,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             var whatsapp = document.getElementById('welcome-whatsapp').value.trim();
             var errorEl = document.getElementById('welcome-error');
 
-            var emailValid = /^[^s@]+@[^s@]+.[^s@]+$/.test(email);
-            var digits = whatsapp.replace(/D/g, '');
+            var emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+            var digits = whatsapp.replace(/\\D/g, '');
             var whatsappValid = digits.length >= 10 && digits.length <= 13;
 
             if (!emailValid || !whatsappValid) {
@@ -2521,6 +2567,10 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               return;
             }
             errorEl.style.display = 'none';
+            try {
+              sessionStorage.setItem('ias_evaluator_email', email);
+              sessionStorage.setItem('ias_evaluator_whatsapp', digits);
+            } catch (err) {}
             document.getElementById('welcome-overlay').style.display = 'none';
             document.body.style.overflow = '';
           });

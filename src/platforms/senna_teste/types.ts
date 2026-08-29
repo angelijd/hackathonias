@@ -35,7 +35,7 @@ export interface ExpectationOption {
   icon: string;
 }
 
-export type ScreenStep = 'welcome' | 'preferences' | 'test_selection' | 'assessment';
+export type ScreenStep = 'welcome' | 'preferences' | 'assessment';
 
 export interface QuestionItem {
   rubricaId: string;
