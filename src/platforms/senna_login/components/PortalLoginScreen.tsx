@@ -178,7 +178,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
 
   // Envia a solicitação real de recuperação para o backend (que chama a Evolution API)
   const handleSendRecoveryRequest = async () => {
-    if (!studentName || !studentClass || !testPhoneNumber) return;
+    if (!studentName || !studentClass) return;
     setRecoveryStep('waiting');
     setRequestId(null);
     setRemainingSeconds(RECOVERY_WAIT_SECONDS);
@@ -189,8 +189,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: studentName,
-          studentClass: studentClass,
-          phoneNumber: testPhoneNumber
+          studentClass: studentClass
         })
       });
 
@@ -550,7 +549,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                   {recoveryStep === 'form' && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
                       <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                        Olá! Se você esqueceu seu código de acesso, informe seus dados para o seu professor responsável receber uma solicitação de entrada via WhatsApp.
+                        Olá! Se você não consegue entrar, informe seus dados abaixo e solicite entrada.
                       </div>
 
                       <div>
@@ -562,7 +561,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         <input
                           type="text"
                           required
-                          placeholder="Ex: Ayrton Senna da Silva"
+                          placeholder="Ex: Estudante"
                           value={studentName}
                           onChange={(e) => setStudentName(e.target.value)}
                           className={`w-full h-[52px] px-4 rounded-xl text-sm font-bold border transition-all outline-none ${
@@ -593,36 +592,10 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         />
                       </div>
 
-                      {/* Campo de Telefone de Teste para o WhatsApp do aluno */}
-                      <div className={`p-4 rounded-2xl border transition-all ${
-                        darkMode ? 'bg-slate-950/60 border-amber-500/20' : 'bg-amber-50/50 border-amber-200 shadow-sm'
-                      }`}>
-                        <p className={`text-xs font-semibold leading-relaxed mb-3 ${darkMode ? 'text-slate-300' : 'text-[#5B6472]'}`}>
-                          📢 <strong>Olá! Se você está testando esse fluxo</strong>, insira o seu WhatsApp abaixo para receber a mensagem e aprovar ou reprovar a entrada do estudante, como se fosse o educador.
-                        </p>
-                        <label className={`block text-[10px] font-black uppercase tracking-wider mb-1.5 ${
-                          darkMode ? 'text-slate-400' : 'text-slate-500'
-                        }`}>
-                          WhatsApp para Teste (DDI + DDD + Número)
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Ex: 5511999998888"
-                          value={testPhoneNumber}
-                          onChange={(e) => setTestPhoneNumber(e.target.value)}
-                          className={`w-full h-[48px] px-4 rounded-xl text-xs font-bold border transition-all outline-none ${
-                            darkMode
-                              ? 'bg-slate-900 border-slate-800 text-white focus:border-[#FBB800]'
-                              : 'bg-white border-slate-300 text-[#0B1226] focus:border-[#FBB800]'
-                          }`}
-                        />
-                      </div>
-
                       <div className="pt-2">
                         <button
                           type="button"
-                          disabled={!studentName || !studentClass || !testPhoneNumber}
+                          disabled={!studentName || !studentClass}
                           onClick={handleSendRecoveryRequest}
                           className="group relative w-full h-[56px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-md active:scale-[0.98] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/40 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -655,7 +628,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         ⏱️ Tempo restante: {formatTime(remainingSeconds)}
                       </div>
                       <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch]">
-                        Se demorar mais do que 10 minutos, procure a Secretaria para regularizar seus dados.
+                        Se a liberação demorar mais do que 10 minutos, feche esta tela e procure a Secretaria para solicitar entrada.
                       </p>
                       <div className="pt-2 w-full">
                         <button
@@ -682,7 +655,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                       </div>
                       <div className="space-y-2">
                         <h4 className="text-base font-black text-rose-600 dark:text-rose-400">
-                          Sem resposta. Procure a secretaria
+                          Tempo esgotado. Dirija-se à secretaria para solicitar acesso.
                         </h4>
                       </div>
                       <div className="pt-2 w-full">
