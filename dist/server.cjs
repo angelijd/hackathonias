@@ -970,7 +970,9 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
    - Compet\xEAncia Geral 8 \u2013 Autoconhecimento e Autocuidado
    - Compet\xEAncia Geral 9 \u2013 Empatia e Coopera\xE7\xE3o
    - Compet\xEAncia Geral 10 \u2013 Responsabilidade e Cidadania
-3. Seja objetivo e curto nas respostas (no m\xE1ximo 3 par\xE1grafos). Nunca use met\xE1foras. D\xEA a resposta exata para o que o(a) educador(a) deseja saber.`;
+3. Seja objetivo e curto nas respostas (no m\xE1ximo 3 par\xE1grafos). Nunca use met\xE1foras. D\xEA a resposta exata para o que o(a) educador(a) deseja saber.
+4. Quando a mensagem trouxer dados de v\xE1rias turmas ou escolas de uma vez (pedido de vis\xE3o geral), fa\xE7a uma an\xE1lise panor\xE2mica e comparativa entre elas, destacando pontos fortes e pontos de aten\xE7\xE3o em comum.
+5. Se o educador ou gestor tiver uma d\xFAvida t\xE9cnica sobre o funcionamento da plataforma (n\xE3o relacionada \xE0 interpreta\xE7\xE3o pedag\xF3gica dos dados), responda na medida do poss\xEDvel com base no que voc\xEA sabe. Se n\xE3o souber a resposta, oriente a pessoa a entrar em contato com o suporte do Instituto Ayrton Senna pelo e-mail suporte@institutoayrtonsenna.org.br.`;
       if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
         return res.json({
           text: `Ol\xE1! Eu sou o Prof. Cl\xE1udio. Analisando os baixos desempenhos socioemocionais do estudante, sugiro uma interven\xE7\xE3o baseada na *Compet\xEAncia Geral 8 (Autoconhecimento e Autocuidado)* e na *Compet\xEAncia Geral 9 (Empatia e Coopera\xE7\xE3o)* da BNCC. Recomendo planejar atividades de media\xE7\xE3o de sentimentos em grupo. (Nota: Chave GEMINI_API_KEY n\xE3o configurada no .env.local)`
@@ -1040,7 +1042,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       "Professor",
       {
         code: "Professor",
-        name: "Ayrton Senna da Silva",
+        name: "Professor",
         school: "C.E.I. Ayrton Senna",
         institutionalEmail: "professor.senna@escola.ias.org.br",
         personalEmail: "",
@@ -1056,7 +1058,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       "Gestor",
       {
         code: "Gestor",
-        name: "Viviane Senna",
+        name: "Gestor",
         school: "Diretoria Regional IAS",
         institutionalEmail: "gestor.senna@escola.ias.org.br",
         personalEmail: "",
@@ -1799,7 +1801,7 @@ Voc\xEA est\xE1 conversando diretamente com o estudante no WhatsApp dele de form
 - Nome: ${mem.studentName || "Estudante"}
 - Escola: ${mem.school || "N\xE3o especificada"} | Ano: ${mem.grade || "Ensino M\xE9dio/Fundamental"} | Cidade: ${mem.city || "Brasil"}
 - Interesses: ${mem.interests || "Gerais"} (${mem.interestDetail || ""})
-- Arqu\xE9tipo IAS: ${mem.arquetipo || "Inovador Estrat\xE9gico"}
+- Perfil IAS: ${mem.arquetipo || "Inovador Estrat\xE9gico"}
 - Superpoder: ${mem.superPoder || "Curiosidade e imagina\xE7\xE3o ativa"}
 - Desafio de Evolu\xE7\xE3o: ${mem.desafioDesenvolvimento || "Articular argumentos e estruturar ideias"}
 ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.summaryMemory}` : ""}
@@ -2406,7 +2408,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Dados na Gaveta</span><br>
-                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arqu\xE9tipos que fazem parte do universo dele e que pode ser exportado.
+                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em perfis que fazem parte do universo dele e que pode ser exportado.
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Da Avalia\xE7\xE3o \xE0 A\xE7\xE3o</span><br>
@@ -2436,7 +2438,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Dados na Gaveta</span><br>
-                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arqu\xE9tipos que fazem parte do universo dele.
+                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em perfis que fazem parte do universo dele.
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Da Avalia\xE7\xE3o \xE0 A\xE7\xE3o</span><br>
@@ -2466,7 +2468,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Dados na Gaveta</span><br>
-                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em arqu\xE9tipos que fazem parte do universo dele e que pode ser exportado
+                  <strong>Solu\xE7\xE3o proposta:</strong> Devolutiva imediata que traduz os resultados socioemocionais do estudante em perfis que fazem parte do universo dele e que pode ser exportado
                 </li>
                 <li class="pain-item">
                   <span class="pain-badge badge-action">Da Avalia\xE7\xE3o \xE0 A\xE7\xE3o</span><br>
