@@ -150,7 +150,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
       averages: { "Autogestão": 4.2, "Engajamento": 3.8, "Amabilidade": 4.5, "Resiliência Emocional": 3.1, "Abertura ao Novo": 4.8 },
       students: [
         {
-          name: "Estudante",
+          name: "Rafael Oliveira",
           competences: [
             { name: "Abertura ao Novo (Curiosidade para aprender)", score: 5.0, prevScore: 4.2, description: "Altamente curioso, questionador e com forte desejo de aprender coisas novas." },
             { name: "Autogestão (Foco e Organização)", score: 4.0, prevScore: 3.0, description: "Evoluiu muito em organização, mas necessita de acompanhamento contínuo para focar sob estresse." },
@@ -311,7 +311,7 @@ Identifique e detalhe os 2 grupos de estudantes com perfis parecidos na turma e 
         return `${c.name.split(' (')[0]} (Estável em ${c.score})`;
       }).join(', ');
       
-      const similarStudent = selectedStudent.name === "Estudante" ? "Bruna Santos" : "Estudante";
+      const similarStudent = selectedStudent.name === "Rafael Oliveira" ? "Bruna Santos" : "Rafael Oliveira";
 
       const promptText = `Análise de Primeiro Acesso - Estudante: *${selectedStudent.name}*. 
 Histórico Comparativo: ${evolutionsText}.
@@ -453,7 +453,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
       <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <span className="text-lg font-extrabold text-amber-500">
-            {role === 'gestor' ? 'Olá, Gestor!' : 'Olá, Professor!'}
+            {role === 'gestor' ? 'Olá, Gestor(a)! Bem-vindo(a) aos' : 'Olá, Professor(a)! Bem-vindo(a) aos'}
           </span>
           <h1 className="text-3xl font-black tracking-tight mt-1">
             Relatórios
@@ -639,7 +639,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
                   </div>
                   <div>
                     <h3 className="text-sm font-black">Prof. Cláudio</h3>
-                    <span className="text-[10px] font-black uppercase text-amber-500">Mentor Socioemocional (IAS)</span>
+                    <span className="text-[10px] font-black uppercase text-amber-500">Mentor de IA</span>
                   </div>
                 </div>
                 <button
