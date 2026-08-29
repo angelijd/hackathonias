@@ -42,7 +42,7 @@ async function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, "") : "";
   const isGmail = smtpHost && smtpHost.includes("gmail") || smtpUser && smtpUser.includes("@gmail.com");
   const host = isGmail ? "smtp.gmail.com" : smtpHost || "smtp.gmail.com";
-  const portNum = isGmail ? 465 : Number(smtpPort) || 465;
+  const portNum = Number(smtpPort) || 465;
   let connectHost = host;
   try {
     const addresses = await import_dns.default.promises.resolve4(host);
@@ -1169,6 +1169,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       if (!user) {
         return res.status(404).json({ error: "Usu\xE1rio n\xE3o encontrado." });
       }
+      const roleLabel = user.role === "gestor" ? "Gestor" : "Professor";
       if (method === "question") {
         if (!answer || answer.toLowerCase().trim() !== user.securityAnswer.toLowerCase().trim()) {
           return res.json({ success: false, error: "Resposta de seguran\xE7a incorreta." });
@@ -1191,7 +1192,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
               from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
               to: user.personalEmail,
               subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
-              text: `Ol\xE1 ${user.name},
+              text: `Ol\xE1 ${roleLabel},
 
 Recebemos uma solicita\xE7\xE3o de redefini\xE7\xE3o de acesso para sua conta.
 
@@ -1203,7 +1204,7 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
               html: `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
                   <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-                  <p>Ol\xE1 <strong>${user.name}</strong>,</p>
+                  <p>Ol\xE1 <strong>${roleLabel}</strong>,</p>
                   <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
                   <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
                     <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
@@ -1233,7 +1234,7 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
         const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
         const messageText = `\u{1F511} *Recupera\xE7\xE3o de Acesso - Portal IAS*
 
-Ol\xE1 *${user.name}*,
+Ol\xE1 *${roleLabel}*,
 
 Suas credenciais s\xE3o:
 - *C\xF3digo de Acesso:* ${user.code}
