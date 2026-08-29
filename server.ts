@@ -2487,7 +2487,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-frictional">Cadastro Friccional</span><br>
@@ -2521,7 +2521,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2551,7 +2551,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2581,7 +2581,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2610,7 +2610,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-connect">Falta de Conectividade</span><br>
@@ -2623,7 +2623,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar protótipo &rarr;</span>
+              <span class="btn-access">Acessar descrição &rarr;</span>
             </div>
           </div>
         </div>
