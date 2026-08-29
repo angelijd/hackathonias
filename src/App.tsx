@@ -100,7 +100,7 @@ export default function App() {
                   <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl mb-4">🧬</div>
                   <h3 className="text-lg font-bold mb-2">Senna Teste</h3>
                   <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                    Diagnóstico socioemocional original composto por 15 questões fixas com devolutiva baseada em arquétipos de personagens de séries.
+                    Diagnóstico socioemocional original composto por 15 questões fixas com devolutiva baseada em perfils de personagens de séries.
                   </p>
                 </div>
                 <span className="text-xs font-black text-amber-500">Acessar módulo &rarr;</span>

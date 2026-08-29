@@ -50,7 +50,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-between transition-colors duration-300 ${
+      className={`h-screen overflow-hidden flex flex-col justify-between transition-colors duration-300 ${
         darkMode ? 'bg-[#070F1E] text-white' : 'bg-[#F4F5F8] text-[#0B1226]'
       }`}
     >
