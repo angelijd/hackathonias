@@ -1,0 +1,21 @@
+Coloque os 20 arquivos de áudio MP3 nesta pasta com os nomes:
+Audio_1.mp3
+Audio_2.mp3
+Audio_3.mp3
+Audio_4.mp3
+Audio_5.mp3
+Audio_6.mp3
+Audio_7.mp3
+Audio_8.mp3
+Audio_9.mp3
+Audio_10.mp3
+Audio_11.mp3
+Audio_12.mp3
+Audio_13.mp3
+Audio_14.mp3
+Audio_15.mp3
+Audio_16.mp3
+Audio_17.mp3
+Audio_18.mp3
+Audio_19.mp3
+Audio_20.mp3
