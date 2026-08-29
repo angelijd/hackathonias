@@ -28,7 +28,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   const [isFirstAccessModalOpen, setIsFirstAccessModalOpen] = useState(false);
   const [firstAccessRole, setFirstAccessRole] = useState<UserInstance | null>(null);
 
-  // Primeiro Acesso - Estudante (Aluno)
+  // Primeiro Acesso - Estudante
   const [newStudentPassword, setNewStudentPassword] = useState('');
   const [confirmStudentPassword, setConfirmStudentPassword] = useState('');
   const [studentPasswordError, setStudentPasswordError] = useState<string | null>(null);
@@ -69,7 +69,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
   // Preenchimento Automático dos Campos de Login ao Trocar de Aba (Testador só clica em Acessar)
   React.useEffect(() => {
     if (instance === 'aluno') {
-      setIdentifier('Aluno');
+      setIdentifier('Estudante');
       setPassword('1234');
     } else if (instance === 'professor') {
       setIdentifier('Professor');
@@ -140,11 +140,11 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
         const cleanId = identifier.trim().toLowerCase();
         const cleanPass = password.trim();
 
-        if (cleanId === 'aluno' && cleanPass === '1234') {
+        if (cleanId === 'estudante' && cleanPass === '1234') {
           setFirstAccessRole('aluno');
           setIsFirstAccessModalOpen(true);
         } else {
-          setLoginError(`Código ou senha de acesso inválidos. Utilize os dados de teste correspondentes:\n\n🎒 Estudante: Aluno | Senha: 1234`);
+          setLoginError(`Código ou senha de acesso inválidos. Utilize os dados de teste correspondentes:\n\n🎒 Código: Estudante | Senha: 1234`);
         }
       }, 800);
       return;
@@ -216,10 +216,10 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
 
   // Conclui o fluxo preenchendo automaticamente as credenciais e fechando o modal
   const handleConfirmApprovedEntrance = () => {
-    setIdentifier('Aluno');
+    setIdentifier('Estudante');
     setPassword('1234');
     setIsRecoveryModalOpen(false);
-    setLoginSuccess('Acesso liberado via professor! Bem-vindo, Aluno.');
+    setLoginSuccess('Acesso liberado via professor! Bem-vindo, Estudante.');
   };
 
   const handleTeacherCheckOptions = async () => {
@@ -363,7 +363,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
           </span>
         </h1>
 
-        {/* Instâncias de Acesso (Tabs Aluno / Professor / Gestor) */}
+        {/* Instâncias de Acesso (Tabs Estudante / Professor / Gestor) */}
         <div className={`flex p-1 rounded-2xl mt-8 mb-6 border transition-all ${
           darkMode 
             ? 'bg-slate-900/60 border-slate-800' 
@@ -422,7 +422,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
             <input
               type="text"
               required
-              placeholder="Digite seu código de acesso (Ex: Aluno)"
+              placeholder="Digite seu código de acesso (Ex: Estudante)"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               className={`w-full h-[52px] px-4 rounded-xl text-sm font-bold border transition-all outline-none ${
@@ -1047,7 +1047,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
               {firstAccessRole === 'aluno' && (
                 <div className="space-y-4 animate-in fade-in duration-200">
                   <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                    👋 Olá, <strong>Aluno</strong>! Este é seu primeiro acesso à plataforma. Escolha uma nova senha para proteger sua conta.
+                    👋 Olá, <strong>Estudante</strong>! Este é seu primeiro acesso à plataforma. Escolha uma nova senha para proteger sua conta.
                   </div>
 
                   <div>
@@ -1109,7 +1109,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         setStudentPasswordError(null);
                         setIsFirstAccessModalOpen(false);
                         if (onLoginSuccess) {
-                          onLoginSuccess('Aluno', 'aluno');
+                          onLoginSuccess('Estudante', 'aluno');
                         }
                       }}
                       className="w-full h-[56px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-md text-[15px] font-black text-[#0B1226] active:scale-[0.98] transition-all cursor-pointer"

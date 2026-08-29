@@ -13,6 +13,7 @@ import { soundFX } from '../utils/soundEffects';
 import { calculateStudentSocioEmotional, matchCharacter } from '../utils/characterMatching';
 import { getCharacterImage } from '../utils/characterImages';
 import { BecoBot } from './BecoBot';
+import { BecoIntroModal } from './BecoIntroModal';
 
 interface Props {
   userName: string;
@@ -90,6 +91,14 @@ export const Screen3Assessment: React.FC<Props> = ({
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [activeMilestone, setActiveMilestone] = useState<MilestoneData | null>(null);
+
+  const [showIntroVideo, setShowIntroVideo] = useState(true);
+  const [isBecoHighlighted, setIsBecoHighlighted] = useState(false);
+
+  const handleCloseIntro = () => {
+    setShowIntroVideo(false);
+    setIsBecoHighlighted(true);
+  };
 
   // Controle de tempo por questão e detecção de padrão rápido/ziguezague
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now());
@@ -591,8 +600,22 @@ export const Screen3Assessment: React.FC<Props> = ({
 
   return (
     <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 pt-4 pb-12 z-10 flex flex-col justify-between min-h-[calc(100vh-90px)]">
+      {/* Beco Intro Video Modal before test starts */}
+      <BecoIntroModal
+        isOpen={showIntroVideo}
+        onClose={handleCloseIntro}
+        userName={userName}
+        darkMode={darkMode}
+      />
+
       {/* Beco Bot Componente de Chat */}
-      <BecoBot question={FIXED_QUESTIONS[currentIdx]} userName={userName} interests={selectedInterests} />
+      <BecoBot
+        question={FIXED_QUESTIONS[currentIdx]}
+        userName={userName}
+        interests={selectedInterests}
+        isHighlighted={isBecoHighlighted}
+        onClearHighlight={() => setIsBecoHighlighted(false)}
+      />
 
       {/* Dynamic 15-Node Progress Trail with Walker and Final Destination */}
       <div className="relative w-full max-w-[1140px] mx-auto mb-5 px-8 sm:px-12 pt-16 sm:pt-20 select-none">

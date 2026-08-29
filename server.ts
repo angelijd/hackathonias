@@ -1964,7 +1964,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             });
 
             // 2. Envia a mensagem de log formatada em seguida
-            const logMessage = `📋 *Registro de Log - Recuperação de Senha*\n- Aluno: ${foundRequest.studentName}\n- Turma: ${foundRequest.studentClass}\n- Status: ${statusText}`;
+            const logMessage = `📋 *Registro de Log - Recuperação de Senha*\n- Estudante: ${foundRequest.studentName}\n- Turma: ${foundRequest.studentClass}\n- Status: ${statusText}`;
 
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
               method: 'POST',
@@ -2557,7 +2557,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                     <span>🔐</span> Credenciais do protótipo de login
                   </div>
                   <div class="welcome-credentials-chips">
-                    <div class="user-role-chip">👤 Aluno</div>
+                    <div class="user-role-chip">👤 Estudante</div>
                     <div class="user-role-chip">👨‍🏫 Professor</div>
                     <div class="user-role-chip">👔 Gestor</div>
                   </div>
@@ -2605,7 +2605,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
+              <div class="credentials-chip">Credenciais: Estudante, Professor e Gestor</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2639,7 +2639,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2669,7 +2669,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2699,7 +2699,7 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
