@@ -2308,49 +2308,43 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             justify-content: space-between;
           }
           .welcome-info-col p {
-            font-size: 13.5px;
-            color: #334155;
-            line-height: 1.55;
-            margin-bottom: 10px;
+            font-size: 15.5px;
+            color: #0F172A;
+            line-height: 1.6;
+            margin-bottom: 12px;
           }
           .welcome-info-col ol {
-            margin: 0 0 12px 18px;
-            font-size: 13px;
+            margin: 0 0 16px 22px;
+            font-size: 15px;
+            color: #1E293B;
+            line-height: 1.65;
+          }
+          .welcome-info-col ol > li {
+            margin-bottom: 8px;
+          }
+          .welcome-pillars-bullets {
+            margin: 6px 0 4px 22px;
+            list-style-type: disc;
+          }
+          .welcome-pillars-bullets li {
+            font-size: 14.5px;
             color: #334155;
-            line-height: 1.55;
-          }
-          .welcome-info-col ol li {
             margin-bottom: 4px;
-          }
-          .welcome-pillars-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 6px 0 14px 0;
-            list-style: none;
-            padding: 0;
-          }
-          .welcome-pillar-chip {
-            font-size: 11.5px;
-            font-weight: 800;
-            background: #EFF6FF;
-            color: #0B7CFB;
-            border: 1px solid #DBEAFE;
-            padding: 4px 10px;
-            border-radius: 8px;
+            font-weight: 600;
           }
           .welcome-signature {
-            font-size: 13.5px;
-            color: #5B6472;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #F1F5F9;
+            font-size: 14.5px;
+            color: #475569;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-signature strong {
             display: block;
             color: #071131;
-            font-size: 14px;
+            font-size: 15.5px;
             font-weight: 800;
+            margin-top: 2px;
           }
           
           /* Coluna Direita (Credenciais + Form) */
@@ -2500,14 +2494,14 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                     <li>Todas as 8 dores do edital foram resolvidas;</li>
                     <li>Desenvolvemos 5 protótipos para essas dores. Em cada card, apresentamos nome, dor e solução;</li>
                     <li>Clique em <strong>"Acessar protótipo"</strong> para navegar em cada um deles;</li>
-                    <li>Todos os protótipos seguem os 3 pilares fundamentais:</li>
+                    <li>Todos os protótipos seguem os 3 pilares fundamentais:
+                      <ul class="welcome-pillars-bullets">
+                        <li>Intencionalidade pedagógica</li>
+                        <li>IA contextualizada</li>
+                        <li>Personalização</li>
+                      </ul>
+                    </li>
                   </ol>
-
-                  <ul class="welcome-pillars-list">
-                    <li class="welcome-pillar-chip">🎯 Intencionalidade pedagógica</li>
-                    <li class="welcome-pillar-chip">🤖 IA contextualizada</li>
-                    <li class="welcome-pillar-chip">⚡ Personalização</li>
-                  </ul>
                 </div>
 
                 <div class="welcome-signature">
