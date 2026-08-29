@@ -22,12 +22,45 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 
 // server.ts
+var import_dns = __toESM(require("dns"), 1);
 var import_express = __toESM(require("express"), 1);
 var import_path = __toESM(require("path"), 1);
 var import_fs = __toESM(require("fs"), 1);
 var import_dotenv = __toESM(require("dotenv"), 1);
 var import_genai = require("@google/genai");
 var import_nodemailer = __toESM(require("nodemailer"), 1);
+import_dns.default.setDefaultResultOrder("ipv4first");
+function formatWhatsAppNumber(phone) {
+  let clean = (phone || "").replace(/\D/g, "");
+  if (!clean) return "";
+  if ((clean.length === 10 || clean.length === 11) && !clean.startsWith("55")) {
+    clean = `55${clean}`;
+  }
+  return clean;
+}
+async function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
+  const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, "") : "";
+  const isGmail = smtpHost && smtpHost.includes("gmail") || smtpUser && smtpUser.includes("@gmail.com");
+  const host = isGmail ? "smtp.gmail.com" : smtpHost || "smtp.gmail.com";
+  const portNum = isGmail ? 465 : Number(smtpPort) || 465;
+  let connectHost = host;
+  try {
+    const addresses = await import_dns.default.promises.resolve4(host);
+    if (addresses[0]) connectHost = addresses[0];
+  } catch (err) {
+    console.warn(`[SMTP] Falha ao resolver IPv4 para ${host}, conectando pelo hostname:`, err);
+  }
+  return import_nodemailer.default.createTransport({
+    host: connectHost,
+    port: portNum,
+    secure: portNum === 465,
+    auth: { user: smtpUser, pass: cleanPass },
+    connectionTimeout: 15e3,
+    greetingTimeout: 15e3,
+    socketTimeout: 2e4,
+    tls: { servername: host, rejectUnauthorized: false }
+  });
+}
 var envLocalPath = import_path.default.resolve(process.cwd(), ".env.local");
 if (import_fs.default.existsSync(envLocalPath)) {
   import_dotenv.default.config({ path: envLocalPath });
@@ -970,12 +1003,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
    - Compet\xEAncia Geral 8 \u2013 Autoconhecimento e Autocuidado
    - Compet\xEAncia Geral 9 \u2013 Empatia e Coopera\xE7\xE3o
    - Compet\xEAncia Geral 10 \u2013 Responsabilidade e Cidadania
-3. Seja objetivo e curto nas respostas (no m\xE1ximo 3 par\xE1grafos). Nunca use met\xE1foras. D\xEA a resposta exata para o que o(a) educador(a) deseja saber.
-4. Quando a mensagem trouxer dados de v\xE1rias turmas ou escolas de uma vez (pedido de vis\xE3o geral), fa\xE7a uma an\xE1lise panor\xE2mica e comparativa entre elas, destacando pontos fortes e pontos de aten\xE7\xE3o em comum.
-5. Se o educador ou gestor tiver uma d\xFAvida t\xE9cnica sobre o funcionamento da plataforma (n\xE3o relacionada \xE0 interpreta\xE7\xE3o pedag\xF3gica dos dados), responda na medida do poss\xEDvel com base no que voc\xEA sabe. Se n\xE3o souber a resposta, oriente a pessoa a entrar em contato com o suporte do Instituto Ayrton Senna pelo e-mail suporte@institutoayrtonsenna.org.br.`;
+3. D\xEA UMA informa\xE7\xE3o por vez, em no m\xE1ximo 2-3 frases curtas e diretas. Nunca despeje v\xE1rias explica\xE7\xF5es, exemplos e sugest\xF5es numa \xFAnica resposta \u2014 isso confunde o(a) educador(a). Termine com uma pergunta simples ou uma proposta objetiva (ex: "Quer que eu detalhe uma sugest\xE3o de atividade?") para deixar a pessoa guiar o pr\xF3ximo passo da conversa. Nunca use met\xE1foras.
+4. Quando a mensagem trouxer dados de v\xE1rias turmas ou escolas de uma vez (pedido de vis\xE3o geral), ainda assim comece por UM destaque comparativo (o ponto mais forte ou mais cr\xEDtico em comum) e pergunte se a pessoa quer aprofundar, em vez de listar tudo de uma vez.
+5. Se o educador ou gestor tiver uma d\xFAvida t\xE9cnica sobre o funcionamento da plataforma (n\xE3o relacionada \xE0 interpreta\xE7\xE3o pedag\xF3gica dos dados), responda na medida do poss\xEDvel com base no que voc\xEA sabe, de forma igualmente breve. Se n\xE3o souber a resposta, oriente a pessoa a entrar em contato com o suporte do Instituto Ayrton Senna pelo e-mail suporte@institutoayrtonsenna.org.br.`;
       if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
         return res.json({
-          text: `Ol\xE1! Eu sou o Prof. Cl\xE1udio. Analisando os baixos desempenhos socioemocionais do estudante, sugiro uma interven\xE7\xE3o baseada na *Compet\xEAncia Geral 8 (Autoconhecimento e Autocuidado)* e na *Compet\xEAncia Geral 9 (Empatia e Coopera\xE7\xE3o)* da BNCC. Recomendo planejar atividades de media\xE7\xE3o de sentimentos em grupo. (Nota: Chave GEMINI_API_KEY n\xE3o configurada no .env.local)`
+          text: `Ol\xE1! Sou o Prof. Cl\xE1udio. Repare em qual compet\xEAncia est\xE1 com a nota mais baixa \u2014 \xE9 o melhor ponto de partida. Quer que eu sugira uma interven\xE7\xE3o pr\xE1tica pra isso? (Nota: Chave GEMINI_API_KEY n\xE3o configurada no .env.local)`
         });
       }
       const ai = new import_genai.GoogleGenAI({ apiKey });
@@ -1009,10 +1042,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       if (!number || !text) {
         return res.status(400).json({ error: "Par\xE2metros ausentes." });
       }
-      let formattedNumber = number.replace(/\D/g, "");
-      if (!formattedNumber.endsWith("@s.whatsapp.net")) {
-        formattedNumber = `${formattedNumber}@s.whatsapp.net`;
-      }
+      const formattedNumber = `${formatWhatsAppNumber(number)}@s.whatsapp.net`;
       const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
         method: "POST",
         headers: {
@@ -1042,7 +1072,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       "Professor",
       {
         code: "Professor",
-        name: "Professor",
+        name: "Fernanda Ribeiro",
         school: "C.E.I. Ayrton Senna",
         institutionalEmail: "professor.senna@escola.ias.org.br",
         personalEmail: "",
@@ -1058,7 +1088,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       "Gestor",
       {
         code: "Gestor",
-        name: "Gestor",
+        name: "Marcelo Andrade",
         school: "Diretoria Regional IAS",
         institutionalEmail: "gestor.senna@escola.ias.org.br",
         personalEmail: "",
@@ -1100,7 +1130,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       return res.status(404).json({ error: "Usu\xE1rio n\xE3o encontrado." });
     }
     user.personalEmail = personalEmail;
-    user.personalWhatsapp = personalWhatsapp;
+    user.personalWhatsapp = formatWhatsAppNumber(personalWhatsapp);
     user.securityQuestion = securityQuestion;
     user.securityAnswer = securityAnswer;
     user.isFirstAccess = false;
@@ -1156,12 +1186,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         let previewUrl = null;
         if (smtpUser && smtpPass) {
           try {
-            const transporter = import_nodemailer.default.createTransport({
-              host: smtpHost,
-              port: smtpPort,
-              secure: smtpPort === 465,
-              auth: { user: smtpUser, pass: smtpPass }
-            });
+            const transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
             const info = await transporter.sendMail({
               from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
               to: user.personalEmail,
@@ -1190,7 +1215,8 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
             });
             previewUrl = import_nodemailer.default.getTestMessageUrl(info) || null;
           } catch (mailErr) {
-            console.warn("[Recovery Email] Aviso ao enviar via SMTP:", mailErr);
+            console.error("[Recovery Email] Falha ao enviar via SMTP:", mailErr);
+            return res.status(502).json({ error: "N\xE3o foi poss\xEDvel enviar o e-mail de recupera\xE7\xE3o. Tente novamente em instantes ou contate o suporte." });
           }
         } else {
           console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
@@ -1204,8 +1230,7 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
         const evolutionUrl = process.env.EVOLUTION_API_URL || "http://localhost:8080";
         const evolutionKey = process.env.EVOLUTION_API_KEY || "apikey";
         const evolutionInstance = process.env.EVOLUTION_INSTANCE || "instancia_teste";
-        const rawNumber = user.personalWhatsapp.replace(/\D/g, "");
-        const formattedNumber = rawNumber.endsWith("@s.whatsapp.net") ? rawNumber : `${rawNumber}@s.whatsapp.net`;
+        const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
         const messageText = `\u{1F511} *Recupera\xE7\xE3o de Acesso - Portal IAS*
 
 Ol\xE1 *${user.name}*,
@@ -1227,10 +1252,12 @@ Guarde essas credenciais com seguran\xE7a.`;
           });
           if (!evoRes.ok) {
             const errText = await evoRes.text();
-            console.warn("[Evolution API Password Recovery Warning]:", errText);
+            console.error("[Evolution API Password Recovery Error]:", errText);
+            return res.status(502).json({ error: "N\xE3o foi poss\xEDvel enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte." });
           }
         } catch (evoErr) {
-          console.warn("[Evolution API Password Recovery Dispatch Warning]:", evoErr);
+          console.error("[Evolution API Password Recovery Dispatch Error]:", evoErr);
+          return res.status(502).json({ error: "N\xE3o foi poss\xEDvel enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte." });
         }
         console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
         return res.json({ success: true });
@@ -1396,15 +1423,7 @@ Guarde essas credenciais com seguran\xE7a.`;
       const smtpPort = Number(process.env.SMTP_PORT) || 587;
       let transporter;
       if (smtpUser && smtpPass) {
-        transporter = import_nodemailer.default.createTransport({
-          host: smtpHost,
-          port: smtpPort,
-          secure: smtpPort === 465,
-          auth: {
-            user: smtpUser,
-            pass: smtpPass
-          }
-        });
+        transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
       } else {
         throw new Error("Ethereal desativado (502 Timeout)");
       }
@@ -1434,8 +1453,7 @@ Guarde essas credenciais com seguran\xE7a.`;
         return res.status(400).json({ error: "Par\xE2metros ausentes." });
       }
       const reqId = Date.now().toString() + Math.random().toString(36).substring(2, 5);
-      const cleanPhone = phoneNumber.replace(/\D/g, "");
-      const formattedPhone = cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`;
+      const formattedPhone = formatWhatsAppNumber(phoneNumber);
       activeAccessRequests.set(reqId, {
         id: reqId,
         studentName: name,
@@ -1599,8 +1617,7 @@ _Esta solicita\xE7\xE3o expirar\xE1 automaticamente se n\xE3o for respondida em 
         superPoder,
         desafioDesenvolvimento
       } = req.body;
-      const cleanPhone = (phoneNumber || "").replace(/\D/g, "");
-      const formattedPhone = cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`;
+      const formattedPhone = formatWhatsAppNumber(phoneNumber);
       const existing = whatsAppMemoryStore.get(formattedPhone) || { history: [] };
       whatsAppMemoryStore.set(formattedPhone, {
         ...existing,
