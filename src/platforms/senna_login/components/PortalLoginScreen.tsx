@@ -557,7 +557,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                   {recoveryStep === 'form' && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
                       <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                        Olá! Se você esqueceu seu código de acesso, informe seus dados para o seu professor responsável receber uma solicitação de entrada via WhatsApp.
+                        Olá! Se você não consegue entrar, informe seus dados abaixo e solicite entrada.
                       </div>
 
                       <div>
@@ -569,7 +569,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         <input
                           type="text"
                           required
-                          placeholder="Ex: Ayrton Senna da Silva"
+                          placeholder="Ex: Estudante"
                           value={studentName}
                           onChange={(e) => setStudentName(e.target.value)}
                           className={`w-full h-[52px] px-4 rounded-xl text-sm font-bold border transition-all outline-none ${
@@ -651,7 +651,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         ⏱️ Tempo restante: {formatTime(remainingSeconds)}
                       </div>
                       <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch]">
-                        Se demorar mais do que 10 minutos, procure a Secretaria para regularizar seus dados.
+                        Se a liberação demorar mais do que 10 minutos, feche esta tela e procure a Secretaria para solicitar entrada.
                       </p>
                       <div className="pt-2 w-full">
                         <button
@@ -678,7 +678,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                       </div>
                       <div className="space-y-2">
                         <h4 className="text-base font-black text-rose-600 dark:text-rose-400">
-                          Sem resposta. Procure a secretaria
+                          Tempo esgotado. Dirija-se à secretaria para solicitar acesso.
                         </h4>
                       </div>
                       <div className="pt-2 w-full">
