@@ -2135,31 +2135,12 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             overflow-x: hidden;
             overflow-y: auto;
           }
-          .hub-hero {
-            padding: 30px 40px 10px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-          }
-          .logo-ias {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-          }
           .hero-title {
             font-size: 28px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
             margin-bottom: 4px;
-          }
-          .hero-subtitle {
-            font-size: 15.5px;
-            font-weight: 800;
-            color: #FBB800;
           }
           .main-grid {
             display: grid;
@@ -2458,12 +2439,9 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           </div>
         </div>
 
-        <div class="hub-hero">
-          <div>
-            <div class="logo-ias">Instituto Ayrton Senna</div>
-            <h1 class="hero-title">O que avaliamos quando avaliamos?</h1>
-            <div class="hero-subtitle">Cinco propostas para que a avaliação chegue, engaje e mova.</div>
-          </div>
+        <div style="padding: 30px 40px 10px 40px;">
+          <h1 class="hero-title">Navegue abaixo pelos protótipos</h1>
+        </div>
         </div>
 
         <div class="main-grid">

@@ -79,7 +79,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-between transition-colors duration-300 ${
+      className={`h-screen overflow-hidden flex flex-col justify-between transition-colors duration-300 ${
         darkMode ? 'bg-[#070F1E] text-white' : 'bg-[#F4F5F8] text-[#0B1226]'
       }`}
     >
@@ -215,29 +215,7 @@ export default function App() {
                   </span>
                 </button>
 
-                {/* Pagination Indicator */}
-                <div
-                  className="flex justify-center items-center gap-2 mt-5 sm:mt-6"
-                  role="tablist"
-                  aria-label="Progresso da introdução"
-                >
-                  {[0, 1, 2, 3].map((dot) => (
-                    <button
-                      key={dot}
-                      type="button"
-                      onClick={() => handleDotClick(dot)}
-                      aria-label={`Slide ${dot + 1}`}
-                      className={`h-[7px] transition-all duration-300 rounded-full cursor-pointer ${
-                        activeDot === dot
-                          ? 'w-[22px] bg-[#FDC300]'
-                          : darkMode
-                          ? 'w-[7px] bg-slate-700 hover:bg-slate-600'
-                          : 'w-[7px] bg-[#040E2B] opacity-60 hover:opacity-100'
-                      }`}
-                    />
-                  ))}
                 </div>
-              </div>
             </section>
           </div>
         )}
