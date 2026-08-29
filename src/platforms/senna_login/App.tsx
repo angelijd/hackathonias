@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-between transition-colors duration-300 ${
+      className={`h-screen overflow-hidden flex flex-col justify-between transition-colors duration-300 ${
         darkMode ? 'bg-[#070F1E] text-white' : 'bg-[#F4F5F8] text-[#0B1226]'
       }`}
     >
@@ -161,14 +161,7 @@ export default function App() {
                       </span>
                     </h1>
 
-                    {/* Subtitle / Description */}
-                    <p
-                      className={`text-[15px] sm:text-[16px] leading-[1.6] mt-4 sm:mt-5 max-w-[48ch] font-medium ${
-                        darkMode ? 'text-slate-200' : 'text-[#5B6472]'
-                      }`}
-                    >
-                      Este teste vai ajudar você a entender melhor suas emoções e a forma como você se conecta com o mundo ao seu redor.
-                    </p>
+                    
 
                     {/* Features List */}
                     <FeaturesList darkMode={darkMode} />

@@ -106,6 +106,9 @@ export const Screen3Assessment: React.FC<Props> = ({
   const [challengeCompleted, setChallengeCompleted] = useState(false);
   const [pendingAnswerValue, setPendingAnswerValue] = useState<number | null>(null);
 
+  const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [isSendingWhatsApp, setIsSendingWhatsApp] = useState(false);
+  const [whatsappStatus, setWhatsappStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const universeKey = selectedInterests[0] || 'stranger_things';
 
   const universeNames: Record<string, string> = {
@@ -134,7 +137,7 @@ export const Screen3Assessment: React.FC<Props> = ({
         badge: '📻 Marco 2 alcançado · 2/3 do caminho',
         title: 'Sinal de Rádio Captado na Colina!',
         subtitle: 'A frequência da Eleven está no volume máximo.',
-        narrative: 'O rádio transmissor emite um zumbido e a voz dos seus amigos ecoa com clareza: “QG para Hawkins, o Demogorgon está recuando e a Eleven está logo à frente!” Falta muito pouco para revelar seu arquétipo!',
+        narrative: 'O rádio transmissor emite um zumbido e a voz dos seus amigos ecoa com clareza: “QG para Hawkins, o Demogorgon está recuando e a Eleven está logo à frente!” Falta muito pouco para revelar seu perfil!',
         icon: '📡',
       };
     }
@@ -324,6 +327,44 @@ export const Screen3Assessment: React.FC<Props> = ({
   // ========================================================
   // TELA DE RESULTADO (DEVOLUTIVA SOCIOEMOCIONAL E PERSONAGEM IA)
   // ========================================================
+  
+  const handleSendWhatsApp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!whatsappNumber.trim()) return;
+
+    setIsSendingWhatsApp(true);
+    const studentScores = calculateStudentSocioEmotional(answers);
+    const matchResult = matchCharacter(universeKey, studentScores);
+    const character = matchResult.character;
+    const matchPercentage = matchResult.matchPercentage;
+
+    const message = `🎗️ *Instituto Ayrton Senna — Resultado Socioemocional*\n\n` +
+      `Olá, *${userName}*!\n\n` +
+      `Seu perfil de destaque em *${universeNames[universeKey]}* é:\n` +
+      `🌟 *${character.name}* (${matchPercentage}% de afinidade)\n` +
+      `🎯 *Papel:* ${character.role}\n\n` +
+      `*Frase-chave:*\n"${character.quote}"\n\n` +
+      `*Principais Forças em Destaque:*\n${character.strengths.map(s => `• ${s}`).join('\n')}\n\n` +
+      `_Parabéns pelo seu autoconhecimento!_`;
+
+    const cleanNum = whatsappNumber.replace(/\D/g, '');
+    const fullNum = cleanNum.startsWith('55') ? cleanNum : `55${cleanNum}`;
+
+    try {
+      await fetch('/api/whatsapp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ number: fullNum, text: message })
+      });
+    } catch (err) {
+      console.warn('Fallback para WhatsApp Web:', err);
+    }
+
+    window.open(`https://wa.me/${fullNum}?text=${encodeURIComponent(message)}`, '_blank');
+    setIsSendingWhatsApp(false);
+    setWhatsappStatus('success');
+  };
+
   if (isCompleted) {
     const studentScores = calculateStudentSocioEmotional(answers);
     const matchResult = matchCharacter(universeKey, studentScores);
@@ -337,22 +378,9 @@ export const Screen3Assessment: React.FC<Props> = ({
         <div className={`rounded-3xl p-6 sm:p-10 border shadow-[0_25px_60px_rgba(4,20,43,0.09)] ${
           darkMode ? 'bg-slate-900/95 border-slate-800 text-white' : 'bg-white border-slate-200 text-[#0B1226]'
         }`}>
-          {/* Header Result */}
-          <div className="flex flex-col items-center text-center max-w-[720px] mx-auto mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#FDC300]/20 border border-[#FDC300]/50 rounded-full mb-3 shadow-sm">
-              <span className="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">
-                ✨ Análise Socioemocional Concluída
-              </span>
-            </div>
+          
 
-            <h1 className="text-[28px] sm:text-[36px] font-black tracking-tight leading-tight mb-2">
-              {userName}, seu arquétipo em {universeNames[universeKey]} é:
-            </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-              Com base nas suas 15 respostas, a IA identificou uma afinidade socioemocional de{' '}
-              <span className="font-extrabold text-amber-600 dark:text-amber-400">{matchPercentage}%</span> com este perfil!
-            </p>
-          </div>
+            
 
           {/* Character Highlight Card with Uniform Photo */}
           <div className={`p-6 sm:p-8 rounded-3xl border mb-8 flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative overflow-hidden ${
@@ -396,8 +424,13 @@ export const Screen3Assessment: React.FC<Props> = ({
               </p>
 
               {/* Quote */}
-              <div className="mt-4 p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 italic text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                {character.quote}
+              <div className="mt-4 p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <span className="block text-[10.5px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 not-italic mb-1">
+                  Frase-chave
+                </span>
+                <p className="italic">
+                  “{character.quote.replace(/^[“”"]|[“”"]$/g, '')}”
+                </p>
               </div>
             </div>
           </div>
@@ -408,7 +441,7 @@ export const Screen3Assessment: React.FC<Props> = ({
             <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`}>
               <h3 className="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
                 <span>🌟</span>
-                <span>Suas Forças de Caráter em Destaque:</span>
+                <span>Suas principais forças em destaque:</span>
               </h3>
               <div className="space-y-3">
                 {character.strengths.map((str, i) => (
@@ -445,118 +478,52 @@ export const Screen3Assessment: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* Gráfico de Competências Socioemocionais (Big Five) */}
-          <div className={`p-6 sm:p-8 rounded-3xl border mb-8 ${
-            darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-slate-50 border-slate-200'
+          
+          {/* Exportar Resultado para WhatsApp */}
+          <div className={`p-6 sm:p-8 rounded-3xl border text-center ${
+            darkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-gradient-to-br from-emerald-50/70 to-emerald-100/30 border-emerald-200'
           }`}>
-            <h3 className="text-sm font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2 flex items-center gap-2">
-              <span>📊</span>
-              <span>Seu Mapa das 5 Grandes Competências Socioemocionais:</span>
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-              Pontuação normalizada de 1.0 a 5.0 calculada a partir das suas 15 respostas:
-            </p>
-
-            <div className="space-y-4">
-              {[
-                { label: 'Abertura ao Novo & Criatividade', score: studentScores.aberturaAoNovo, color: 'bg-indigo-500' },
-                { label: 'Autodisciplina & Autogestão', score: studentScores.autodisciplina, color: 'bg-blue-500' },
-                { label: 'Amabilidade & Cooperação', score: studentScores.amabilidade, color: 'bg-emerald-500' },
-                { label: 'Extroversão & Engajamento com os Outros', score: studentScores.extroversao, color: 'bg-amber-500' },
-                { label: 'Resiliência & Estabilidade Emocional', score: studentScores.resilienciaEmocional, color: 'bg-rose-500' },
-              ].map((dim, i) => (
-                <div key={i} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-extrabold text-slate-700 dark:text-slate-300">
-                    <span>{dim.label}</span>
-                    <span>{dim.score} / 5.0</span>
-                  </div>
-                  <div className="w-full h-3 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                    <div
-                      className={`h-full ${dim.color} rounded-full transition-all duration-700`}
-                      style={{ width: `${(dim.score / 5) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Insight de Crescimento Pessoal Formativo (Padrão IAS) */}
-          <div className="p-5 sm:p-6 rounded-3xl bg-amber-500/10 border border-amber-400/30 mb-8 flex items-start gap-4">
-            <span className="text-2xl">🌱</span>
-            <div>
-              <h4 className="text-sm font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1">
-                Dica Formativa de Desenvolvimento:
-              </h4>
-              <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                {character.growthInsight}
+            <div className="max-w-md mx-auto">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-3">
+                📲
+              </div>
+              <h3 className="text-base sm:text-lg font-extrabold text-[#0B1226] dark:text-white mb-1">
+                Receber resultado no WhatsApp
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
+                Digite seu número para enviar o resumo das suas forças socioemocionais para o seu celular.
               </p>
+              
+              <form onSubmit={handleSendWhatsApp} className="flex flex-col sm:flex-row gap-2.5">
+                <input
+                  type="tel"
+                  placeholder="(11) 91234-5678"
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
+                    darkMode 
+                      ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500' 
+                      : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400 focus:border-emerald-500'
+                  }`}
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={isSendingWhatsApp}
+                  className="px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                >
+                  {isSendingWhatsApp ? 'Enviando...' : 'Exportar para WhatsApp →'}
+                </button>
+              </form>
+
+              {whatsappStatus === 'success' && (
+                <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2.5">
+                  ✅ Resultado enviado com sucesso para o WhatsApp!
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Outros Personagens Próximos do Ranking */}
-          <div className="mb-8">
-            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">
-              Outros personagens com os quais você também tem afinidade:
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {top3.map((item, idx) => {
-                const itemPhoto = getCharacterImage(item.character.id);
-                return (
-                  <div
-                    key={idx}
-                    className={`p-3.5 rounded-2xl border flex items-center justify-between ${
-                      idx === 0
-                        ? 'border-amber-400 bg-amber-500/10'
-                        : darkMode
-                        ? 'bg-slate-800/40 border-slate-700'
-                        : 'bg-white border-slate-200'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-black/20 flex items-center justify-center ring-2 ring-black/5 dark:ring-white/10">
-                        {itemPhoto ? (
-                          <img
-                            src={itemPhoto}
-                            alt={item.character.name}
-                            className="w-full h-full object-cover object-center"
-                          />
-                        ) : (
-                          <span className="text-xl">{item.character.avatarIcon}</span>
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-xs font-black">{item.character.name}</p>
-                        <p className="text-[10px] text-slate-500">{item.character.role}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs font-black text-amber-600 dark:text-amber-400">
-                      {item.matchPercentage}%
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <button
-              type="button"
-              onClick={handleRestart}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full font-extrabold text-[15px] bg-[#0B1226] hover:bg-slate-800 text-white dark:bg-white dark:text-[#0B1226] dark:hover:bg-slate-100 transition-all cursor-pointer shadow-md"
-            >
-              Refazer o Teste ↺
-            </button>
-
-            <button
-              type="button"
-              onClick={onBackToWelcome}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-[15px] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer"
-            >
-              Trocar de Universo 🌍
-            </button>
-          </div>
         </div>
       </div>
     );

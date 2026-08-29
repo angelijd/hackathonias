@@ -915,6 +915,37 @@ Gere uma s\xEDntese formativa com mindset de crescimento (sem julgamento punitiv
   });
   const whatsAppMemoryStore = /* @__PURE__ */ new Map();
   const activeAccessRequests = /* @__PURE__ */ new Map();
+  const RECOVERY_REQUEST_TTL_MS = 10 * 60 * 1e3;
+  const expireRecoveryRequest = async (request) => {
+    request.status = "expired";
+    activeAccessRequests.set(request.id, request);
+    const evolutionUrl = process.env.EVOLUTION_API_URL;
+    const evolutionKey = process.env.EVOLUTION_API_KEY;
+    const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
+    if (!evolutionUrl || !evolutionKey) return;
+    try {
+      await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": evolutionKey },
+        body: JSON.stringify({
+          number: request.teacherPhone,
+          text: `\u23F0 *Solicita\xE7\xE3o Expirada*
+
+A solicita\xE7\xE3o de acesso de *${request.studentName}* (turma *${request.studentClass}*) expirou ap\xF3s 10 minutos sem resposta e n\xE3o aceita mais aprova\xE7\xE3o ou recusa.`,
+          delay: 500
+        })
+      });
+    } catch (err) {
+      console.warn("[Recupera\xE7\xE3o de Acesso] Falha ao notificar expira\xE7\xE3o:", err);
+    }
+  };
+  setInterval(() => {
+    for (const request of activeAccessRequests.values()) {
+      if (request.status === "waiting" && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+        expireRecoveryRequest(request);
+      }
+    }
+  }, 3e4);
   const logDeSenhaPerdida = [];
   app.get("/api/logs/senha-perdida", (req, res) => {
     return res.json(logDeSenhaPerdida);
@@ -1120,22 +1151,20 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const smtpPass = process.env.SMTP_PASS;
         const smtpHost = process.env.SMTP_HOST || "smtp.ethereal.email";
         const smtpPort = Number(process.env.SMTP_PORT) || 587;
-        let transporter;
+        let previewUrl = null;
         if (smtpUser && smtpPass) {
-          transporter = import_nodemailer.default.createTransport({
-            host: smtpHost,
-            port: smtpPort,
-            secure: smtpPort === 465,
-            auth: { user: smtpUser, pass: smtpPass }
-          });
-        } else {
-          throw new Error("Ethereal desativado (502 Timeout)");
-        }
-        const info = await transporter.sendMail({
-          from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-          to: user.personalEmail,
-          subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
-          text: `Ol\xE1 ${user.name},
+          try {
+            const transporter = import_nodemailer.default.createTransport({
+              host: smtpHost,
+              port: smtpPort,
+              secure: smtpPort === 465,
+              auth: { user: smtpUser, pass: smtpPass }
+            });
+            const info = await transporter.sendMail({
+              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
+              to: user.personalEmail,
+              subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
+              text: `Ol\xE1 ${user.name},
 
 Recebemos uma solicita\xE7\xE3o de redefini\xE7\xE3o de acesso para sua conta.
 
@@ -1144,20 +1173,26 @@ Suas credenciais s\xE3o:
 - Senha: ${user.password}
 
 Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-              <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-              <p>Ol\xE1 <strong>${user.name}</strong>,</p>
-              <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
-              <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
-                <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
-                <strong>Senha:</strong> <code>${user.password}</code>
-              </div>
-              <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
-            </div>
-          `
-        });
-        const previewUrl = import_nodemailer.default.getTestMessageUrl(info);
+              html: `
+                <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <p>Ol\xE1 <strong>${user.name}</strong>,</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
+                    <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
+                    <strong>Senha:</strong> <code>${user.password}</code>
+                  </div>
+                  <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
+                </div>
+              `
+            });
+            previewUrl = import_nodemailer.default.getTestMessageUrl(info) || null;
+          } catch (mailErr) {
+            console.warn("[Recovery Email] Aviso ao enviar via SMTP:", mailErr);
+          }
+        } else {
+          console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
+        }
         return res.json({ success: true, previewUrl: previewUrl || null });
       }
       if (method === "whatsapp") {
@@ -1178,22 +1213,25 @@ Suas credenciais s\xE3o:
 - *Senha:* ${user.password}
 
 Guarde essas credenciais com seguran\xE7a.`;
-        const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "apikey": evolutionKey },
-          body: JSON.stringify({
-            number: formattedNumber,
-            text: messageText,
-            delay: 500
-          })
-        });
-        if (evoRes.ok) {
-          return res.json({ success: true });
-        } else {
-          const errText = await evoRes.text();
-          console.warn("[Evolution API Password Recovery Error]:", errText);
-          return res.status(500).json({ error: "Erro ao enviar mensagem via Evolution API." });
+        try {
+          const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "apikey": evolutionKey },
+            body: JSON.stringify({
+              number: formattedNumber,
+              text: messageText,
+              delay: 500
+            })
+          });
+          if (!evoRes.ok) {
+            const errText = await evoRes.text();
+            console.warn("[Evolution API Password Recovery Warning]:", errText);
+          }
+        } catch (evoErr) {
+          console.warn("[Evolution API Password Recovery Dispatch Warning]:", evoErr);
         }
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
+        return res.json({ success: true });
       }
       return res.status(400).json({ error: "M\xE9todo inv\xE1lido." });
     } catch (err) {
@@ -1450,14 +1488,16 @@ _Esta solicita\xE7\xE3o expirar\xE1 automaticamente se n\xE3o for respondida em 
       return res.status(500).json({ error: err.message || "Erro ao registrar solicita\xE7\xE3o" });
     }
   });
-  app.get("/api/auth-recovery/status/:id", (req, res) => {
+  app.get("/api/auth-recovery/status/:id", async (req, res) => {
     const { id } = req.params;
     const request = activeAccessRequests.get(id);
     if (!request) {
       return res.json({ status: "rejected", reason: "expired_or_not_found" });
     }
-    if (Date.now() - request.createdAt > 10 * 60 * 1e3) {
-      activeAccessRequests.delete(id);
+    if (request.status === "waiting" && Date.now() - request.createdAt > RECOVERY_REQUEST_TTL_MS) {
+      await expireRecoveryRequest(request);
+    }
+    if (request.status === "expired") {
       return res.json({ status: "rejected", reason: "expired" });
     }
     return res.json({ status: request.status });
@@ -1652,6 +1692,10 @@ Vi aqui que seu perfil no laborat\xF3rio foi *${arquetipo || "Inovador Estrat\xE
               }
             }
           }
+          if (foundRequest && Date.now() - foundRequest.createdAt > RECOVERY_REQUEST_TTL_MS) {
+            await expireRecoveryRequest(foundRequest);
+            foundRequest = null;
+          }
           if (foundRequest) {
             const statusText = isApprove ? "APROVADO" : "REPROVADO";
             foundRequest.status = isApprove ? "approved" : "rejected";
@@ -1681,7 +1725,7 @@ O acesso do estudante *${foundRequest.studentName}* foi bloqueado. Ele foi instr
               })
             });
             const logMessage = `\u{1F4CB} *Registro de Log - Recupera\xE7\xE3o de Senha*
-- Aluno: ${foundRequest.studentName}
+- Estudante: ${foundRequest.studentName}
 - Turma: ${foundRequest.studentClass}
 - Status: ${statusText}`;
             await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
@@ -1864,31 +1908,12 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             overflow-x: hidden;
             overflow-y: auto;
           }
-          .hub-hero {
-            padding: 30px 40px 10px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-          }
-          .logo-ias {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-          }
           .hero-title {
             font-size: 28px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
             margin-bottom: 4px;
-          }
-          .hero-subtitle {
-            font-size: 15.5px;
-            font-weight: 800;
-            color: #FBB800;
           }
           .main-grid {
             display: grid;
@@ -2012,103 +2037,202 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(7, 17, 49, 0.72);
-            backdrop-filter: blur(6px);
+            background: rgba(4, 14, 43, 0.78);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
             overflow-y: auto;
           }
           .welcome-card {
             background: white;
             border-radius: 28px;
-            max-width: 620px;
+            max-width: 960px;
             width: 100%;
-            padding: 36px 40px;
-            box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
+            padding: 36px 42px;
+            box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.4);
             margin: auto;
-          }
-          .welcome-eyebrow {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           .welcome-title {
             font-size: 26px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
-            margin-bottom: 18px;
+            margin-bottom: 6px;
           }
-          .welcome-card p {
-            font-size: 14.5px;
-            color: #334155;
+          .welcome-subtitle {
+            font-size: 14px;
+            color: #5B6472;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+          }
+          .welcome-layout-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 36px;
+            align-items: stretch;
+          }
+          .welcome-info-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .welcome-info-col p {
+            font-size: 15.5px;
+            color: #0F172A;
             line-height: 1.6;
-            margin-bottom: 14px;
+            margin-bottom: 24px;
           }
-          .welcome-card ol,
-          .welcome-card ul {
-            margin: 0 0 18px 20px;
+          .welcome-info-col ol {
+            margin: 0 0 16px 22px;
+            font-size: 15px;
+            color: #1E293B;
+            line-height: 1.65;
+          }
+          .welcome-info-col ol > li {
+            margin-bottom: 8px;
+          }
+          .welcome-pillars-bullets {
+            margin: 6px 0 4px 22px;
+            list-style-type: disc;
+          }
+          .welcome-pillars-bullets li {
             font-size: 14.5px;
             color: #334155;
-            line-height: 1.7;
-          }
-          .welcome-card ol li,
-          .welcome-card ul li {
             margin-bottom: 4px;
+            font-weight: 600;
           }
           .welcome-important {
             background: #FFFBEB;
             border: 1px solid #FDE68A;
             border-left: 4px solid #FBB800;
-            border-radius: 0 14px 14px 0;
-            padding: 16px 18px;
-            margin-bottom: 22px;
+            border-radius: 0 12px 12px 0;
+            padding: 10px 14px;
+            margin-top: 14px;
+            margin-bottom: 4px;
           }
           .welcome-important p {
-            margin-bottom: 8px;
-            color: #7C4A03;
+            margin-bottom: 3px !important;
+            color: #7C4A03 !important;
+            font-size: 13px !important;
+            line-height: 1.45 !important;
           }
           .welcome-important p:last-child {
-            margin-bottom: 0;
+            margin-bottom: 0 !important;
             font-weight: 700;
           }
           .welcome-signature {
             font-size: 14.5px;
-            color: #334155;
-            margin-bottom: 26px;
+            color: #475569;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-signature strong {
             display: block;
             color: #071131;
+            font-size: 15.5px;
+            font-weight: 800;
+            margin-top: 2px;
           }
+          
+          /* Coluna Direita (Credenciais + Form) */
+          .welcome-action-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 24px;
+          }
+          .welcome-credentials-box {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+          }
+          .welcome-credentials-header {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #071131;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .welcome-credentials-chips {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .user-role-chip {
+            flex: 1;
+            text-align: center;
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            padding: 6px 4px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #0B1226;
+          }
+          .credential-pwd-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #92400E;
+            width: 100%;
+            justify-content: center;
+          }
+          .credential-pwd-chip strong {
+            font-family: monospace;
+            background: #FEF3C7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+          }
+          
           .welcome-form {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 14px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-field label {
             display: block;
             font-size: 11px;
             font-weight: 800;
-            color: #7C879C;
+            color: #5B6472;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
           }
           .welcome-field input {
             width: 100%;
-            height: 48px;
-            padding: 0 16px;
-            border-radius: 12px;
-            border: 1.5px solid #E2E8F0;
-            font-size: 14.5px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 10px;
+            border: 1.5px solid #CBD5E1;
+            font-size: 13.5px;
             font-family: 'Manrope', sans-serif;
             color: #0B1226;
+            background: white;
             outline: none;
             transition: border-color 0.15s ease;
           }
@@ -2117,82 +2241,117 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
           }
           .welcome-error {
             display: none;
-            font-size: 12.5px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #DC2626;
-            margin-top: -4px;
+            margin-top: -2px;
           }
           .welcome-submit-btn {
-            margin-top: 6px;
-            height: 54px;
+            margin-top: 4px;
+            height: 48px;
             border: none;
             border-radius: 999px;
             background: linear-gradient(135deg, #FDC300, #FBB800);
             color: #071131;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 10px 25px -5px rgba(253,195,0,0.4);
+            box-shadow: 0 8px 20px -4px rgba(253,195,0,0.45);
+            transition: transform 0.15s, filter 0.15s;
           }
           .welcome-submit-btn:hover {
-            filter: brightness(1.03);
+            filter: brightness(1.04);
+            transform: scale(1.01);
+          }
+          @media (max-width: 820px) {
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
+          }
+          @media (max-width: 760px) {
+            .welcome-card {
+              padding: 28px 24px;
+            }
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 24px;
+            }
           }
         </style>
       </head>
       <body>
         <div class="welcome-overlay" id="welcome-overlay">
           <div class="welcome-card">
-            <div class="welcome-eyebrow">Instituto Ayrton Senna</div>
             <h1 class="welcome-title">Ol\xE1, avaliador(a)!</h1>
+            <p class="welcome-subtitle">Seja bem-vindo ao Portal IAS. Nosso time pensou na melhor experi\xEAncia de uso para voc\xEA acessar os prot\xF3tipos.</p>
 
-            <p>Seja bem-vindo ao Portal IAS.</p>
-            <p>Nosso time pensou na melhor experi\xEAncia de uso para voc\xEA acessar os prot\xF3tipos.</p>
-            <p><strong>O que voc\xEA precisa saber:</strong></p>
+            <div class="welcome-layout-grid">
+              <!-- Coluna da Esquerda: O que voc\xEA precisa saber & Pilares -->
+              <div class="welcome-info-col">
+                <div>
+                  <p><strong>O que voc\xEA precisa saber:</strong></p>
+                  <ol>
+                    <li>Todas as 8 dores do edital foram resolvidas;</li>
+                    <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada um, apresentamos nome, dor e solu\xE7\xE3o;</li>
+                    <li>Clique em <strong>"Acessar prot\xF3tipo"</strong> para navegar em cada um deles;</li>
+                    <li>Todos os prot\xF3tipos seguem os 3 pilares fundamentais:
+                      <ul class="welcome-pillars-bullets">
+                        <li>Intencionalidade pedag\xF3gica</li>
+                        <li>IA contextualizada</li>
+                        <li>Personaliza\xE7\xE3o</li>
+                      </ul>
+                    </li>
+                  </ol>
 
-            <ol>
-              <li>Todas as 8 dores do edital foram resolvidas;</li>
-              <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada prot\xF3tipo, temos nome, dor e como resolvemos.</li>
-              <li>Clique em "Acessar prot\xF3tipo" para navegar em cada um deles.</li>
-              <li>Todos os prot\xF3tipos seguem os 3 pilares abaixo:</li>
-            </ol>
+                  <div class="welcome-important">
+                    <p><strong>Importante:</strong> para que voc\xEA possa testar as solu\xE7\xF5es, \xE9 fundamental informar aqui um e-mail e WhatsApp v\xE1lidos.</p>
+                    <p>N\xE3o se preocupe. Assim que voc\xEA fechar essa p\xE1gina, os dados ser\xE3o apagados.</p>
+                  </div>
+                </div>
 
-            <ul>
-              <li>Intencionalidade pedag\xF3gica</li>
-              <li>IA contextualizada</li>
-              <li>Personaliza\xE7\xE3o</li>
-            </ul>
+                <div class="welcome-signature">
+                  Boa jornada!
+                  <strong>Time Cris Miura</strong>
+                </div>
+              </div>
 
-            <div class="welcome-important">
-              <p><strong>Importante:</strong> para que voc\xEA possa testar as solu\xE7\xF5es, \xE9 fundamental informar aqui um e-mail e WhatsApp v\xE1lidos.</p>
-              <p>N\xE3o se preocupe. Assim que voc\xEA fechar essa p\xE1gina, os dados ser\xE3o apagados.</p>
+              <!-- Coluna da Direita: Credenciais Organizadas em Chips + Form de Entrada -->
+              <div class="welcome-action-col">
+                <div class="welcome-credentials-box">
+                  <div class="welcome-credentials-header">
+                    <span>\u{1F510}</span> Credenciais do prot\xF3tipo de login
+                  </div>
+                  <div class="welcome-credentials-chips">
+                    <div class="user-role-chip">Estudante</div>
+                    <div class="user-role-chip">Professor</div>
+                    <div class="user-role-chip">Gestor</div>
+                  </div>
+                  <div class="credential-pwd-chip">
+                    <span>\u{1F511} Senha para todos:</span> <strong>1234</strong>
+                  </div>
+                </div>
+
+                <form class="welcome-form" id="welcome-form">
+                  <div class="welcome-field">
+                    <label for="welcome-email">Seu E-mail</label>
+                    <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
+                  </div>
+                  <div class="welcome-field">
+                    <label for="welcome-whatsapp">Seu WhatsApp</label>
+                    <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
+                  </div>
+                  <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp v\xE1lidos para continuar.</div>
+                  <button type="submit" class="welcome-submit-btn">Acessar Prot\xF3tipos \u2192</button>
+                </form>
+              </div>
             </div>
-
-            <p class="welcome-signature">
-              Boa jornada!
-              <strong>Time Cris Miura</strong>
-            </p>
-
-            <form class="welcome-form" id="welcome-form">
-              <div class="welcome-field">
-                <label for="welcome-email">E-mail</label>
-                <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
-              </div>
-              <div class="welcome-field">
-                <label for="welcome-whatsapp">WhatsApp</label>
-                <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
-              </div>
-              <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp v\xE1lidos para continuar.</div>
-              <button type="submit" class="welcome-submit-btn">Acessar Portal</button>
-            </form>
           </div>
         </div>
 
-        <div class="hub-hero">
-          <div>
-            <div class="logo-ias">Instituto Ayrton Senna</div>
-            <h1 class="hero-title">O que avaliamos quando avaliamos?</h1>
-            <div class="hero-subtitle">Cinco propostas para que a avalia\xE7\xE3o chegue, engaje e mova.</div>
-          </div>
+        <div style="padding: 30px 40px 10px 40px;">
+          <h1 class="hero-title">Navegue abaixo pelos prot\xF3tipos</h1>
+        </div>
         </div>
 
         <div class="main-grid">
@@ -2204,8 +2363,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Estudante, Professor e Gestor</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-frictional">Cadastro Friccional</span><br>
@@ -2238,8 +2397,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2268,8 +2427,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2298,8 +2457,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+              <div class="credentials-chip">Credenciais: Estudante</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2328,7 +2487,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-connect">Falta de Conectividade</span><br>
@@ -2341,7 +2500,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar prot\xF3tipo &rarr;</span>
+              <span class="btn-access">Acessar descri\xE7\xE3o &rarr;</span>
             </div>
           </div>
         </div>
@@ -2385,8 +2544,8 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             var whatsapp = document.getElementById('welcome-whatsapp').value.trim();
             var errorEl = document.getElementById('welcome-error');
 
-            var emailValid = /^[^s@]+@[^s@]+.[^s@]+$/.test(email);
-            var digits = whatsapp.replace(/D/g, '');
+            var emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+            var digits = whatsapp.replace(/\\D/g, '');
             var whatsappValid = digits.length >= 10 && digits.length <= 13;
 
             if (!emailValid || !whatsappValid) {
@@ -2394,6 +2553,10 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               return;
             }
             errorEl.style.display = 'none';
+            try {
+              sessionStorage.setItem('ias_evaluator_email', email);
+              sessionStorage.setItem('ias_evaluator_whatsapp', digits);
+            } catch (err) {}
             document.getElementById('welcome-overlay').style.display = 'none';
             document.body.style.overflow = '';
           });

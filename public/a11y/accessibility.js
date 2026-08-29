@@ -1,9 +1,8 @@
 // accessibility.js
 document.addEventListener('DOMContentLoaded', function() {
-
   var isOpeningScreen = window.location.pathname.includes("/login");
 
-  // Widget Flutuante ♿
+  // Widget Flutuante ♿ (canto inferior direito)
   var widget = document.createElement('button');
   widget.id = 'ias-a11y-widget';
   widget.innerHTML = '♿';
@@ -13,8 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Menu de Acessibilidade
   var menu = document.createElement('div');
   menu.id = 'ias-a11y-menu';
-  menu.innerHTML = '<button class="ias-a11y-btn" id="ias-btn-contrast">👁️ Modo adaptado</button>' +
-                   '';
+  menu.innerHTML = '<button class="ias-a11y-btn" id="ias-btn-contrast">👁️ Modo adaptado</button>';
   if (isOpeningScreen) { document.body.appendChild(menu); }
 
   widget.addEventListener('click', function() { menu.classList.toggle('active'); });
@@ -27,5 +25,4 @@ document.addEventListener('DOMContentLoaded', function() {
         '👁️ Desativar Modo Adaptado' : '👁️ Modo adaptado';
     });
   }
-
 });

@@ -557,7 +557,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                   {recoveryStep === 'form' && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
                       <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold leading-relaxed">
-                        Olá! Se você não consegue entrar, informe seus dados abaixo e solicite entrada.
+                        Olá! Se você esqueceu seu código de acesso, informe seus dados para solicitar entrada.
                       </div>
 
                       <div>
@@ -651,7 +651,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                         ⏱️ Tempo restante: {formatTime(remainingSeconds)}
                       </div>
                       <p className="text-[11px] font-bold text-slate-400 leading-normal max-w-[38ch]">
-                        Se a liberação demorar mais do que 10 minutos, feche esta tela e procure a Secretaria para solicitar entrada.
+                        Se não houver resposta em 10 minutos, feche esta tela e procure a Secretaria da sua escola.
                       </p>
                       <div className="pt-2 w-full">
                         <button

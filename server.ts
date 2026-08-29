@@ -1305,38 +1305,44 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const smtpHost = process.env.SMTP_HOST || 'smtp.ethereal.email';
         const smtpPort = Number(process.env.SMTP_PORT) || 587;
 
-        let transporter;
+        let previewUrl: string | boolean | null = null;
+
         if (smtpUser && smtpPass) {
-          transporter = nodemailer.createTransport({
-            host: smtpHost,
-            port: smtpPort,
-            secure: smtpPort === 465,
-            auth: { user: smtpUser, pass: smtpPass }
-          });
+          try {
+            const transporter = nodemailer.createTransport({
+              host: smtpHost,
+              port: smtpPort,
+              secure: smtpPort === 465,
+              auth: { user: smtpUser, pass: smtpPass }
+            });
+
+            const info = await transporter.sendMail({
+              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
+              to: user.personalEmail,
+              subject: '🔑 Recuperação de Acesso - Portal IAS',
+              text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+              html: `
+                <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <p>Olá <strong>${user.name}</strong>,</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
+                    <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
+                    <strong>Senha:</strong> <code>${user.password}</code>
+                  </div>
+                  <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
+                </div>
+              `
+            });
+
+            previewUrl = nodemailer.getTestMessageUrl(info) || null;
+          } catch (mailErr) {
+            console.warn('[Recovery Email] Aviso ao enviar via SMTP:', mailErr);
+          }
         } else {
-          throw new Error('Ethereal desativado (502 Timeout)');
+          console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: Código: ${user.code}, Senha: ${user.password}`);
         }
 
-        const info = await transporter.sendMail({
-          from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-          to: user.personalEmail,
-          subject: '🔑 Recuperação de Acesso - Portal IAS',
-          text: `Olá ${user.name},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-              <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-              <p>Olá <strong>${user.name}</strong>,</p>
-              <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
-              <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
-                <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
-                <strong>Senha:</strong> <code>${user.password}</code>
-              </div>
-              <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
-            </div>
-          `
-        });
-
-        const previewUrl = nodemailer.getTestMessageUrl(info);
         return res.json({ success: true, previewUrl: previewUrl || null });
       }
 
@@ -1354,23 +1360,27 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
 
-        const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
-          body: JSON.stringify({
-            number: formattedNumber,
-            text: messageText,
-            delay: 500
-          })
-        });
+        try {
+          const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
+            body: JSON.stringify({
+              number: formattedNumber,
+              text: messageText,
+              delay: 500
+            })
+          });
 
-        if (evoRes.ok) {
-          return res.json({ success: true });
-        } else {
-          const errText = await evoRes.text();
-          console.warn('[Evolution API Password Recovery Error]:', errText);
-          return res.status(500).json({ error: 'Erro ao enviar mensagem via Evolution API.' });
+          if (!evoRes.ok) {
+            const errText = await evoRes.text();
+            console.warn('[Evolution API Password Recovery Warning]:', errText);
+          }
+        } catch (evoErr) {
+          console.warn('[Evolution API Password Recovery Dispatch Warning]:', evoErr);
         }
+
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: Código: ${user.code}, Senha: ${user.password}`);
+        return res.json({ success: true });
       }
 
       return res.status(400).json({ error: 'Método inválido.' });
@@ -2179,31 +2189,12 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             overflow-x: hidden;
             overflow-y: auto;
           }
-          .hub-hero {
-            padding: 30px 40px 10px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-          }
-          .logo-ias {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-          }
           .hero-title {
             font-size: 28px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
             margin-bottom: 4px;
-          }
-          .hero-subtitle {
-            font-size: 15.5px;
-            font-weight: 800;
-            color: #FBB800;
           }
           .main-grid {
             display: grid;
@@ -2327,40 +2318,43 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(7, 17, 49, 0.72);
-            backdrop-filter: blur(6px);
+            background: rgba(4, 14, 43, 0.78);
+            backdrop-filter: blur(8px);
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
             overflow-y: auto;
           }
           .welcome-card {
             background: white;
             border-radius: 28px;
-            max-width: 920px;
+            max-width: 960px;
             width: 100%;
-            padding: 40px 44px;
-            box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
+            padding: 36px 42px;
+            box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.4);
             margin: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           .welcome-title {
             font-size: 26px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
           }
           .welcome-subtitle {
             font-size: 14px;
-            color: #334155;
-            line-height: 1.6;
-            margin-bottom: 24px;
+            color: #5B6472;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
           }
           .welcome-layout-grid {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.15fr 0.85fr;
             gap: 36px;
+            align-items: stretch;
           }
           .welcome-info-col {
             display: flex;
@@ -2368,120 +2362,158 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             justify-content: space-between;
           }
           .welcome-info-col p {
-            font-size: 14px;
-            color: #334155;
+            font-size: 15.5px;
+            color: #0F172A;
             line-height: 1.6;
-            margin-bottom: 10px;
+            margin-bottom: 24px;
           }
           .welcome-info-col ol {
-            margin: 0 0 0 18px;
-            font-size: 13.5px;
-            color: #334155;
-            line-height: 1.7;
+            margin: 0 0 16px 22px;
+            font-size: 15px;
+            color: #1E293B;
+            line-height: 1.65;
           }
-          .welcome-info-col ol li {
-            margin-bottom: 6px;
+          .welcome-info-col ol > li {
+            margin-bottom: 8px;
           }
           .welcome-pillars-bullets {
-            margin: 6px 0 0 18px;
-            font-size: 13px;
-            color: #475569;
-            line-height: 1.6;
+            margin: 6px 0 4px 22px;
+            list-style-type: disc;
           }
-          .welcome-action-col {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-          }
-          .welcome-credentials-box {
-            background: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            padding: 16px 18px;
-          }
-          .welcome-credentials-header {
-            font-size: 12px;
-            font-weight: 800;
-            color: #0E477A;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-          }
-          .welcome-credentials-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-          }
-          .user-role-chip {
-            background: white;
-            border: 1px solid #E2E8F0;
-            border-radius: 999px;
-            padding: 6px 14px;
-            font-size: 12.5px;
-            font-weight: 700;
+          .welcome-pillars-bullets li {
+            font-size: 14.5px;
             color: #334155;
-          }
-          .credential-pwd-chip {
-            font-size: 13px;
-            color: #7C4A03;
-            background: #FFFBEB;
-            border: 1px solid #FDE68A;
-            border-radius: 10px;
-            padding: 8px 12px;
-            display: inline-block;
+            margin-bottom: 4px;
+            font-weight: 600;
           }
           .welcome-important {
             background: #FFFBEB;
             border: 1px solid #FDE68A;
             border-left: 4px solid #FBB800;
-            border-radius: 0 14px 14px 0;
-            padding: 14px 16px;
+            border-radius: 0 12px 12px 0;
+            padding: 10px 14px;
+            margin-top: 14px;
+            margin-bottom: 4px;
           }
           .welcome-important p {
-            margin-bottom: 6px;
-            color: #7C4A03;
-            font-size: 13.5px;
-            line-height: 1.5;
+            margin-bottom: 3px !important;
+            color: #7C4A03 !important;
+            font-size: 13px !important;
+            line-height: 1.45 !important;
           }
           .welcome-important p:last-child {
-            margin-bottom: 0;
+            margin-bottom: 0 !important;
             font-weight: 700;
           }
           .welcome-signature {
-            font-size: 14px;
-            color: #334155;
+            font-size: 14.5px;
+            color: #475569;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-signature strong {
             display: block;
             color: #071131;
+            font-size: 15.5px;
+            font-weight: 800;
+            margin-top: 2px;
           }
+          
+          /* Coluna Direita (Credenciais + Form) */
+          .welcome-action-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 24px;
+          }
+          .welcome-credentials-box {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+          }
+          .welcome-credentials-header {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #071131;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .welcome-credentials-chips {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .user-role-chip {
+            flex: 1;
+            text-align: center;
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            padding: 6px 4px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #0B1226;
+          }
+          .credential-pwd-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #92400E;
+            width: 100%;
+            justify-content: center;
+          }
+          .credential-pwd-chip strong {
+            font-family: monospace;
+            background: #FEF3C7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+          }
+          
           .welcome-form {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 14px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-field label {
             display: block;
             font-size: 11px;
             font-weight: 800;
-            color: #7C879C;
+            color: #5B6472;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
           }
           .welcome-field input {
             width: 100%;
-            height: 46px;
-            padding: 0 16px;
-            border-radius: 12px;
-            border: 1.5px solid #E2E8F0;
-            font-size: 14px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 10px;
+            border: 1.5px solid #CBD5E1;
+            font-size: 13.5px;
             font-family: 'Manrope', sans-serif;
             color: #0B1226;
+            background: white;
             outline: none;
             transition: border-color 0.15s ease;
           }
@@ -2490,25 +2522,33 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           }
           .welcome-error {
             display: none;
-            font-size: 12.5px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #DC2626;
-            margin-top: -4px;
+            margin-top: -2px;
           }
           .welcome-submit-btn {
-            margin-top: 6px;
-            height: 54px;
+            margin-top: 4px;
+            height: 48px;
             border: none;
             border-radius: 999px;
             background: linear-gradient(135deg, #FDC300, #FBB800);
             color: #071131;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 10px 25px -5px rgba(253,195,0,0.4);
+            box-shadow: 0 8px 20px -4px rgba(253,195,0,0.45);
+            transition: transform 0.15s, filter 0.15s;
           }
           .welcome-submit-btn:hover {
-            filter: brightness(1.03);
+            filter: brightness(1.04);
+            transform: scale(1.01);
+          }
+          @media (max-width: 820px) {
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
           }
           @media (max-width: 760px) {
             .welcome-card {
@@ -2528,12 +2568,13 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
             <p class="welcome-subtitle">Seja bem-vindo ao Portal IAS. Nosso time pensou na melhor experiência de uso para você acessar os protótipos.</p>
 
             <div class="welcome-layout-grid">
+              <!-- Coluna da Esquerda: O que você precisa saber & Pilares -->
               <div class="welcome-info-col">
                 <div>
                   <p><strong>O que você precisa saber:</strong></p>
                   <ol>
                     <li>Todas as 8 dores do edital foram resolvidas;</li>
-                    <li>Desenvolvemos 5 protótipos para essas dores. Em cada card, apresentamos nome, dor e solução;</li>
+                    <li>Desenvolvemos 5 protótipos para essas dores. Em cada um, apresentamos nome, dor e solução;</li>
                     <li>Clique em <strong>"Acessar protótipo"</strong> para navegar em cada um deles;</li>
                     <li>Todos os protótipos seguem os 3 pilares fundamentais:
                       <ul class="welcome-pillars-bullets">
@@ -2543,32 +2584,33 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                       </ul>
                     </li>
                   </ol>
+
+                  <div class="welcome-important">
+                    <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
+                    <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
+                  </div>
                 </div>
 
-                <p class="welcome-signature">
+                <div class="welcome-signature">
                   Boa jornada!
                   <strong>Time Cris Miura</strong>
-                </p>
+                </div>
               </div>
 
+              <!-- Coluna da Direita: Credenciais Organizadas em Chips + Form de Entrada -->
               <div class="welcome-action-col">
                 <div class="welcome-credentials-box">
                   <div class="welcome-credentials-header">
                     <span>🔐</span> Credenciais do protótipo de login
                   </div>
                   <div class="welcome-credentials-chips">
-                    <div class="user-role-chip">👤 Estudante</div>
-                    <div class="user-role-chip">👨‍🏫 Professor</div>
-                    <div class="user-role-chip">👔 Gestor</div>
+                    <div class="user-role-chip">Estudante</div>
+                    <div class="user-role-chip">Professor</div>
+                    <div class="user-role-chip">Gestor</div>
                   </div>
                   <div class="credential-pwd-chip">
                     <span>🔑 Senha para todos:</span> <strong>1234</strong>
                   </div>
-                </div>
-
-                <div class="welcome-important">
-                  <p><strong>Importante:</strong> para que você possa testar as soluções, é fundamental informar aqui um e-mail e WhatsApp válidos.</p>
-                  <p>Não se preocupe. Assim que você fechar essa página, os dados serão apagados.</p>
                 </div>
 
                 <form class="welcome-form" id="welcome-form">
@@ -2588,12 +2630,9 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           </div>
         </div>
 
-        <div class="hub-hero">
-          <div>
-            <div class="logo-ias">Instituto Ayrton Senna</div>
-            <h1 class="hero-title">O que avaliamos quando avaliamos?</h1>
-            <div class="hero-subtitle">Cinco propostas para que a avaliação chegue, engaje e mova.</div>
-          </div>
+        <div style="padding: 30px 40px 10px 40px;">
+          <h1 class="hero-title">Navegue abaixo pelos protótipos</h1>
+        </div>
         </div>
 
         <div class="main-grid">
