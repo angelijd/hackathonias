@@ -206,7 +206,7 @@ export const Screen2bTestSelection: React.FC<Props> = ({
             onClick={handleContinue}
             className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#0640C6] hover:bg-[#05329C] active:scale-[0.985] text-white text-[15px] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_24px_rgba(6,64,198,0.3)] hover:shadow-[0_12px_28px_rgba(6,64,198,0.4)] transition-all cursor-pointer"
           >
-            <span>Entrar no laboratório</span>
+            <span>Começar o teste</span>
             <span className="text-lg leading-none">→</span>
           </button>
         </div>
