@@ -1993,103 +1993,189 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(7, 17, 49, 0.72);
-            backdrop-filter: blur(6px);
+            background: rgba(4, 14, 43, 0.78);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
             overflow-y: auto;
           }
           .welcome-card {
             background: white;
             border-radius: 28px;
-            max-width: 620px;
+            max-width: 960px;
             width: 100%;
-            padding: 36px 40px;
-            box-shadow: 0 30px 70px -15px rgba(0,0,0,0.35);
+            padding: 36px 42px;
+            box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.4);
             margin: auto;
-          }
-          .welcome-eyebrow {
-            font-size: 11px;
-            font-weight: 900;
-            color: #FBB800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           .welcome-title {
             font-size: 26px;
             font-weight: 900;
             color: #071131;
             letter-spacing: -0.5px;
-            margin-bottom: 18px;
+            margin-bottom: 6px;
           }
-          .welcome-card p {
-            font-size: 14.5px;
+          .welcome-subtitle {
+            font-size: 14px;
+            color: #5B6472;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+          }
+          .welcome-layout-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 36px;
+            align-items: stretch;
+          }
+          .welcome-info-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .welcome-info-col p {
+            font-size: 13.5px;
             color: #334155;
-            line-height: 1.6;
-            margin-bottom: 14px;
+            line-height: 1.55;
+            margin-bottom: 10px;
           }
-          .welcome-card ol,
-          .welcome-card ul {
-            margin: 0 0 18px 20px;
-            font-size: 14.5px;
+          .welcome-info-col ol {
+            margin: 0 0 12px 18px;
+            font-size: 13px;
             color: #334155;
-            line-height: 1.7;
+            line-height: 1.55;
           }
-          .welcome-card ol li,
-          .welcome-card ul li {
+          .welcome-info-col ol li {
             margin-bottom: 4px;
           }
-          .welcome-important {
-            background: #FFFBEB;
-            border: 1px solid #FDE68A;
-            border-left: 4px solid #FBB800;
-            border-radius: 0 14px 14px 0;
-            padding: 16px 18px;
-            margin-bottom: 22px;
+          .welcome-pillars-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0 14px 0;
+            list-style: none;
+            padding: 0;
           }
-          .welcome-important p {
-            margin-bottom: 8px;
-            color: #7C4A03;
-          }
-          .welcome-important p:last-child {
-            margin-bottom: 0;
-            font-weight: 700;
+          .welcome-pillar-chip {
+            font-size: 11.5px;
+            font-weight: 800;
+            background: #EFF6FF;
+            color: #0B7CFB;
+            border: 1px solid #DBEAFE;
+            padding: 4px 10px;
+            border-radius: 8px;
           }
           .welcome-signature {
-            font-size: 14.5px;
-            color: #334155;
-            margin-bottom: 26px;
+            font-size: 13.5px;
+            color: #5B6472;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #F1F5F9;
           }
           .welcome-signature strong {
             display: block;
             color: #071131;
+            font-size: 14px;
+            font-weight: 800;
           }
+          
+          /* Coluna Direita (Credenciais + Form) */
+          .welcome-action-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 24px;
+          }
+          .welcome-credentials-box {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+          }
+          .welcome-credentials-header {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #071131;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .welcome-credentials-chips {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+          .user-role-chip {
+            flex: 1;
+            text-align: center;
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            padding: 6px 4px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #0B1226;
+          }
+          .credential-pwd-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #92400E;
+            width: 100%;
+            justify-content: center;
+          }
+          .credential-pwd-chip strong {
+            font-family: monospace;
+            background: #FEF3C7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+          }
+          
           .welcome-form {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 14px;
+            border-top: 1px solid #E2E8F0;
           }
           .welcome-field label {
             display: block;
             font-size: 11px;
             font-weight: 800;
-            color: #7C879C;
+            color: #5B6472;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
           }
           .welcome-field input {
             width: 100%;
-            height: 48px;
-            padding: 0 16px;
-            border-radius: 12px;
-            border: 1.5px solid #E2E8F0;
-            font-size: 14.5px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 10px;
+            border: 1.5px solid #CBD5E1;
+            font-size: 13.5px;
             font-family: 'Manrope', sans-serif;
             color: #0B1226;
+            background: white;
             outline: none;
             transition: border-color 0.15s ease;
           }
@@ -2098,73 +2184,97 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
           }
           .welcome-error {
             display: none;
-            font-size: 12.5px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #DC2626;
-            margin-top: -4px;
+            margin-top: -2px;
           }
           .welcome-submit-btn {
-            margin-top: 6px;
-            height: 54px;
+            margin-top: 4px;
+            height: 48px;
             border: none;
             border-radius: 999px;
             background: linear-gradient(135deg, #FDC300, #FBB800);
             color: #071131;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 10px 25px -5px rgba(253,195,0,0.4);
+            box-shadow: 0 8px 20px -4px rgba(253,195,0,0.45);
+            transition: transform 0.15s, filter 0.15s;
           }
           .welcome-submit-btn:hover {
-            filter: brightness(1.03);
+            filter: brightness(1.04);
+            transform: scale(1.01);
+          }
+          @media (max-width: 820px) {
+            .welcome-layout-grid {
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
           }
         </style>
       </head>
       <body>
         <div class="welcome-overlay" id="welcome-overlay">
           <div class="welcome-card">
-            <div class="welcome-eyebrow">Instituto Ayrton Senna</div>
             <h1 class="welcome-title">Ol\xE1, avaliador(a)!</h1>
+            <p class="welcome-subtitle">Seja bem-vindo ao Portal IAS. Nosso time pensou na melhor experi\xEAncia de uso para voc\xEA acessar os prot\xF3tipos.</p>
 
-            <p>Seja bem-vindo ao Portal IAS.</p>
-            <p>Nosso time pensou na melhor experi\xEAncia de uso para voc\xEA acessar os prot\xF3tipos.</p>
-            <p><strong>O que voc\xEA precisa saber:</strong></p>
+            <div class="welcome-layout-grid">
+              <!-- Coluna da Esquerda: O que voc\xEA precisa saber & Pilares -->
+              <div class="welcome-info-col">
+                <div>
+                  <p><strong>O que voc\xEA precisa saber:</strong></p>
+                  <ol>
+                    <li>Todas as 8 dores do edital foram resolvidas;</li>
+                    <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada card, apresentamos nome, dor e solu\xE7\xE3o;</li>
+                    <li>Clique em <strong>"Acessar prot\xF3tipo"</strong> para navegar em cada um deles;</li>
+                    <li>Todos os prot\xF3tipos seguem os 3 pilares fundamentais:</li>
+                  </ol>
 
-            <ol>
-              <li>Todas as 8 dores do edital foram resolvidas;</li>
-              <li>Desenvolvemos 5 prot\xF3tipos para essas dores. Em cada prot\xF3tipo, temos nome, dor e como resolvemos.</li>
-              <li>Clique em "Acessar prot\xF3tipo" para navegar em cada um deles.</li>
-              <li>Todos os prot\xF3tipos seguem os 3 pilares abaixo:</li>
-            </ol>
+                  <ul class="welcome-pillars-list">
+                    <li class="welcome-pillar-chip">\u{1F3AF} Intencionalidade pedag\xF3gica</li>
+                    <li class="welcome-pillar-chip">\u{1F916} IA contextualizada</li>
+                    <li class="welcome-pillar-chip">\u26A1 Personaliza\xE7\xE3o</li>
+                  </ul>
+                </div>
 
-            <ul>
-              <li>Intencionalidade pedag\xF3gica</li>
-              <li>IA contextualizada</li>
-              <li>Personaliza\xE7\xE3o</li>
-            </ul>
+                <div class="welcome-signature">
+                  Boa jornada!
+                  <strong>Time Cris Miura</strong>
+                </div>
+              </div>
 
-            <div class="welcome-important">
-              <p><strong>Importante:</strong> para que voc\xEA possa testar as solu\xE7\xF5es, \xE9 fundamental informar aqui um e-mail e WhatsApp v\xE1lidos.</p>
-              <p>N\xE3o se preocupe. Assim que voc\xEA fechar essa p\xE1gina, os dados ser\xE3o apagados.</p>
+              <!-- Coluna da Direita: Credenciais Organizadas em Chips + Form de Entrada -->
+              <div class="welcome-action-col">
+                <div class="welcome-credentials-box">
+                  <div class="welcome-credentials-header">
+                    <span>\u{1F510}</span> Credenciais do prot\xF3tipo de login
+                  </div>
+                  <div class="welcome-credentials-chips">
+                    <div class="user-role-chip">\u{1F464} Aluno</div>
+                    <div class="user-role-chip">\u{1F468}\u200D\u{1F3EB} Professor</div>
+                    <div class="user-role-chip">\u{1F454} Gestor</div>
+                  </div>
+                  <div class="credential-pwd-chip">
+                    <span>\u{1F511} Senha para todos:</span> <strong>1234</strong>
+                  </div>
+                </div>
+
+                <form class="welcome-form" id="welcome-form">
+                  <div class="welcome-field">
+                    <label for="welcome-email">Seu E-mail</label>
+                    <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
+                  </div>
+                  <div class="welcome-field">
+                    <label for="welcome-whatsapp">Seu WhatsApp</label>
+                    <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
+                  </div>
+                  <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp v\xE1lidos para continuar.</div>
+                  <button type="submit" class="welcome-submit-btn">Acessar Prot\xF3tipos \u2192</button>
+                </form>
+              </div>
             </div>
-
-            <p class="welcome-signature">
-              Boa jornada!
-              <strong>Time Cris Miura</strong>
-            </p>
-
-            <form class="welcome-form" id="welcome-form">
-              <div class="welcome-field">
-                <label for="welcome-email">E-mail</label>
-                <input type="email" id="welcome-email" placeholder="seuemail@exemplo.com" required />
-              </div>
-              <div class="welcome-field">
-                <label for="welcome-whatsapp">WhatsApp</label>
-                <input type="tel" id="welcome-whatsapp" placeholder="(11) 91234-5678" required />
-              </div>
-              <div class="welcome-error" id="welcome-error">Informe um e-mail e um WhatsApp v\xE1lidos para continuar.</div>
-              <button type="submit" class="welcome-submit-btn">Acessar Portal</button>
-            </form>
           </div>
         </div>
 
@@ -2183,7 +2293,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno, Professor e Gestor</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-frictional">Cadastro Friccional</span><br>
@@ -2217,7 +2327,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2247,7 +2357,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2277,7 +2387,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             </div>
             <div class="card-body">
               <div class="credentials-chip">Credenciais: Aluno</div>
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-engagement">Engajamento de Jovens</span><br>
@@ -2306,7 +2416,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="section-title">Dores do Edital Atacadas</div>
+
               <ul class="pain-list">
                 <li class="pain-item">
                   <span class="pain-badge badge-connect">Falta de Conectividade</span><br>
@@ -2319,7 +2429,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </ul>
             </div>
             <div class="card-footer">
-              <span class="btn-access">Acessar prot\xF3tipo &rarr;</span>
+              <span class="btn-access">Acessar descri\xE7\xE3o &rarr;</span>
             </div>
           </div>
         </div>
