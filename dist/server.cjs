@@ -22,12 +22,25 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 
 // server.ts
+var import_dns = __toESM(require("dns"), 1);
 var import_express = __toESM(require("express"), 1);
 var import_path = __toESM(require("path"), 1);
 var import_fs = __toESM(require("fs"), 1);
 var import_dotenv = __toESM(require("dotenv"), 1);
 var import_genai = require("@google/genai");
 var import_nodemailer = __toESM(require("nodemailer"), 1);
+try {
+  import_dns.default.setDefaultResultOrder("ipv4first");
+} catch (e) {
+}
+function formatWhatsAppNumber(phone) {
+  let clean = (phone || "").replace(/\D/g, "");
+  if (!clean) return "";
+  if ((clean.length === 10 || clean.length === 11) && !clean.startsWith("55")) {
+    clean = `55${clean}`;
+  }
+  return clean;
+}
 var envLocalPath = import_path.default.resolve(process.cwd(), ".env.local");
 if (import_fs.default.existsSync(envLocalPath)) {
   import_dotenv.default.config({ path: envLocalPath });
@@ -1067,7 +1080,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       return res.status(404).json({ error: "Usu\xE1rio n\xE3o encontrado." });
     }
     user.personalEmail = personalEmail;
-    user.personalWhatsapp = personalWhatsapp;
+    user.personalWhatsapp = formatWhatsAppNumber(personalWhatsapp);
     user.securityQuestion = securityQuestion;
     user.securityAnswer = securityAnswer;
     user.isFirstAccess = false;
@@ -1165,14 +1178,13 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
         return res.json({ success: true, previewUrl: previewUrl || null });
       }
       if (method === "whatsapp") {
-        if (!user.personalWhatsapp) {
-          return res.status(400).json({ error: "WhatsApp n\xE3o configurado." });
+        const cleanNumber = formatWhatsAppNumber(user.personalWhatsapp);
+        if (!cleanNumber) {
+          return res.status(400).json({ error: "WhatsApp n\xE3o configurado ou inv\xE1lido." });
         }
         const evolutionUrl = process.env.EVOLUTION_API_URL || "http://localhost:8080";
-        const evolutionKey = process.env.EVOLUTION_API_KEY || "apikey";
-        const evolutionInstance = process.env.EVOLUTION_INSTANCE || "instancia_teste";
-        const rawNumber = user.personalWhatsapp.replace(/\D/g, "");
-        const formattedNumber = rawNumber.endsWith("@s.whatsapp.net") ? rawNumber : `${rawNumber}@s.whatsapp.net`;
+        const evolutionKey = process.env.EVOLUTION_API_KEY || "BecoIAS2026";
+        const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
         const messageText = `\u{1F511} *Recupera\xE7\xE3o de Acesso - Portal IAS*
 
 Ol\xE1 *${user.name}*,
@@ -1187,7 +1199,7 @@ Guarde essas credenciais com seguran\xE7a.`;
             method: "POST",
             headers: { "Content-Type": "application/json", "apikey": evolutionKey },
             body: JSON.stringify({
-              number: formattedNumber,
+              number: cleanNumber,
               text: messageText,
               delay: 500
             })
@@ -1195,11 +1207,13 @@ Guarde essas credenciais com seguran\xE7a.`;
           if (!evoRes.ok) {
             const errText = await evoRes.text();
             console.warn("[Evolution API Password Recovery Warning]:", errText);
+          } else {
+            console.log(`[Evolution API Password Recovery] Mensagem enviada com sucesso para ${cleanNumber}!`);
           }
         } catch (evoErr) {
           console.warn("[Evolution API Password Recovery Dispatch Warning]:", evoErr);
         }
-        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${cleanNumber}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
         return res.json({ success: true });
       }
       return res.status(400).json({ error: "M\xE9todo inv\xE1lido." });

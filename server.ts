@@ -1,26 +1,33 @@
+import dns from 'dns';
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {}
 
-function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
+function formatWhatsAppNumber(phone: string): string {
+  let clean = (phone || '').replace(/\D/g, '');
+  if (!clean) return '';
+  if ((clean.length === 10 || clean.length === 11) && !clean.startsWith('55')) {
+    clean = `55${clean}`;
+  }
+  return clean;
+}
+
+function createEmailTransporter(smtpUser?: string, smtpPass?: string, smtpHost?: string, smtpPort?: string | number) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
   const portNum = Number(smtpPort) || 465;
-  if ((smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'))) {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: smtpUser, pass: cleanPass },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000
-    });
-  }
+  const isGmail = (smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'));
+
   return nodemailer.createTransport({
-    host: smtpHost || 'smtp.gmail.com',
+    host: isGmail ? 'smtp.gmail.com' : (smtpHost || 'smtp.gmail.com'),
     port: portNum,
     secure: portNum === 465,
     auth: { user: smtpUser, pass: cleanPass },
+    family: 4, // Força IPv4 para evitar erro ENETUNREACH
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 20000,
     tls: { rejectUnauthorized: false }
-  });
+  } as any);
 }
 
 import express from 'express';
@@ -1203,7 +1210,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     }
 
     user.personalEmail = personalEmail;
-    user.personalWhatsapp = personalWhatsapp;
+    user.personalWhatsapp = formatWhatsAppNumber(personalWhatsapp);
     user.securityQuestion = securityQuestion;
     user.securityAnswer = securityAnswer;
     user.isFirstAccess = false;
@@ -1312,16 +1319,14 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       }
 
       if (method === 'whatsapp') {
-        if (!user.personalWhatsapp) {
-          return res.status(400).json({ error: 'WhatsApp não configurado.' });
+        const cleanNumber = formatWhatsAppNumber(user.personalWhatsapp);
+        if (!cleanNumber) {
+          return res.status(400).json({ error: 'WhatsApp não configurado ou inválido.' });
         }
 
         const evolutionUrl = process.env.EVOLUTION_API_URL || 'http://localhost:8080';
-        const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
-        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
-
-        const rawNumber = user.personalWhatsapp.replace(/\D/g, '');
-        const formattedNumber = rawNumber.endsWith('@s.whatsapp.net') ? rawNumber : `${rawNumber}@s.whatsapp.net`;
+        const evolutionKey = process.env.EVOLUTION_API_KEY || 'BecoIAS2026';
+        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
         const messageText = `🔑 *Recuperação de Acesso - Portal IAS*\n\nOlá *${user.name}*,\n\nSuas credenciais são:\n- *Código de Acesso:* ${user.code}\n- *Senha:* ${user.password}\n\nGuarde essas credenciais com segurança.`;
 
@@ -1330,7 +1335,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'apikey': evolutionKey },
             body: JSON.stringify({
-              number: formattedNumber,
+              number: cleanNumber,
               text: messageText,
               delay: 500
             })
@@ -1339,12 +1344,14 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
           if (!evoRes.ok) {
             const errText = await evoRes.text();
             console.warn('[Evolution API Password Recovery Warning]:', errText);
+          } else {
+            console.log(`[Evolution API Password Recovery] Mensagem enviada com sucesso para ${cleanNumber}!`);
           }
         } catch (evoErr) {
           console.warn('[Evolution API Password Recovery Dispatch Warning]:', evoErr);
         }
 
-        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: Código: ${user.code}, Senha: ${user.password}`);
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${cleanNumber}: Código: ${user.code}, Senha: ${user.password}`);
         return res.json({ success: true });
       }
 
