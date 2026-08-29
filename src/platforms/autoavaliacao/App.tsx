@@ -222,7 +222,7 @@ export default function App() {
               interestDetail={selectedInterests.map(id => interestDetails[id]).filter(Boolean).join(', ')}
               selectedExpectation={selectedExpectation}
               testType={selectedTestType || 'critical_thinking'}
-              onBackToWelcome={() => setScreenStep('welcome')}
+              onBackToPreferences={() => setScreenStep('preferences')}
             />
           </div>
         )}
