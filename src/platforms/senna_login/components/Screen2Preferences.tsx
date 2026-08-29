@@ -233,7 +233,7 @@ export const Screen2Preferences: React.FC<Props> = ({
           <span className="absolute top-0 -left-[60%] w-[38%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-sheen pointer-events-none" />
 
           <span className="text-[16px] font-extrabold text-[#0B1226] tracking-tight whitespace-nowrap">
-            Avançar para as perguntas
+            Começar o teste
           </span>
 
           <span className="w-8 h-8 rounded-full bg-[#040E2B] flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 shadow ml-2">

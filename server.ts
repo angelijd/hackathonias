@@ -1,5 +1,11 @@
 
-function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
+import dns from 'dns';
+// Muitos hosts de container (Railway incluso) anunciam um endereço IPv6 para
+// smtp.gmail.com que não tem rota de saída, causando ENETUNREACH. Forçar IPv4
+// evita que o Node tente esse endereço primeiro.
+dns.setDefaultResultOrder('ipv4first');
+
+function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
   const portNum = Number(smtpPort) || 465;
   if ((smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'))) {
@@ -1070,14 +1076,14 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
    - Competência Geral 8 – Autoconhecimento e Autocuidado
    - Competência Geral 9 – Empatia e Cooperação
    - Competência Geral 10 – Responsabilidade e Cidadania
-3. Seja objetivo e curto nas respostas (no máximo 3 parágrafos). Nunca use metáforas. Dê a resposta exata para o que o(a) educador(a) deseja saber.
-4. Quando a mensagem trouxer dados de várias turmas ou escolas de uma vez (pedido de visão geral), faça uma análise panorâmica e comparativa entre elas, destacando pontos fortes e pontos de atenção em comum.
-5. Se o educador ou gestor tiver uma dúvida técnica sobre o funcionamento da plataforma (não relacionada à interpretação pedagógica dos dados), responda na medida do possível com base no que você sabe. Se não souber a resposta, oriente a pessoa a entrar em contato com o suporte do Instituto Ayrton Senna pelo e-mail suporte@institutoayrtonsenna.org.br.`;
+3. Dê UMA informação por vez, em no máximo 2-3 frases curtas e diretas. Nunca despeje várias explicações, exemplos e sugestões numa única resposta — isso confunde o(a) educador(a). Termine com uma pergunta simples ou uma proposta objetiva (ex: "Quer que eu detalhe uma sugestão de atividade?") para deixar a pessoa guiar o próximo passo da conversa. Nunca use metáforas.
+4. Quando a mensagem trouxer dados de várias turmas ou escolas de uma vez (pedido de visão geral), ainda assim comece por UM destaque comparativo (o ponto mais forte ou mais crítico em comum) e pergunte se a pessoa quer aprofundar, em vez de listar tudo de uma vez.
+5. Se o educador ou gestor tiver uma dúvida técnica sobre o funcionamento da plataforma (não relacionada à interpretação pedagógica dos dados), responda na medida do possível com base no que você sabe, de forma igualmente breve. Se não souber a resposta, oriente a pessoa a entrar em contato com o suporte do Instituto Ayrton Senna pelo e-mail suporte@institutoayrtonsenna.org.br.`;
 
       if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
         // Fallback simples sem chave
         return res.json({
-          text: `Olá! Eu sou o Prof. Cláudio. Analisando os baixos desempenhos socioemocionais do estudante, sugiro uma intervenção baseada na *Competência Geral 8 (Autoconhecimento e Autocuidado)* e na *Competência Geral 9 (Empatia e Cooperação)* da BNCC. Recomendo planejar atividades de mediação de sentimentos em grupo. (Nota: Chave GEMINI_API_KEY não configurada no .env.local)`
+          text: `Olá! Sou o Prof. Cláudio. Repare em qual competência está com a nota mais baixa — é o melhor ponto de partida. Quer que eu sugira uma intervenção prática pra isso? (Nota: Chave GEMINI_API_KEY não configurada no .env.local)`
         });
       }
 
@@ -1174,7 +1180,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       'Professor',
       {
         code: 'Professor',
-        name: 'Professor',
+        name: 'Fernanda Ribeiro',
         school: 'C.E.I. Ayrton Senna',
         institutionalEmail: 'professor.senna@escola.ias.org.br',
         personalEmail: '',
@@ -1190,7 +1196,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       'Gestor',
       {
         code: 'Gestor',
-        name: 'Gestor',
+        name: 'Marcelo Andrade',
         school: 'Diretoria Regional IAS',
         institutionalEmail: 'gestor.senna@escola.ias.org.br',
         personalEmail: '',
@@ -1311,12 +1317,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         if (smtpUser && smtpPass) {
           try {
-            const transporter = nodemailer.createTransport({
-              host: smtpHost,
-              port: smtpPort,
-              secure: smtpPort === 465,
-              auth: { user: smtpUser, pass: smtpPass }
-            });
+            const transporter = createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
 
             const info = await transporter.sendMail({
               from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
@@ -1338,8 +1339,9 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             });
 
             previewUrl = nodemailer.getTestMessageUrl(info) || null;
-          } catch (mailErr) {
-            console.warn('[Recovery Email] Aviso ao enviar via SMTP:', mailErr);
+          } catch (mailErr: any) {
+            console.error('[Recovery Email] Falha ao enviar via SMTP:', mailErr);
+            return res.status(502).json({ error: 'Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes ou contate o suporte.' });
           }
         } else {
           console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: Código: ${user.code}, Senha: ${user.password}`);
@@ -1375,10 +1377,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
           if (!evoRes.ok) {
             const errText = await evoRes.text();
-            console.warn('[Evolution API Password Recovery Warning]:', errText);
+            console.error('[Evolution API Password Recovery Error]:', errText);
+            return res.status(502).json({ error: 'Não foi possível enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte.' });
           }
         } catch (evoErr) {
-          console.warn('[Evolution API Password Recovery Dispatch Warning]:', evoErr);
+          console.error('[Evolution API Password Recovery Dispatch Error]:', evoErr);
+          return res.status(502).json({ error: 'Não foi possível enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte.' });
         }
 
         console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: Código: ${user.code}, Senha: ${user.password}`);
@@ -1572,15 +1576,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
       if (smtpUser && smtpPass) {
         // Usa credenciais reais configuradas pelo usuário no .env.local
-        transporter = nodemailer.createTransport({
-          host: smtpHost,
-          port: smtpPort,
-          secure: smtpPort === 465,
-          auth: {
-            user: smtpUser,
-            pass: smtpPass
-          }
-        });
+        transporter = createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
       } else {
         // Gera uma conta de teste Ethereal descartável em tempo de execução
         throw new Error('Ethereal desativado (502 Timeout)');
