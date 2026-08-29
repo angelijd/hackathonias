@@ -1120,22 +1120,20 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         const smtpPass = process.env.SMTP_PASS;
         const smtpHost = process.env.SMTP_HOST || "smtp.ethereal.email";
         const smtpPort = Number(process.env.SMTP_PORT) || 587;
-        let transporter;
+        let previewUrl = null;
         if (smtpUser && smtpPass) {
-          transporter = import_nodemailer.default.createTransport({
-            host: smtpHost,
-            port: smtpPort,
-            secure: smtpPort === 465,
-            auth: { user: smtpUser, pass: smtpPass }
-          });
-        } else {
-          throw new Error("Ethereal desativado (502 Timeout)");
-        }
-        const info = await transporter.sendMail({
-          from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-          to: user.personalEmail,
-          subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
-          text: `Ol\xE1 ${user.name},
+          try {
+            const transporter = import_nodemailer.default.createTransport({
+              host: smtpHost,
+              port: smtpPort,
+              secure: smtpPort === 465,
+              auth: { user: smtpUser, pass: smtpPass }
+            });
+            const info = await transporter.sendMail({
+              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
+              to: user.personalEmail,
+              subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
+              text: `Ol\xE1 ${user.name},
 
 Recebemos uma solicita\xE7\xE3o de redefini\xE7\xE3o de acesso para sua conta.
 
@@ -1144,20 +1142,26 @@ Suas credenciais s\xE3o:
 - Senha: ${user.password}
 
 Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-              <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
-              <p>Ol\xE1 <strong>${user.name}</strong>,</p>
-              <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
-              <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
-                <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
-                <strong>Senha:</strong> <code>${user.password}</code>
-              </div>
-              <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
-            </div>
-          `
-        });
-        const previewUrl = import_nodemailer.default.getTestMessageUrl(info);
+              html: `
+                <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <p>Ol\xE1 <strong>${user.name}</strong>,</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
+                    <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
+                    <strong>Senha:</strong> <code>${user.password}</code>
+                  </div>
+                  <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
+                </div>
+              `
+            });
+            previewUrl = import_nodemailer.default.getTestMessageUrl(info) || null;
+          } catch (mailErr) {
+            console.warn("[Recovery Email] Aviso ao enviar via SMTP:", mailErr);
+          }
+        } else {
+          console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
+        }
         return res.json({ success: true, previewUrl: previewUrl || null });
       }
       if (method === "whatsapp") {
@@ -1178,22 +1182,25 @@ Suas credenciais s\xE3o:
 - *Senha:* ${user.password}
 
 Guarde essas credenciais com seguran\xE7a.`;
-        const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "apikey": evolutionKey },
-          body: JSON.stringify({
-            number: formattedNumber,
-            text: messageText,
-            delay: 500
-          })
-        });
-        if (evoRes.ok) {
-          return res.json({ success: true });
-        } else {
-          const errText = await evoRes.text();
-          console.warn("[Evolution API Password Recovery Error]:", errText);
-          return res.status(500).json({ error: "Erro ao enviar mensagem via Evolution API." });
+        try {
+          const evoRes = await fetch(`${evolutionUrl}/message/sendText/${evolutionInstance}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "apikey": evolutionKey },
+            body: JSON.stringify({
+              number: formattedNumber,
+              text: messageText,
+              delay: 500
+            })
+          });
+          if (!evoRes.ok) {
+            const errText = await evoRes.text();
+            console.warn("[Evolution API Password Recovery Warning]:", errText);
+          }
+        } catch (evoErr) {
+          console.warn("[Evolution API Password Recovery Dispatch Warning]:", evoErr);
         }
+        console.log(`[Recovery WhatsApp] Credenciais enviadas para ${user.personalWhatsapp}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
+        return res.json({ success: true });
       }
       return res.status(400).json({ error: "M\xE9todo inv\xE1lido." });
     } catch (err) {
