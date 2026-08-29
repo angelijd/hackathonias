@@ -1135,7 +1135,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div>
                         <span className="block text-slate-400 font-bold">Nome Completo:</span>
-                        <span className="font-extrabold">{firstAccessRole === 'professor' ? 'Ayrton Senna da Silva' : 'Viviane Senna'}</span>
+                        <span className="font-extrabold">{firstAccessRole === 'professor' ? 'Professor' : 'Gestor'}</span>
                       </div>
                       <div>
                         <span className="block text-slate-400 font-bold">Escola:</span>
@@ -1275,7 +1275,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                             setIsFirstAccessModalOpen(false);
                             if (onLoginSuccess) {
                               onLoginSuccess(
-                                firstAccessRole === 'professor' ? 'Ayrton Senna da Silva' : 'Viviane Senna',
+                                firstAccessRole === 'professor' ? 'Professor' : 'Gestor',
                                 firstAccessRole!,
                                 { email: personalEmail, whatsapp: personalWhatsapp }
                               );

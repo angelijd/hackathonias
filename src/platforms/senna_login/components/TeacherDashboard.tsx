@@ -33,6 +33,7 @@ interface ClassData {
 
 interface SchoolData {
   name: string;
+  averages: Record<string, number>;
   classes: ClassData[];
 }
 
@@ -82,11 +83,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
 
   // Estados da Árvore de Relatórios
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({
-    "9º ano A": true,
-    "Centro Educacional Ayrton Senna": true
+    "9º ano A": true
   });
   const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
   const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
+  const [selectedSchool, setSelectedSchool] = useState<SchoolData | null>(null);
 
   // Estados de exportação
   const [exportAlert, setExportAlert] = useState<string | null>(null);
@@ -95,7 +96,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
   const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'model'; text: string }>>([
     {
       role: 'model',
-      text: 'Oi! Sou o Prof. Cláudio 👋 Selecione uma turma ou estudante ao lado que eu já trago uma análise, ou me chame se tiver alguma dúvida!'
+      text: role === 'gestor'
+        ? 'Oi! Sou o Prof. Cláudio 👋 Selecione uma escola ao lado que eu já trago os resultados gerais, ou me peça para analisar todos os relatórios de uma vez!'
+        : 'Oi! Sou o Prof. Cláudio 👋 Selecione uma turma ou estudante ao lado que eu já trago uma análise, ou me peça para analisar todos os relatórios de uma vez!'
     }
   ]);
   const [userInput, setUserInput] = useState('');
@@ -103,14 +106,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
 
   // Estado do widget flutuante do Cláudio (inicia fechado, como o Béco)
   const [isClaudioOpen, setIsClaudioOpen] = useState(false);
-  const claudioMountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const claudioReportTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const claudioInactivityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cláudio surge sozinho após 10s de tela aberta ou 1min de inatividade, o que vier primeiro
+  // Cláudio surge sozinho após 1 minuto de inatividade na tela
   useEffect(() => {
     const popUp = () => setIsClaudioOpen((prev) => prev || true);
-
-    claudioMountTimerRef.current = setTimeout(popUp, 10000);
 
     const resetInactivityTimer = () => {
       if (claudioInactivityTimerRef.current) clearTimeout(claudioInactivityTimerRef.current);
@@ -122,11 +123,25 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     activityEvents.forEach((evt) => window.addEventListener(evt, resetInactivityTimer));
 
     return () => {
-      if (claudioMountTimerRef.current) clearTimeout(claudioMountTimerRef.current);
       if (claudioInactivityTimerRef.current) clearTimeout(claudioInactivityTimerRef.current);
       activityEvents.forEach((evt) => window.removeEventListener(evt, resetInactivityTimer));
     };
   }, []);
+
+  // Cláudio também surge sozinho se o educador ficar 15s parado no mesmo relatório selecionado
+  useEffect(() => {
+    const currentReportKey = selectedStudent?.name || selectedClass?.name || selectedSchool?.name || null;
+    if (!currentReportKey) return;
+
+    if (claudioReportTimerRef.current) clearTimeout(claudioReportTimerRef.current);
+    claudioReportTimerRef.current = setTimeout(() => {
+      setIsClaudioOpen(true);
+    }, 15000);
+
+    return () => {
+      if (claudioReportTimerRef.current) clearTimeout(claudioReportTimerRef.current);
+    };
+  }, [selectedStudent, selectedClass, selectedSchool]);
 
   // 1. Dados do Educador: Turma -> Estudante -> Competências (Com Histórico PrevScore)
   const classReportsData: ClassData[] = [
@@ -171,10 +186,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     }
   ];
 
-  // 2. Dados do Gestor: Escola -> Turma -> Médias
+  // 2. Dados do Gestor: Resultados Gerais por Escola (média entre as turmas da rede)
   const schoolReportsData: SchoolData[] = [
     {
       name: "Centro Educacional Ayrton Senna",
+      averages: { "Autogestão": 4.4, "Engajamento": 3.6, "Amabilidade": 4.2, "Resiliência Emocional": 3.7, "Abertura ao Novo": 4.2 },
       classes: [
         {
           name: "9º ano A (C.E.I. Ayrton Senna)",
@@ -190,6 +206,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     },
     {
       name: "E.E. Dr. Ytrio Correia",
+      averages: { "Autogestão": 3.4, "Engajamento": 3.5, "Amabilidade": 3.9, "Resiliência Emocional": 3.1, "Abertura ao Novo": 4.0 },
       classes: [
         {
           name: "9º ano C (E.E. Dr. Ytrio Correia)",
@@ -262,6 +279,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     ]);
   };
 
+  // FLUXO AUTOMÁTICO AMIGÁVEL: Ao selecionar a escola (visão do Gestor), Claudio se coloca à disposição
+  const handleSelectSchool = (school: SchoolData) => {
+    setSelectedSchool(school);
+
+    setChatMessages([
+      {
+        role: 'model',
+        text: `Vi que você selecionou a escola **${school.name}** 👋 Quer ajuda para interpretar os resultados gerais ou sugestões de intervenção?`
+      }
+    ]);
+  };
+
   // Solicitação explícita dos grupos da turma
   const handleRequestGroupDetails = () => {
     const className = selectedClass ? selectedClass.name : "9º ano A";
@@ -296,6 +325,13 @@ Médias Atuais: Autogestão (${selectedClass.averages["Autogestão"]}), Abertura
 Sugira intervenções pedagógicas e estratégias voltadas para as Competências Gerais da BNCC para apoiar a turma.`;
 
       sendAutoMessage(promptText, `Prof. Cláudio, me elabore uma sugestão de intervenção pedagógica voltada para a BNCC para apoiar a turma *${selectedClass.name}* nas médias socioemocionais.`);
+    } else if (selectedSchool) {
+      const avgEntries = Object.entries(selectedSchool.averages).map(([k, v]) => `${k} (${v})`).join(', ');
+      const promptText = `Análise Geral da Escola: *${selectedSchool.name}*.
+Médias Atuais: ${avgEntries}.
+Sugira intervenções pedagógicas e estratégias voltadas para as Competências Gerais da BNCC para apoiar a rede escolar.`;
+
+      sendAutoMessage(promptText, `Prof. Cláudio, me elabore uma sugestão de intervenção pedagógica voltada para a BNCC para apoiar a escola *${selectedSchool.name}* nas médias socioemocionais.`);
     } else {
       const promptText = `Dê uma sugestão de intervenção pedagógica geral baseada nas Competências Gerais da BNCC para apoiar alunos com baixa resiliência emocional.`;
       sendAutoMessage(promptText, `Prof. Cláudio, me dê uma sugestão de intervenção pedagógica baseada na BNCC para apoiar alunos com baixa resiliência emocional.`);
@@ -370,13 +406,36 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
     setExpandedItems(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Monta um resumo com os dados de todas as turmas (professor) ou escolas (gestor) de uma vez
+  const buildFullDataSummary = () => {
+    if (role === 'gestor') {
+      return schoolReportsData
+        .map((sch) => `Escola: ${sch.name} — ${Object.entries(sch.averages).map(([k, v]) => `${k}: ${v}`).join(', ')}`)
+        .join('\n');
+    }
+    return classReportsData
+      .map((cls) => `Turma: ${cls.name} — ${Object.entries(cls.averages).map(([k, v]) => `${k}: ${v}`).join(', ')}`)
+      .join('\n');
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim() || isSendingMessage) return;
 
     const userMsg = userInput.trim();
     setUserInput('');
-    await sendAutoMessage(userMsg);
+
+    // Se o educador pedir uma visão geral, envia os dados de todos os relatórios de uma vez
+    const wantsFullAnalysis = /todos os relat[oó]rios|todas as (turmas|escolas)|vis[aã]o geral|panorama geral|geral da rede/i.test(userMsg);
+    if (wantsFullAnalysis) {
+      const summary = buildFullDataSummary();
+      await sendAutoMessage(
+        `${userMsg}\n\nDados completos para análise (${role === 'gestor' ? 'todas as escolas' : 'todas as turmas'}):\n${summary}`,
+        userMsg
+      );
+    } else {
+      await sendAutoMessage(userMsg);
+    }
   };
 
   return (
@@ -394,14 +453,14 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
       <section className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <span className="text-lg font-extrabold text-amber-500">
-            {role === 'gestor' ? 'Olá, gestor(a)! Bem-vindo ao' : 'Olá, professor(a)! Bem-vindo ao'}
+            {role === 'gestor' ? 'Olá, Gestor!' : 'Olá, Professor!'}
           </span>
-          <h1 className="text-3xl font-black tracking-tight mt-1 flex items-center gap-2">
-            {role === 'gestor' ? '🏛️ Painel de Controle do Gestor' : '🧑‍🏫 Painel de Controle do Professor'}
+          <h1 className="text-3xl font-black tracking-tight mt-1">
+            Relatórios
           </h1>
           <p className={`text-sm font-semibold mt-1.5 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
             {role === 'gestor'
-              ? 'Acompanhe as médias socioemocionais por escolas e turmas da rede escolar.'
+              ? 'Acompanhe os relatórios por escolas navegando abaixo'
               : 'Aqui você irá acompanhar as solicitações de acesso e os relatórios dos seus estudantes.'}
           </p>
         </div>
@@ -414,7 +473,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
               : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 shadow-sm'
           }`}
         >
-          🚪 Sair do Painel
+          🚪 Sair
         </button>
       </section>
 
@@ -426,10 +485,10 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
             darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
           }`}>
             <h2 className="text-xl font-black mb-1">
-              📊 {role === 'gestor' ? 'Relatórios por Escola' : 'Relatórios por Turma / Estudante'}
+              {role === 'gestor' ? 'Relatórios por escola' : 'Relatórios por Turma / Estudante'}
             </h2>
             <p className={`text-xs font-semibold mb-6 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-              Navegue clicando nas pastas para expandir os níveis e ativar análises automáticas do bot.
+              Navegue clicando nas pastas para expandir os resultados
             </p>
 
             {/* ÁRVORE DO EDUCADOR (Turma -> Estudante) */}
@@ -515,66 +574,44 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
               </div>
             )}
 
-            {/* ÁRVORE DO GESTOR (Escola -> Turma) */}
+            {/* VISÃO DO GESTOR (Resultados Gerais por Escola) */}
             {role === 'gestor' && (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {schoolReportsData.map((sch) => {
-                  const isSchoolExpanded = expandedItems[sch.name];
+                  const isSelected = selectedSchool?.name === sch.name;
                   return (
-                    <div key={sch.name} className="border-l-2 border-amber-500/30 pl-4 py-1">
-                      {/* Nível 1: Escola */}
-                      <button 
-                        onClick={() => toggleExpand(sch.name)}
-                        className={`flex items-center gap-2 text-sm font-black w-full text-left py-1 hover:text-amber-500 transition-colors cursor-pointer`}
+                    <div key={sch.name} className="space-y-2">
+                      <button
+                        onClick={() => handleSelectSchool(sch)}
+                        className={`flex items-center gap-2 text-sm font-black w-full text-left py-2 px-3 rounded-lg transition-colors cursor-pointer ${
+                          isSelected
+                            ? 'bg-amber-500/15 text-amber-500'
+                            : 'hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+                        }`}
                       >
                         <span>🏫</span>
-                        <span>Escola: {sch.name}</span>
+                        <span>{sch.name}</span>
                         <span className="text-[10px] text-slate-400 font-bold">({sch.classes.length} turmas)</span>
                       </button>
 
-                      {/* Nível 2: Turmas da Escola */}
-                      {isSchoolExpanded && (
-                        <div className="ml-6 mt-2 space-y-2 animate-in slide-in-from-top-1 duration-150">
-                          {sch.classes.map((cls) => {
-                            const isSelected = selectedClass?.name === cls.name;
-                            return (
-                              <div key={cls.name} className="space-y-2">
-                                <button 
-                                  onClick={() => handleSelectClass(cls)}
-                                  className={`flex items-center gap-2 text-xs font-extrabold py-1.5 px-3 rounded-lg transition-colors cursor-pointer w-full text-left ${
-                                    isSelected 
-                                      ? 'bg-amber-500/15 text-amber-500' 
-                                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                                  }`}
-                                >
-                                  <span>📁</span>
-                                  <span>{cls.name}</span>
-                                </button>
-
-                                {/* Nível 3: Médias da Turma/Escola (quando selecionado) */}
-                                {isSelected && (
-                                  <div className="ml-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-150 dark:border-slate-850 space-y-3.5 animate-in zoom-in-95 duration-150">
-                                    <h4 className="text-[11px] font-black uppercase text-amber-500 tracking-wider">Médias Socioemocionais da Turma</h4>
-                                    {Object.entries(cls.averages).map(([compName, score]) => (
-                                      <div key={compName} className="space-y-1">
-                                        <div className="flex justify-between text-xs font-bold">
-                                          <span>{compName}</span>
-                                          <span className="text-amber-500 font-black">{score} / 5</span>
-                                        </div>
-                                        {/* Barra de Progresso */}
-                                        <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
-                                          <div 
-                                            className="h-full rounded-full bg-gradient-to-r from-amber-400 to-[#FBB800]"
-                                            style={{ width: `${(score / 5) * 100}%` }}
-                                          />
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
+                      {isSelected && (
+                        <div className="ml-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-150 dark:border-slate-850 space-y-3.5 animate-in zoom-in-95 duration-150">
+                          <h4 className="text-[11px] font-black uppercase text-amber-500 tracking-wider">Resultados Gerais da Escola</h4>
+                          {Object.entries(sch.averages).map(([compName, score]) => (
+                            <div key={compName} className="space-y-1">
+                              <div className="flex justify-between text-xs font-bold">
+                                <span>{compName}</span>
+                                <span className="text-amber-500 font-black">{score} / 5</span>
                               </div>
-                            );
-                          })}
+                              {/* Barra de Progresso */}
+                              <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                                <div
+                                  className="h-full rounded-full bg-gradient-to-r from-amber-400 to-[#FBB800]"
+                                  style={{ width: `${(score / 5) * 100}%` }}
+                                />
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
