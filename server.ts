@@ -1,4 +1,10 @@
 
+import dns from 'dns';
+// Muitos hosts de container (Railway incluso) anunciam um endereço IPv6 para
+// smtp.gmail.com que não tem rota de saída, causando ENETUNREACH. Forçar IPv4
+// evita que o Node tente esse endereço primeiro.
+dns.setDefaultResultOrder('ipv4first');
+
 function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
   const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
   const portNum = Number(smtpPort) || 465;
