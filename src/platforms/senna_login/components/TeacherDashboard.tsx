@@ -128,14 +128,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ darkMode, ro
     };
   }, []);
 
-  // 1. Dados do Educador: Turma -> Aluno -> Competências (Com Histórico PrevScore)
+  // 1. Dados do Educador: Turma -> Estudante -> Competências (Com Histórico PrevScore)
   const classReportsData: ClassData[] = [
     {
       name: "9º ano A",
       averages: { "Autogestão": 4.2, "Engajamento": 3.8, "Amabilidade": 4.5, "Resiliência Emocional": 3.1, "Abertura ao Novo": 4.8 },
       students: [
         {
-          name: "Ayrton Senna da Silva",
+          name: "Estudante",
           competences: [
             { name: "Abertura ao Novo (Curiosidade para aprender)", score: 5.0, prevScore: 4.2, description: "Altamente curioso, questionador e com forte desejo de aprender coisas novas." },
             { name: "Autogestão (Foco e Organização)", score: 4.0, prevScore: 3.0, description: "Evoluiu muito em organização, mas necessita de acompanhamento contínuo para focar sob estresse." },
@@ -282,7 +282,7 @@ Identifique e detalhe os 2 grupos de estudantes com perfis parecidos na turma e 
         return `${c.name.split(' (')[0]} (Estável em ${c.score})`;
       }).join(', ');
       
-      const similarStudent = selectedStudent.name === "Ayrton Senna da Silva" ? "Bruna Santos" : "Ayrton Senna da Silva";
+      const similarStudent = selectedStudent.name === "Estudante" ? "Bruna Santos" : "Estudante";
 
       const promptText = `Análise de Primeiro Acesso - Estudante: *${selectedStudent.name}*. 
 Histórico Comparativo: ${evolutionsText}.
@@ -426,13 +426,13 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
             darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
           }`}>
             <h2 className="text-xl font-black mb-1">
-              📊 {role === 'gestor' ? 'Relatórios por Escola' : 'Relatórios por Turma / Aluno'}
+              📊 {role === 'gestor' ? 'Relatórios por Escola' : 'Relatórios por Turma / Estudante'}
             </h2>
             <p className={`text-xs font-semibold mb-6 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
               Navegue clicando nas pastas para expandir os níveis e ativar análises automáticas do bot.
             </p>
 
-            {/* ÁRVORE DO EDUCADOR (Turma -> Aluno) */}
+            {/* ÁRVORE DO EDUCADOR (Turma -> Estudante) */}
             {role === 'professor' && (
               <div className="space-y-4">
                 {classReportsData.map((cls) => {
@@ -471,7 +471,7 @@ Sugira intervenções pedagógicas e estratégias voltadas para as Competências
                                   <span>{student.name}</span>
                                 </button>
 
-                                {/* Nível 3: Competências do Aluno (com barra comparativa do Semestre Anterior) */}
+                                {/* Nível 3: Competências do Estudante (com barra comparativa do Semestre Anterior) */}
                                 {isSelected && (
                                   <div className="ml-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-150 dark:border-slate-850 space-y-4 animate-in zoom-in-95 duration-150">
                                     <h4 className="text-[11px] font-black uppercase text-amber-500 tracking-wider">Histórico Comparativo de Competências</h4>

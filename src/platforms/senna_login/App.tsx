@@ -13,7 +13,7 @@ import { ScreenStep } from './types';
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [activePlatform, setActivePlatform] = useState<'descoberta' | 'login' | 'professor_panel'>('login');
-  const [userName, setUserName] = useState('Aluno');
+  const [userName, setUserName] = useState('Estudante');
   const [userRole, setUserRole] = useState<'aluno' | 'professor' | 'gestor'>('aluno');
   const [teacherContact, setTeacherContact] = useState<{ email: string; whatsapp: string }>({ email: '', whatsapp: '' });
   const [userAge, setUserAge] = useState('14 anos');
@@ -27,7 +27,7 @@ export default function App() {
   const [selectedTestType, setSelectedTestType] = useState<'critical_thinking' | 'creativity' | null>(null);
 
   const [isEditingName, setIsEditingName] = useState(false);
-  const [tempName, setTempName] = useState('Aluno');
+  const [tempName, setTempName] = useState('Estudante');
   const [tempAge, setTempAge] = useState('14 anos');
   const [tempGrade, setTempGrade] = useState('9º ano');
   const [tempCity, setTempCity] = useState('São Paulo');
