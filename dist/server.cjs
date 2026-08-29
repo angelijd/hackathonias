@@ -1966,6 +1966,11 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             margin-bottom: 16px;
             flex-shrink: 0;
           }
+          .card-header h3 {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+          }
           .credentials-chip {
             font-size: 10px;
             font-weight: 800;
@@ -2093,7 +2098,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
             gap: 36px;
-            align-items: stretch;
+            align-items: start;
           }
           .welcome-info-col {
             display: flex;
@@ -2163,7 +2168,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
           .welcome-action-col {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 20px;
@@ -2383,7 +2388,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Estudante, Professor e Gestor</div>
+              <div class="credentials-chip">Vis\xF5es: Estudante, Professor e Gestor</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2417,7 +2422,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Estudante</div>
+              <div class="credentials-chip">Vis\xE3o: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2447,7 +2452,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Estudante</div>
+              <div class="credentials-chip">Vis\xE3o: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2477,7 +2482,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
               </div>
             </div>
             <div class="card-body">
-              <div class="credentials-chip">Credenciais: Estudante</div>
+              <div class="credentials-chip">Vis\xE3o: Estudante</div>
 
               <ul class="pain-list">
                 <li class="pain-item">
@@ -2503,7 +2508,7 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
           <div class="card" style="cursor: pointer;" onclick="document.getElementById('modal-offline').style.display = 'flex'">
             <div class="card-header">
               <div>
-                <h3 style="font-size: 14px;">App IAS offline first</h3>
+                <h3 style="font-size: 16px;">App IAS offline first</h3>
               </div>
             </div>
             <div class="card-body">
