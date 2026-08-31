@@ -412,7 +412,8 @@ O array "items" deve ter exatamente 5 objetos, todos com "tipo":"dissertativa", 
 REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se voc\xEA gerar "opcoes" em qualquer item, sua resposta \xE9 inv\xE1lida. Todos os 5 itens s\xE3o EXCLUSIVAMENTE dissertativos.`;
       const prompt = isCreativity ? promptCreativity : promptCriticalThinking;
       const response = await generateGeminiContent(ai, prompt, {
-        responseMimeType: "application/json"
+        responseMimeType: "application/json",
+        thinkingConfig: { thinkingBudget: 0 }
       });
       const jsonText = response?.text || "{}";
       let items = [];
