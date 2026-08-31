@@ -1,8 +1,7 @@
 
 import dns from 'dns';
 // Defesa geral para chamadas que usam dns.lookup (fetch/net padrão) em hosts como o
-// Railway, que não têm rota de saída IPv6. Não cobre o nodemailer, que resolve o
-// SMTP com dns.resolve4/resolve6 por conta própria — ver createEmailTransporter.
+// Railway, que não têm rota de saída IPv6.
 dns.setDefaultResultOrder('ipv4first');
 
 // Normaliza números de WhatsApp brasileiros, adicionando o DDI 55 quando ausente.
@@ -19,42 +18,39 @@ function formatWhatsAppNumber(phone: string): string {
   return clean;
 }
 
-async function createEmailTransporter(smtpUser: string, smtpPass: string, smtpHost: string, smtpPort: number | string) {
-  const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, '') : '';
-  const isGmail = (smtpHost && smtpHost.includes('gmail')) || (smtpUser && smtpUser.includes('@gmail.com'));
-  const host = isGmail ? 'smtp.gmail.com' : (smtpHost || 'smtp.gmail.com');
-  // Respeita a porta configurada (SMTP_PORT) mesmo para Gmail — não força 465.
-  // Alguns hosts de container bloqueiam a porta 465 (TLS implícito) mas liberam
-  // a 587 (STARTTLS), então isso precisa ser configurável, não fixo.
-  const portNum = Number(smtpPort) || 465;
+// Envia e-mail via API HTTP do Resend (porta 443) em vez de SMTP bruto (portas 465/587).
+// Railway bloqueia saída SMTP nas duas portas (ETIMEDOUT em ambas, confirmado em produção),
+// então qualquer abordagem baseada em nodemailer/SMTP fica sujeita a esse bloqueio de rede.
+// A API HTTP do Resend não sofre esse bloqueio.
+const RESEND_FROM_DOMAIN = 'naoresponda@cristianemiura.com';
 
-  // nodemailer resolves BOTH the A and AAAA records for the SMTP host and then
-  // picks one AT RANDOM to connect to (see node_modules/nodemailer/lib/shared/index.js,
-  // formatDNSValue) — dns.setDefaultResultOrder has no effect on this, since
-  // nodemailer calls dns.resolve4/dns.resolve6 directly instead of dns.lookup.
-  // On hosts like Railway with no outbound IPv6 route, that random pick regularly
-  // lands on an IPv6 address and the connection fails with ENETUNREACH. Resolve
-  // to a literal IPv4 address ourselves so nodemailer never has an IPv6 address
-  // to pick, and keep the real hostname as tls.servername so SNI/certificate
-  // validation still works when connecting by IP.
-  let connectHost = host;
-  try {
-    const addresses = await dns.promises.resolve4(host);
-    if (addresses[0]) connectHost = addresses[0];
-  } catch (err) {
-    console.warn(`[SMTP] Falha ao resolver IPv4 para ${host}, conectando pelo hostname:`, err);
+async function sendEmailViaResend(fromName: string, to: string, subject: string, text: string, html: string) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    throw new Error('RESEND_API_KEY não configurada.');
   }
 
-  return nodemailer.createTransport({
-    host: connectHost,
-    port: portNum,
-    secure: portNum === 465,
-    auth: { user: smtpUser, pass: cleanPass },
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 20000,
-    tls: { servername: host, rejectUnauthorized: false }
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${resendApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: `${fromName} <${RESEND_FROM_DOMAIN}>`,
+      to: [to],
+      subject,
+      text,
+      html,
+    }),
   });
+
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => '');
+    throw new Error(`Resend respondeu ${res.status}: ${errBody}`);
+  }
+
+  return res.json();
 }
 
 import express from 'express';
@@ -63,7 +59,6 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
-import nodemailer from 'nodemailer';
 
 // Load environment variables from .env.local if it exists, otherwise fall back to .env
 const envLocalPath = path.resolve(process.cwd(), '.env.local');
@@ -1337,23 +1332,14 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
           return res.status(400).json({ error: 'E-mail não configurado.' });
         }
 
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASS;
-        const smtpHost = process.env.SMTP_HOST || 'smtp.ethereal.email';
-        const smtpPort = Number(process.env.SMTP_PORT) || 587;
-
-        let previewUrl: string | boolean | null = null;
-
-        if (smtpUser && smtpPass) {
+        if (process.env.RESEND_API_KEY) {
           try {
-            const transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
-
-            const info = await transporter.sendMail({
-              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-              to: user.personalEmail,
-              subject: '🔑 Recuperação de Acesso - Portal IAS',
-              text: `Olá ${roleLabel},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
-              html: `
+            await sendEmailViaResend(
+              'Portal Socioemocional IAS',
+              user.personalEmail,
+              '🔑 Recuperação de Acesso - Portal IAS',
+              `Olá ${roleLabel},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+              `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
                   <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
                   <p>Olá <strong>${roleLabel}</strong>,</p>
@@ -1365,18 +1351,16 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
                   <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
                 </div>
               `
-            });
-
-            previewUrl = nodemailer.getTestMessageUrl(info) || null;
+            );
           } catch (mailErr: any) {
-            console.error('[Recovery Email] Falha ao enviar via SMTP:', mailErr);
+            console.error('[Recovery Email] Falha ao enviar via Resend:', mailErr);
             return res.status(502).json({ error: 'Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes ou contate o suporte.' });
           }
         } else {
           console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: Código: ${user.code}, Senha: ${user.password}`);
         }
 
-        return res.json({ success: true, previewUrl: previewUrl || null });
+        return res.json({ success: true, previewUrl: null });
       }
 
       if (method === 'whatsapp') {
@@ -1587,7 +1571,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     `;
   }
 
-  // API Route para exportar relatório por E-mail de verdade (SMTP real ou Ethereal de Teste)
+  // API Route para exportar relatório por E-mail de verdade (via API HTTP do Resend)
   app.post('/api/ai/export-email', async (req, res) => {
     try {
       const { email, text, metadata } = req.body;
@@ -1595,38 +1579,26 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         return res.status(400).json({ error: 'Parâmetros ausentes.' });
       }
 
-      const smtpUser = process.env.SMTP_USER;
-      const smtpPass = process.env.SMTP_PASS;
-      const smtpHost = process.env.SMTP_HOST || 'smtp.ethereal.email';
-      const smtpPort = Number(process.env.SMTP_PORT) || 587;
-
-      let transporter;
-
-      if (smtpUser && smtpPass) {
-        // Usa credenciais reais configuradas pelo usuário no .env.local
-        transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
-      } else {
-        // Gera uma conta de teste Ethereal descartável em tempo de execução
-        throw new Error('Ethereal desativado (502 Timeout)');
+      if (!process.env.RESEND_API_KEY) {
+        throw new Error('RESEND_API_KEY não configurada.');
       }
 
       // Envia o e-mail de fato com o layout contemporâneo estruturado
       const htmlBody = buildHtmlReport(text, metadata);
 
-      const info = await transporter.sendMail({
-        from: '"Prof. Cláudio - Mentor IAS" <suporte@institutoayrtonsenna.org.br>',
-        to: email,
-        subject: '📊 Relatório Socioemocional & Recomendações BNCC',
-        text: text,
-        html: htmlBody
-      });
+      await sendEmailViaResend(
+        'Prof. Cláudio - Mentor IAS',
+        email,
+        '📊 Relatório Socioemocional & Recomendações BNCC',
+        text,
+        htmlBody
+      );
 
-      const previewUrl = nodemailer.getTestMessageUrl(info);
-      console.log(`[E-mail Enviado] Preview URL: ${previewUrl || 'Enviado via SMTP real'}`);
+      console.log(`[E-mail Enviado] Enviado via Resend para ${email}`);
 
-      return res.json({ 
-        success: true, 
-        previewUrl: previewUrl || null 
+      return res.json({
+        success: true,
+        previewUrl: null
       });
 
     } catch (err: any) {
