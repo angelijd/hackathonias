@@ -130,6 +130,41 @@ export default function App() {
                   <span className="text-[#05B85B] font-extrabold">autodiagnóstico socioemocional</span>.
                 </p>
 
+                {/* CTA Button — logo abaixo do texto de boas-vindas, para não sumir com zoom da tela */}
+                <div className="w-full max-w-[420px] mt-6 sm:mt-7">
+                  <button
+                    type="button"
+                    onClick={handleStartWelcome}
+                    className="group relative w-full h-[58px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-[0_10px_26px_rgba(253,195,0,0.34)] hover:shadow-[0_14px_30px_rgba(253,195,0,0.45)] active:scale-[0.985] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/40"
+                    aria-label="Vamos começar o teste"
+                  >
+                    {/* Shimmer Sheen Reflection Animation */}
+                    <span
+                      className="absolute top-0 -left-[60%] w-[38%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-sheen pointer-events-none"
+                      aria-hidden="true"
+                    />
+
+                    <span className="text-[16px] font-extrabold text-[#0B1226] tracking-tight pr-6 select-none">
+                      Vamos começar!
+                    </span>
+
+                    {/* Action Circle Icon */}
+                    <span
+                      className="absolute right-1.5 top-1.5 bottom-1.5 aspect-square rounded-full bg-[#040E2B] flex items-center justify-center transition-transform duration-200 ease-out group-hover:scale-105 group-active:translate-x-0.5 shadow-md"
+                      aria-hidden="true"
+                    >
+                      <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4">
+                        <path
+                          d="M7.5 4.5l5 5.5-5 5.5"
+                          stroke="#fff"
+                          strokeWidth="2.3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
               </section>
 
               {/* Right Column: Hero Illustration */}
@@ -137,45 +172,6 @@ export default function App() {
                 <HeroIllustration darkMode={darkMode} />
               </section>
             </main>
-
-            {/* CTA Band & Pagination */}
-            <section className="relative z-10 w-full max-w-[1400px] mx-auto px-5 sm:px-10 mt-4 sm:mt-6 pb-8 sm:pb-12 flex flex-col items-center">
-              <div className="w-full max-w-[420px] sm:max-w-[480px]">
-                {/* CTA Button */}
-                <button
-                  type="button"
-                  onClick={handleStartWelcome}
-                  className="group relative w-full h-[58px] rounded-full bg-gradient-to-br from-[#FDC300] to-[#FBB800] flex items-center justify-center shadow-[0_10px_26px_rgba(253,195,0,0.34)] hover:shadow-[0_14px_30px_rgba(253,195,0,0.45)] active:scale-[0.985] transition-all duration-150 overflow-hidden cursor-pointer border border-amber-300/40"
-                  aria-label="Vamos começar o teste"
-                >
-                  {/* Shimmer Sheen Reflection Animation */}
-                  <span
-                    className="absolute top-0 -left-[60%] w-[38%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-sheen pointer-events-none"
-                    aria-hidden="true"
-                  />
-
-                  <span className="text-[16px] font-extrabold text-[#0B1226] tracking-tight pr-6 select-none">
-                    Vamos começar!
-                  </span>
-
-                  {/* Action Circle Icon */}
-                  <span
-                    className="absolute right-1.5 top-1.5 bottom-1.5 aspect-square rounded-full bg-[#040E2B] flex items-center justify-center transition-transform duration-200 ease-out group-hover:scale-105 group-active:translate-x-0.5 shadow-md"
-                    aria-hidden="true"
-                  >
-                    <svg viewBox="0 0 20 20" fill="none" className="w-4 h-4">
-                      <path
-                        d="M7.5 4.5l5 5.5-5 5.5"
-                        stroke="#fff"
-                        strokeWidth="2.3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </section>
           </div>
         )}
 
