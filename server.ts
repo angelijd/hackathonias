@@ -2585,7 +2585,9 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
                         <li>Personalização</li>
                       </ul>
                     </li>
-                    <li><strong>Fundamentação pedagógica:</strong> a personalização por cultura pop e hobbies (no bot e nos testes) é uma camada de apresentação apoiada em pesquisa de psicologia educacional e de medição — sem alterar o instrumento, os critérios de pontuação ou a estrutura lógica das avaliações do IAS. <a href="#" onclick="document.getElementById('modal-pedagogico').style.display = 'flex'; return false;" style="color: #0E477A; font-weight: 700; text-decoration: underline;">Saiba mais</a>.</li>
+                    <li>
+                      <button type="button" onclick="document.getElementById('modal-pedagogico').style.display = 'flex'" style="background: #EFF6FF; color: #0E477A; border: 1px solid #DBEAFE; border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 800; cursor: pointer;">Fundamentação pedagógica</button>
+                    </li>
                   </ol>
 
                   <div class="welcome-important">
