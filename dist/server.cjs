@@ -2318,7 +2318,9 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
                         <li>Personaliza\xE7\xE3o</li>
                       </ul>
                     </li>
-                    <li><strong>Fundamenta\xE7\xE3o pedag\xF3gica:</strong> a personaliza\xE7\xE3o por cultura pop e hobbies (no bot e nos testes) \xE9 uma camada de apresenta\xE7\xE3o apoiada em pesquisa de psicologia educacional e de medi\xE7\xE3o \u2014 sem alterar o instrumento, os crit\xE9rios de pontua\xE7\xE3o ou a estrutura l\xF3gica das avalia\xE7\xF5es do IAS. <a href="#" onclick="document.getElementById('modal-pedagogico').style.display = 'flex'; return false;" style="color: #0E477A; font-weight: 700; text-decoration: underline;">Saiba mais</a>.</li>
+                    <li>
+                      <button type="button" onclick="document.getElementById('modal-pedagogico').style.display = 'flex'" style="background: #EFF6FF; color: #0E477A; border: 1px solid #DBEAFE; border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 800; cursor: pointer;">Fundamenta\xE7\xE3o pedag\xF3gica</button>
+                    </li>
                   </ol>
 
                   <div class="welcome-important">
