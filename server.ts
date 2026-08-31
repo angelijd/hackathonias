@@ -2819,8 +2819,23 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
         </div>
         <script>
           // Tela 0: bloqueia o scroll até o avaliador informar e-mail/WhatsApp.
-          // Nenhum dado é enviado ao servidor — some da memória ao fechar a página.
-          document.body.style.overflow = 'hidden';
+          // Nenhum dado é enviado ao servidor — fica só no sessionStorage da aba,
+          // que soma da memória ao fechar a página. Se o avaliador já informou os
+          // dados nesta mesma aba (ex: voltou para a home a partir de um protótipo),
+          // não precisa informar de novo.
+          var savedEmail = null;
+          var savedWhatsapp = null;
+          try {
+            savedEmail = sessionStorage.getItem('ias_evaluator_email');
+            savedWhatsapp = sessionStorage.getItem('ias_evaluator_whatsapp');
+          } catch (err) {}
+
+          if (savedEmail && savedWhatsapp) {
+            document.getElementById('welcome-overlay').style.display = 'none';
+          } else {
+            document.body.style.overflow = 'hidden';
+          }
+
           document.getElementById('welcome-form').addEventListener('submit', function(e) {
             e.preventDefault();
             var email = document.getElementById('welcome-email').value.trim();
