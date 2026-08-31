@@ -1143,7 +1143,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       const { number, text } = req.body;
       const evolutionUrl = process.env.EVOLUTION_API_URL || 'http://localhost:8080';
       const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
-      const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
+      const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
       if (!number || !text) {
         return res.status(400).json({ error: 'Parâmetros ausentes.' });
@@ -1337,17 +1337,18 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             await sendEmailViaResend(
               'Portal Socioemocional IAS',
               user.personalEmail,
-              '🔑 Recuperação de Acesso - Portal IAS',
-              `Olá ${roleLabel},\n\nRecebemos uma solicitação de redefinição de acesso para sua conta.\n\nSuas credenciais são:\n- Código: ${user.code}\n- Senha: ${user.password}\n\nSe você não solicitou isso, ignore este e-mail.`,
+              'Recuperação de senha - Instituto Ayrton Senna',
+              `Recuperação de acesso\n\nOlá ${roleLabel},\n\nConforme solicitado, enviamos suas credenciais do portal do Instituto Ayrton Senna:\n\nCódigo de Acesso: ${user.code}\nSenha: ${user.password}\n\nPor segurança, não se esqueça de trocar a sua senha assim que acessar!\n\nInstituto Ayrton Senna`,
               `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <h2 style="color: #1e293b;">Recuperação de acesso</h2>
                   <p>Olá <strong>${roleLabel}</strong>,</p>
-                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do portal do Instituto Ayrton Senna:</p>
                   <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
                     <strong>Código de Acesso:</strong> <code>${user.code}</code><br/>
                     <strong>Senha:</strong> <code>${user.password}</code>
                   </div>
+                  <p style="font-size: 13px; color: #475569;">Por segurança, não se esqueça de trocar a sua senha assim que acessar!</p>
                   <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
                 </div>
               `
@@ -1370,7 +1371,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
 
         const evolutionUrl = process.env.EVOLUTION_API_URL || 'http://localhost:8080';
         const evolutionKey = process.env.EVOLUTION_API_KEY || 'apikey';
-        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'instancia_teste';
+        const evolutionInstance = process.env.EVOLUTION_INSTANCE || 'beco_bot';
 
         const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
 

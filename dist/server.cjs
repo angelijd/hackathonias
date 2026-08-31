@@ -1040,7 +1040,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       const { number, text } = req.body;
       const evolutionUrl = process.env.EVOLUTION_API_URL || "http://localhost:8080";
       const evolutionKey = process.env.EVOLUTION_API_KEY || "apikey";
-      const evolutionInstance = process.env.EVOLUTION_INSTANCE || "instancia_teste";
+      const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
       if (!number || !text) {
         return res.status(400).json({ error: "Par\xE2metros ausentes." });
       }
@@ -1187,25 +1187,29 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             await sendEmailViaResend(
               "Portal Socioemocional IAS",
               user.personalEmail,
-              "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
-              `Ol\xE1 ${roleLabel},
+              "Recupera\xE7\xE3o de senha - Instituto Ayrton Senna",
+              `Recupera\xE7\xE3o de acesso
 
-Recebemos uma solicita\xE7\xE3o de redefini\xE7\xE3o de acesso para sua conta.
+Ol\xE1 ${roleLabel},
 
-Suas credenciais s\xE3o:
-- C\xF3digo: ${user.code}
-- Senha: ${user.password}
+Conforme solicitado, enviamos suas credenciais do portal do Instituto Ayrton Senna:
 
-Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
+C\xF3digo de Acesso: ${user.code}
+Senha: ${user.password}
+
+Por seguran\xE7a, n\xE3o se esque\xE7a de trocar a sua senha assim que acessar!
+
+Instituto Ayrton Senna`,
               `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
-                  <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
+                  <h2 style="color: #1e293b;">Recupera\xE7\xE3o de acesso</h2>
                   <p>Ol\xE1 <strong>${roleLabel}</strong>,</p>
-                  <p>Conforme solicitado, enviamos suas credenciais do Portal Socioemocional:</p>
+                  <p>Conforme solicitado, enviamos suas credenciais do portal do Instituto Ayrton Senna:</p>
                   <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0; margin: 15px 0;">
                     <strong>C\xF3digo de Acesso:</strong> <code>${user.code}</code><br/>
                     <strong>Senha:</strong> <code>${user.password}</code>
                   </div>
+                  <p style="font-size: 13px; color: #475569;">Por seguran\xE7a, n\xE3o se esque\xE7a de trocar a sua senha assim que acessar!</p>
                   <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
                 </div>
               `
@@ -1225,7 +1229,7 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
         }
         const evolutionUrl = process.env.EVOLUTION_API_URL || "http://localhost:8080";
         const evolutionKey = process.env.EVOLUTION_API_KEY || "apikey";
-        const evolutionInstance = process.env.EVOLUTION_INSTANCE || "instancia_teste";
+        const evolutionInstance = process.env.EVOLUTION_INSTANCE || "beco_bot";
         const formattedNumber = `${formatWhatsAppNumber(user.personalWhatsapp)}@s.whatsapp.net`;
         const messageText = `\u{1F511} *Recupera\xE7\xE3o de Acesso - Portal IAS*
 
