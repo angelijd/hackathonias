@@ -10,6 +10,10 @@ import { PortalLoginScreen } from './components/PortalLoginScreen';
 import { TeacherDashboard } from './components/TeacherDashboard';
 import { ScreenStep } from './types';
 
+// Turmas do professor e escolas do gestor exibidas em "Seus dados" — mesmos nomes usados no TeacherDashboard.
+const PROFESSOR_TURMAS = ['9º ano A', '9º ano B'];
+const GESTOR_ESCOLAS = ['Centro Educacional Ayrton Senna', 'E.E. Dr. Ytrio Correia'];
+
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [activePlatform, setActivePlatform] = useState<'descoberta' | 'login' | 'professor_panel'>('login');
@@ -271,24 +275,45 @@ export default function App() {
                 <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Nome</span>
                 <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userName || '-'}</p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Idade</span>
-                  <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userAge || '-'}</p>
+
+              {userRole === 'aluno' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Idade</span>
+                    <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userAge || '-'}</p>
+                  </div>
+                  <div>
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Ano Letivo</span>
+                    <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userGrade || '-'}</p>
+                  </div>
                 </div>
-                <div>
-                  <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Ano Letivo</span>
-                  <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userGrade || '-'}</p>
-                </div>
-              </div>
+              )}
+
               <div>
                 <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Cidade</span>
                 <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userCity || '-'}</p>
               </div>
-              <div>
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Escola</span>
-                <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userSchool || '-'}</p>
-              </div>
+
+              {userRole !== 'gestor' && (
+                <div>
+                  <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Escola</span>
+                  <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{userSchool || '-'}</p>
+                </div>
+              )}
+
+              {userRole === 'professor' && (
+                <div>
+                  <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Turmas</span>
+                  <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{PROFESSOR_TURMAS.join(', ')}</p>
+                </div>
+              )}
+
+              {userRole === 'gestor' && (
+                <div>
+                  <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">Escolas</span>
+                  <p className={`text-[15px] font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{GESTOR_ESCOLAS.join(', ')}</p>
+                </div>
+              )}
             </div>
 
             <div className="mt-8">

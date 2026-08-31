@@ -19,6 +19,9 @@ export default function App() {
   const [interestDetails, setInterestDetails] = useState<Record<string, string>>({});
   const [selectedExpectation, setSelectedExpectation] = useState<string | null>(null);
   const [selectedTestType, setSelectedTestType] = useState<'critical_thinking' | 'creativity' | null>(null);
+  // Sobrevive à troca entre Pensamento Crítico e Criatividade (que remonta o Screen3Assessment),
+  // para o vídeo do Béco aparecer só uma vez por bloco, não a cada teste.
+  const [hasSeenIntroVideo, setHasSeenIntroVideo] = useState(false);
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [tempName, setTempName] = useState('Estudante');
@@ -237,6 +240,8 @@ export default function App() {
               selectedExpectation={selectedExpectation}
               testType={selectedTestType || 'critical_thinking'}
               onBackToWelcome={() => setScreenStep('welcome')}
+              hasSeenIntroVideo={hasSeenIntroVideo}
+              onIntroVideoSeen={() => setHasSeenIntroVideo(true)}
             />
           </div>
         )}

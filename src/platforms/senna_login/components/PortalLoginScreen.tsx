@@ -1260,7 +1260,7 @@ export const PortalLoginScreen: React.FC<PortalLoginScreenProps> = ({ darkMode, 
                             setIsFirstAccessModalOpen(false);
                             if (onLoginSuccess) {
                               onLoginSuccess(
-                                firstAccessRole === 'professor' ? 'Professor' : 'Gestor',
+                                firstAccessRole === 'professor' ? 'Fernanda Ribeiro' : 'Marcelo Andrade',
                                 firstAccessRole!,
                                 { email: personalEmail, whatsapp: personalWhatsapp }
                               );

@@ -17,6 +17,8 @@ interface Props {
   selectedExpectation?: string | null;
   testType: 'critical_thinking' | 'creativity';
   onBackToWelcome: () => void;
+  hasSeenIntroVideo: boolean;
+  onIntroVideoSeen: () => void;
 }
 
 export const Screen3Assessment: React.FC<Props> = ({
@@ -31,6 +33,8 @@ export const Screen3Assessment: React.FC<Props> = ({
   selectedExpectation = null,
   testType,
   onBackToWelcome,
+  hasSeenIntroVideo,
+  onIntroVideoSeen,
 }) => {
   const [activeTestType, setActiveTestType] = useState<'critical_thinking' | 'creativity'>(testType);
   const [testStep, setTestStep] = useState<1 | 2>(1);
@@ -42,7 +46,9 @@ export const Screen3Assessment: React.FC<Props> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [showIntroVideo, setShowIntroVideo] = useState(true);
+  // O vídeo do Béco só deve aparecer no primeiro teste do bloco (hasSeenIntroVideo
+  // vem do App, sobrevivendo a um remonte deste componente ao trocar de teste).
+  const [showIntroVideo, setShowIntroVideo] = useState(!hasSeenIntroVideo);
   const [isBecoHighlighted, setIsBecoHighlighted] = useState(false);
 
   const [isReportLoading, setIsReportLoading] = useState(false);
@@ -62,6 +68,7 @@ export const Screen3Assessment: React.FC<Props> = ({
   const handleCloseIntro = () => {
     setShowIntroVideo(false);
     setIsBecoHighlighted(true);
+    onIntroVideoSeen();
   };
 
   useEffect(() => {
@@ -328,7 +335,7 @@ export const Screen3Assessment: React.FC<Props> = ({
             <div className="py-24 flex flex-col items-center justify-center space-y-4">
               <div className="w-12 h-12 border-4 border-[#FDC300] border-t-transparent rounded-full animate-spin"></div>
               <p className="text-sm font-bold text-slate-500 dark:text-slate-400 animate-pulse">
-                Preparando os desafios de {activeTestType === 'critical_thinking' ? 'Pensamento Crítico' : 'Criatividade'}...
+                Preparando seu teste personalizado...
               </p>
             </div>
           ) : isReportLoading ? (
