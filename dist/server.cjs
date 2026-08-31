@@ -28,7 +28,6 @@ var import_path = __toESM(require("path"), 1);
 var import_fs = __toESM(require("fs"), 1);
 var import_dotenv = __toESM(require("dotenv"), 1);
 var import_genai = require("@google/genai");
-var import_nodemailer = __toESM(require("nodemailer"), 1);
 import_dns.default.setDefaultResultOrder("ipv4first");
 function formatWhatsAppNumber(phone) {
   let clean = (phone || "").replace(/\D/g, "");
@@ -38,28 +37,31 @@ function formatWhatsAppNumber(phone) {
   }
   return clean;
 }
-async function createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort) {
-  const cleanPass = smtpPass ? smtpPass.replace(/\s+/g, "") : "";
-  const isGmail = smtpHost && smtpHost.includes("gmail") || smtpUser && smtpUser.includes("@gmail.com");
-  const host = isGmail ? "smtp.gmail.com" : smtpHost || "smtp.gmail.com";
-  const portNum = Number(smtpPort) || 465;
-  let connectHost = host;
-  try {
-    const addresses = await import_dns.default.promises.resolve4(host);
-    if (addresses[0]) connectHost = addresses[0];
-  } catch (err) {
-    console.warn(`[SMTP] Falha ao resolver IPv4 para ${host}, conectando pelo hostname:`, err);
+var RESEND_FROM_DOMAIN = "naoresponda@cristianemiura.com";
+async function sendEmailViaResend(fromName, to, subject, text, html) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    throw new Error("RESEND_API_KEY n\xE3o configurada.");
   }
-  return import_nodemailer.default.createTransport({
-    host: connectHost,
-    port: portNum,
-    secure: portNum === 465,
-    auth: { user: smtpUser, pass: cleanPass },
-    connectionTimeout: 15e3,
-    greetingTimeout: 15e3,
-    socketTimeout: 2e4,
-    tls: { servername: host, rejectUnauthorized: false }
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${resendApiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      from: `${fromName} <${RESEND_FROM_DOMAIN}>`,
+      to: [to],
+      subject,
+      text,
+      html
+    })
   });
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => "");
+    throw new Error(`Resend respondeu ${res.status}: ${errBody}`);
+  }
+  return res.json();
 }
 var envLocalPath = import_path.default.resolve(process.cwd(), ".env.local");
 if (import_fs.default.existsSync(envLocalPath)) {
@@ -1180,19 +1182,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         if (!user.personalEmail) {
           return res.status(400).json({ error: "E-mail n\xE3o configurado." });
         }
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASS;
-        const smtpHost = process.env.SMTP_HOST || "smtp.ethereal.email";
-        const smtpPort = Number(process.env.SMTP_PORT) || 587;
-        let previewUrl = null;
-        if (smtpUser && smtpPass) {
+        if (process.env.RESEND_API_KEY) {
           try {
-            const transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
-            const info = await transporter.sendMail({
-              from: '"Portal Socioemocional IAS" <suporte@institutoayrtonsenna.org.br>',
-              to: user.personalEmail,
-              subject: "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
-              text: `Ol\xE1 ${roleLabel},
+            await sendEmailViaResend(
+              "Portal Socioemocional IAS",
+              user.personalEmail,
+              "\u{1F511} Recupera\xE7\xE3o de Acesso - Portal IAS",
+              `Ol\xE1 ${roleLabel},
 
 Recebemos uma solicita\xE7\xE3o de redefini\xE7\xE3o de acesso para sua conta.
 
@@ -1201,7 +1197,7 @@ Suas credenciais s\xE3o:
 - Senha: ${user.password}
 
 Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
-              html: `
+              `
                 <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
                   <h2 style="color: #1e293b;">Chave de Acesso Recuperada</h2>
                   <p>Ol\xE1 <strong>${roleLabel}</strong>,</p>
@@ -1213,16 +1209,15 @@ Se voc\xEA n\xE3o solicitou isso, ignore este e-mail.`,
                   <p style="font-size: 12px; color: #64748b;">Instituto Ayrton Senna</p>
                 </div>
               `
-            });
-            previewUrl = import_nodemailer.default.getTestMessageUrl(info) || null;
+            );
           } catch (mailErr) {
-            console.error("[Recovery Email] Falha ao enviar via SMTP:", mailErr);
+            console.error("[Recovery Email] Falha ao enviar via Resend:", mailErr);
             return res.status(502).json({ error: "N\xE3o foi poss\xEDvel enviar o e-mail de recupera\xE7\xE3o. Tente novamente em instantes ou contate o suporte." });
           }
         } else {
           console.log(`[Recovery Email] Credenciais enviadas para ${user.personalEmail}: C\xF3digo: ${user.code}, Senha: ${user.password}`);
         }
-        return res.json({ success: true, previewUrl: previewUrl || null });
+        return res.json({ success: true, previewUrl: null });
       }
       if (method === "whatsapp") {
         if (!user.personalWhatsapp) {
@@ -1418,29 +1413,21 @@ Guarde essas credenciais com seguran\xE7a.`;
       if (!email || !text) {
         return res.status(400).json({ error: "Par\xE2metros ausentes." });
       }
-      const smtpUser = process.env.SMTP_USER;
-      const smtpPass = process.env.SMTP_PASS;
-      const smtpHost = process.env.SMTP_HOST || "smtp.ethereal.email";
-      const smtpPort = Number(process.env.SMTP_PORT) || 587;
-      let transporter;
-      if (smtpUser && smtpPass) {
-        transporter = await createEmailTransporter(smtpUser, smtpPass, smtpHost, smtpPort);
-      } else {
-        throw new Error("Ethereal desativado (502 Timeout)");
+      if (!process.env.RESEND_API_KEY) {
+        throw new Error("RESEND_API_KEY n\xE3o configurada.");
       }
       const htmlBody = buildHtmlReport(text, metadata);
-      const info = await transporter.sendMail({
-        from: '"Prof. Cl\xE1udio - Mentor IAS" <suporte@institutoayrtonsenna.org.br>',
-        to: email,
-        subject: "\u{1F4CA} Relat\xF3rio Socioemocional & Recomenda\xE7\xF5es BNCC",
+      await sendEmailViaResend(
+        "Prof. Cl\xE1udio - Mentor IAS",
+        email,
+        "\u{1F4CA} Relat\xF3rio Socioemocional & Recomenda\xE7\xF5es BNCC",
         text,
-        html: htmlBody
-      });
-      const previewUrl = import_nodemailer.default.getTestMessageUrl(info);
-      console.log(`[E-mail Enviado] Preview URL: ${previewUrl || "Enviado via SMTP real"}`);
+        htmlBody
+      );
+      console.log(`[E-mail Enviado] Enviado via Resend para ${email}`);
       return res.json({
         success: true,
-        previewUrl: previewUrl || null
+        previewUrl: null
       });
     } catch (err) {
       console.error("[E-mail Route Error]:", err);
