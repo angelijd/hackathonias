@@ -434,7 +434,8 @@ REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se você 
       const prompt = isCreativity ? promptCreativity : promptCriticalThinking;
 
       const response = await generateGeminiContent(ai, prompt, {
-        responseMimeType: "application/json"
+        responseMimeType: "application/json",
+        thinkingConfig: { thinkingBudget: 0 }
       });
 
       const jsonText = response?.text || '{}';
