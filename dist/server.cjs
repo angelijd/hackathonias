@@ -2552,8 +2552,23 @@ ${mem.summaryMemory ? `- Mem\xF3ria executiva das conversas anteriores: ${mem.su
         </div>
         <script>
           // Tela 0: bloqueia o scroll at\xE9 o avaliador informar e-mail/WhatsApp.
-          // Nenhum dado \xE9 enviado ao servidor \u2014 some da mem\xF3ria ao fechar a p\xE1gina.
-          document.body.style.overflow = 'hidden';
+          // Nenhum dado \xE9 enviado ao servidor \u2014 fica s\xF3 no sessionStorage da aba,
+          // que soma da mem\xF3ria ao fechar a p\xE1gina. Se o avaliador j\xE1 informou os
+          // dados nesta mesma aba (ex: voltou para a home a partir de um prot\xF3tipo),
+          // n\xE3o precisa informar de novo.
+          var savedEmail = null;
+          var savedWhatsapp = null;
+          try {
+            savedEmail = sessionStorage.getItem('ias_evaluator_email');
+            savedWhatsapp = sessionStorage.getItem('ias_evaluator_whatsapp');
+          } catch (err) {}
+
+          if (savedEmail && savedWhatsapp) {
+            document.getElementById('welcome-overlay').style.display = 'none';
+          } else {
+            document.body.style.overflow = 'hidden';
+          }
+
           document.getElementById('welcome-form').addEventListener('submit', function(e) {
             e.preventDefault();
             var email = document.getElementById('welcome-email').value.trim();
