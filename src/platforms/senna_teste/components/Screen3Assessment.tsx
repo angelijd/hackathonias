@@ -352,6 +352,8 @@ export const Screen3Assessment: React.FC<Props> = ({
       `*Principais Forças em Destaque:*\n${character.strengths.map(s => `• ${s}`).join('\n')}\n\n` +
       `_Parabéns pelo seu autoconhecimento! Qualquer dúvida, é só me chamar por aqui. — Béco_`;
 
+    const followUpMessage = 'Quer saber como essas forças têm impacto no seu dia a dia? 💬';
+
     const cleanNum = whatsappNumber.replace(/\D/g, '');
     const fullNum = cleanNum.startsWith('55') ? cleanNum : `55${cleanNum}`;
 
@@ -363,6 +365,15 @@ export const Screen3Assessment: React.FC<Props> = ({
         body: JSON.stringify({ number: fullNum, text: message })
       });
       setWhatsappStatus(res.ok ? 'success' : 'error');
+
+      // Puxa um assunto logo após o relatório, para o Béco continuar a conversa.
+      if (res.ok) {
+        await fetch('/api/ai/export', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number: fullNum, text: followUpMessage })
+        }).catch(() => {});
+      }
     } catch (err) {
       console.error('Erro ao enviar relatório via WhatsApp:', err);
       setWhatsappStatus('error');
@@ -386,13 +397,13 @@ export const Screen3Assessment: React.FC<Props> = ({
         }`}>
 
           {/* Character Highlight Card — tratamento de destaque, é o resultado principal do teste */}
-          <div className={`p-4 sm:p-5 2xl:p-8 rounded-3xl border-2 mb-4 2xl:mb-6 flex flex-col md:flex-row items-center gap-4 sm:gap-6 2xl:gap-8 relative overflow-hidden ${
+          <div className={`p-4 sm:p-5 2xl:p-8 rounded-3xl border-2 mb-4 2xl:mb-6 flex flex-col md:flex-row items-center md:items-stretch gap-4 sm:gap-6 2xl:gap-8 relative overflow-hidden ${
             darkMode
               ? 'bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-800/80 border-amber-500/30 shadow-[0_20px_50px_rgba(253,195,0,0.08)]'
               : 'bg-gradient-to-br from-amber-50 via-white to-amber-50/60 border-[#FBB800]/40 shadow-[0_20px_50px_rgba(253,195,0,0.15)]'
           }`}>
-            {/* Uniform Photo Container (Object Cover & Center Focus) */}
-            <div className="w-24 h-24 sm:w-28 sm:h-28 2xl:w-40 2xl:h-40 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-[#FBB800]/40 dark:ring-[#FBB800]/30 shrink-0 relative bg-black/20 flex items-center justify-center">
+            {/* Uniform Photo Container (Object Cover & Center Focus) — acompanha a altura da coluna de texto (badges até a frase-chave) em telas médias+ */}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-40 md:h-auto lg:w-48 2xl:w-56 rounded-3xl overflow-hidden shadow-2xl ring-4 ring-[#FBB800]/40 dark:ring-[#FBB800]/30 shrink-0 relative bg-black/20 flex items-center justify-center">
               {characterPhoto ? (
                 <img
                   src={characterPhoto}
@@ -487,10 +498,10 @@ export const Screen3Assessment: React.FC<Props> = ({
           <div className={`p-4 sm:p-5 rounded-3xl border ${
             darkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-gradient-to-br from-emerald-50/70 to-emerald-100/30 border-emerald-200'
           }`}>
-            <div className="max-w-lg mx-auto">
-              {/* Fala do Béco (avatar + balão) */}
-              <div className="flex items-start gap-3 mb-3.5 text-left">
-                <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 border-2 border-[#FBB800] shadow-md">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+              {/* Metade 1: Fala do Béco (avatar maior + balão) */}
+              <div className="flex items-start gap-3 text-left md:flex-1">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shrink-0 border-2 border-[#FBB800] shadow-md">
                   <img src={becoAvatar} alt="Béco" className="w-full h-full object-cover" />
                 </div>
                 <div className={`flex-1 p-4 rounded-2xl rounded-tl-sm text-[13.5px] sm:text-sm font-semibold leading-relaxed ${
@@ -500,38 +511,41 @@ export const Screen3Assessment: React.FC<Props> = ({
                 </div>
               </div>
 
-              <form onSubmit={handleSendWhatsApp} className="flex flex-col sm:flex-row gap-2.5">
-                <input
-                  type="tel"
-                  placeholder="(11) 91234-5678"
-                  value={whatsappNumber}
-                  onChange={(e) => setWhatsappNumber(e.target.value)}
-                  className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
-                    darkMode
-                      ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500'
-                      : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400 focus:border-emerald-500'
-                  }`}
-                  required
-                />
-                <button
-                  type="submit"
-                  disabled={isSendingWhatsApp}
-                  className="px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
-                >
-                  {isSendingWhatsApp ? 'Enviando...' : 'Sim, enviar →'}
-                </button>
-              </form>
+              {/* Metade 2: Formulário de envio */}
+              <div className="md:flex-1">
+                <form onSubmit={handleSendWhatsApp} className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-2.5">
+                  <input
+                    type="tel"
+                    placeholder="(11) 91234-5678"
+                    value={whatsappNumber}
+                    onChange={(e) => setWhatsappNumber(e.target.value)}
+                    className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold border transition-all ${
+                      darkMode
+                        ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500'
+                        : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400 focus:border-emerald-500'
+                    }`}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSendingWhatsApp}
+                    className="px-6 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                  >
+                    {isSendingWhatsApp ? 'Enviando...' : 'Sim, enviar →'}
+                  </button>
+                </form>
 
-              {whatsappStatus === 'success' && (
-                <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2.5">
-                  ✅ Prontinho! O Béco te mandou o relatório no WhatsApp.
-                </p>
-              )}
-              {whatsappStatus === 'error' && (
-                <p className="text-xs font-bold text-rose-500 mt-2.5">
-                  ❌ Não conseguimos enviar agora. Tente novamente em instantes.
-                </p>
-              )}
+                {whatsappStatus === 'success' && (
+                  <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2.5">
+                    ✅ Prontinho! O Béco te mandou o relatório no WhatsApp.
+                  </p>
+                )}
+                {whatsappStatus === 'error' && (
+                  <p className="text-xs font-bold text-rose-500 mt-2.5">
+                    ❌ Não conseguimos enviar agora. Tente novamente em instantes.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
