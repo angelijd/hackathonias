@@ -2826,58 +2826,257 @@ ${mem.summaryMemory ? `- Memória executiva das conversas anteriores: ${mem.summ
           <div style="background: white; border-radius: 24px; padding: 40px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
             <button onclick="document.getElementById('modal-pedagogico').style.display = 'none'" style="position: absolute; top: 24px; right: 24px; background: #F1F5F9; border: none; width: 36px; height: 36px; border-radius: 18px; font-weight: bold; cursor: pointer; color: #475569; font-size: 16px;">X</button>
 
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
               <div>
-                <h2 style="font-size: 24px; font-weight: 900; color: #071131; margin: 0;">Fundamentação Pedagógica</h2>
-                <span style="font-size: 13.5px; color: #5B6472; font-weight: 600;">Personalização e cultura pop no bot e nos testes do IAS</span>
+                <h2 style="font-size: 24px; font-weight: 900; color: #071131; margin: 0;">Fundamentação teórica: personalização e cultura pop no bot e nos testes do IAS</h2>
+                <span style="font-size: 13.5px; color: #5B6472; font-weight: 600;">Projeto: Bot de pensamento crítico e criatividade + personalização "envelope" de hobbies e cultura pop para os testes do IAS</span>
               </div>
             </div>
 
+            <p style="font-size: 13px; line-height: 1.6; color: #64748B; margin: 0 0 20px 0;">
+              <strong>Escopo deste documento:</strong> apresentar a fonte teórica que orientou a decisão de design de usar elementos de cultura pop, hobbies e interesses pessoais do estudante em dois componentes do projeto: (1) o bot de interação com o estudante, e (2) o envelope de personalização com elementos de cultura pop aplicado aos testes do IAS, sem alterar, em nenhum dos dois casos, o método de aplicação, as escalas ou os critérios de pontuação do instrumento.
+            </p>
+
+            <div style="background: #F1F5F9; padding: 16px 20px; border-radius: 12px; margin-bottom: 24px;">
+              <p style="font-size: 13px; line-height: 1.6; color: #475569; margin: 0 0 8px 0;">
+                <strong>Natureza deste documento:</strong> este texto tem finalidade documental e de rastreabilidade — registrar qual literatura embasou a decisão de design, não afirmar que a decisão está cientificamente "provada" ou é a única leitura possível.
+              </p>
+              <p style="font-size: 13px; line-height: 1.6; color: #475569; margin: 0;">
+                Como detalhado na Seção 6, os estudos citados são objeto de debate acadêmico ativo, têm tamanhos de efeito modestos e nem sempre se replicam. O documento não deve ser lido como validação científica do produto, e sim como registro de que a escolha de design não foi arbitrária — foi orientada por um corpo específico e identificável de pesquisa em psicologia educacional e em medição educacional.
+              </p>
+            </div>
+
             <div style="background: #F8FAFC; border-left: 4px solid #FBB800; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 20px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">A decisão de design</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #0E477A; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;">1. A decisão de design em uma frase</h4>
               <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 10px 0;">
-                O projeto tem dois componentes de personalização, de importância equivalente para esta fundamentação: <strong>(1) o bot</strong>, cuja interação com o estudante usa exemplos e analogias conectados a interesses pessoais declarados (jogos, séries, esportes, música etc.), e <strong>(2) o envelope de cultura pop</strong> aplicado aos testes do IAS, onde a redação de superfície dos itens (cenário, contexto, referências) pode ser adaptada aos interesses do estudante.
+                O projeto tem dois componentes de personalização, de importância equivalente para esta fundamentação:
+              </p>
+              <ol style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 10px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                <li><strong>O bot</strong> — a interação com o estudante usa exemplos e analogias conectados a interesses pessoais declarados (jogos, séries, esportes, música, etc.), personalizando a interação, em vez de usar exemplos genéricos.</li>
+                <li><strong>O envelope de cultura pop aplicado aos testes do IAS</strong> — os itens de teste podem ter sua redação de superfície (cenário, contexto, referências) adaptada aos interesses do estudante.</li>
+              </ol>
+              <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 10px 0;">
+                Em ambos os casos, o instrumento em si não muda: no bot, isso significa que o conteúdo pedagógico e o objetivo da interação permanecem os mesmos independentemente do envelope; nos testes, significa que a estrutura lógica dos itens, o critério de resposta correta e a escala de pontuação do IAS permanecem inalterados.
               </p>
               <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0;">
-                Em ambos os casos, o instrumento em si não muda: no bot, o conteúdo pedagógico e o objetivo da interação permanecem os mesmos; nos testes, a estrutura lógica dos itens, o critério de resposta correta e a escala de pontuação do IAS permanecem inalterados. Essa distinção — conteúdo/instrumento intocado vs. camada de apresentação personalizada — é o desenho mais defensável segundo a literatura citada abaixo.
+                Essa distinção — conteúdo/instrumento intocado vs. camada de apresentação personalizada — é o que a literatura de motivação educacional recomenda (Seções 2–3, aplicável a ambos os componentes) e o que a literatura de medição educacional trata como o desenho mais defensável especificamente quando a personalização toca itens de avaliação (Seção 4, aplicável ao envelope dos testes).
               </p>
             </div>
 
             <div style="background: #F0FDF4; border-left: 4px solid #22C55E; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 20px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">Por que isso deveria funcionar</h4>
-              <ul style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px;">
-                <li><strong>Interesse como "gancho" de entrada (Hidi & Renninger, 2006):</strong> o Modelo de Quatro Fases do Desenvolvimento do Interesse descreve o interesse situacional despertado por um estímulo externo como facilitador da atenção sustentada. O envelope de cultura pop corresponde à Fase 1 (interesse situacional desperto); a interação continuada com o bot pode corresponder à Fase 2 (interesse situacional mantido), dependendo do desenho conversacional. As Fases 3 e 4 (interesse individual duradouro) não são reivindicadas — exigiriam evidência longitudinal fora do escopo deste projeto.</li>
-                <li><strong>Autonomia, competência e pertencimento (Ryan & Deci — Teoria da Autodeterminação, 2000):</strong> quando o exemplo vem do próprio universo do estudante, três necessidades psicológicas básicas são atendidas: autonomia (a atividade dialoga com escolhas dele), competência (ele já é "especialista" no próprio hobby, reduzindo insegurança) e pertencimento (seu interesse é validado).</li>
-                <li><strong>Personalização de contexto sem alterar o núcleo do problema (Cordova & Lepper, 1996; Walkington, 2013):</strong> quando o mesmo conteúdo é embutido em contextos personalizados sem alterar estrutura ou dificuldade, alunos mostram maior engajamento, persistência e desempenho — só a "casca" do problema muda, a métrica não.</li>
+              <h4 style="font-size: 14px; font-weight: 800; color: #166534; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">2. Por que isso deveria funcionar: pilares teóricos comuns aos dois componentes</h4>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">2.1 O interesse pessoal como "gancho" de entrada (Hidi & Renninger)</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 10px 0;">
+                O Modelo de Quatro Fases do Desenvolvimento do Interesse (Hidi & Renninger, 2006, Educational Psychologist) descreve o interesse como algo que se constrói em fases — começando por um interesse situacional disparado por um estímulo externo (novidade, relevância pessoal), que pode evoluir para interesse mantido e, com o tempo, para interesse individual duradouro.
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 10px 0;">
+                Isso justifica o uso do envelope tanto no bot quanto nos testes: o elemento de cultura pop/hobby não é o objetivo pedagógico em si — é o gatilho que capta a atenção do estudante no momento em que ele encontra o exemplo, seja durante a interação com o bot, seja ao ler o enunciado de um item de teste. A literatura descreve esse gatilho externo como, para muitos alunos, um facilitador prático para que a atenção sustentada aconteça, especialmente antes que haja interesse intrínseco já estabelecido pelo tema (pensamento crítico/criatividade em si).
+              </p>
+              <p style="font-size: 13px; font-weight: 700; color: #166534; margin: 0 0 4px 0;">Mapeamento das duas fases do modelo aos dois componentes do projeto:</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 8px 0;">
+                O projeto pode ser lido, à luz do modelo, como cobrindo deliberadamente as duas primeiras das quatro fases:
+              </p>
+              <ul style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 10px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Fase 1 — Interesse situacional desperto:</strong> corresponde diretamente ao envelope de cultura pop/personalização, presente tanto no bot quanto nos testes. É o estímulo pontual de entrada — a referência ao hobby, jogo ou série do estudante — cuja função é captar atenção no momento em que o exemplo é apresentado, através de reconhecimento e relevância pessoal imediata. Essa fase é igualmente aplicável ao envelope do bot e ao envelope dos testes, já que em ambos o mecanismo é o mesmo: um estímulo de superfície ligado ao interesse do estudante.</li>
+                <li><strong>Fase 2 — Interesse situacional mantido:</strong> corresponde à interação continuada com o bot e no engajamento com os testes, na medida em que eles sustentam o engajamento do estudante além do estímulo inicial. Esta correspondência depende do desenho conversacional específico do bot: ela é mais direta se a interação envolver algum mecanismo de sustentação ativa (perguntas sucessivas, por exemplo, caso o bot de fato opere por método socrático), mas o princípio da Fase 2 (sustentar atenção além do gatilho inicial) se aplica de forma mais genérica a qualquer interação que mantenha o estudante engajado por mais de um turno, independentemente da técnica conversacional exata usada. Nos testes, essa fase tem aplicação mais limitada, já que um item de teste isolado tende a ser mais próximo de um evento único do que de uma interação sustentada — a Fase 2, nesse componente, se relacionaria antes à experiência do estudante ao longo de todo o teste (múltiplos itens personalizados), não a um item isolado.</li>
               </ul>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 10px 0;">
+                Essa é uma leitura estrutural do modelo, não uma medição empírica: o modelo de Hidi & Renninger foi originalmente descrito para explicar o desenvolvimento do interesse ao longo de semanas ou meses de exposição repetida a um domínio, não para uma única sessão de bot ou um único teste. É razoável mapear o projeto às duas primeiras fases porque a lógica funcional é a mesma (estímulo de entrada → sustentação da atenção), mas isso é uma inferência de design, não uma constatação de que o produto efetivamente induz essas fases nos estudantes reais — isso exigiria medição (ex.: escalas de interesse situacional aplicadas antes/depois do uso).
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 16px 0;">
+                <strong>Importante:</strong> o documento não reivindica que o produto avança o estudante às Fases 3 (Interesse Individual Emergente) ou 4 (Interesse Individual Bem Desenvolvido) do modelo. Essas fases descrevem interesse duradouro e autorregulado, que exigiria evidência longitudinal de uso continuado — fora do escopo desta justificativa de design.
+              </p>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">2.2 Autonomia, competência e pertencimento (Ryan & Deci — Teoria da Autodeterminação)</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 6px 0;">
+                Quando o exemplo ou analogia usado — seja no bot, seja no enunciado de um item de teste — vem do próprio universo do estudante, três necessidades psicológicas básicas descritas pela Teoria da Autodeterminação são atendidas:
+              </p>
+              <ul style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 8px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li><strong>Autonomia</strong> — o estudante sente que a atividade dialoga com escolhas e gostos que são dele, não impostos;</li>
+                <li><strong>Competência</strong> — o estudante já é "especialista" no próprio hobby, o que reduz a insegurança inicial diante de uma tarefa ou tema abstrato;</li>
+                <li><strong>Pertencimento</strong> — validar o interesse do estudante (mesmo que seja um jogo ou uma série) sinaliza que o espaço de interação/avaliação reconhece sua identidade.</li>
+              </ul>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 16px 0;">
+                Isso vale tanto para a experiência do estudante com o bot quanto para o momento em que ele responde aos itens de teste — em ambos, a personalização reduz barreiras de entrada percebidas sem alterar o que está sendo pedido ou avaliado.
+              </p>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #166534; margin: 0 0 6px 0;">2.3 Personalização de contexto sem alterar o núcleo do problema (Cordova & Lepper; Walkington)</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 8px 0;">
+                O estudo de referência aqui é Cordova & Lepper (1996, Journal of Educational Psychology): quando o mesmo conteúdo de aritmética foi embutido em contextos personalizados aos interesses dos alunos, sem alterar a estrutura ou a dificuldade da tarefa, os alunos mostraram maior engajamento, maior persistência e aprenderam mais no mesmo tempo — comparado ao grupo com o conteúdo abstrato, idêntico em substância.
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0 0 8px 0;">
+                O trabalho de Candace Walkington em álgebra (2013 em diante) reforça o mesmo padrão em problemas estruturados: problemas matemáticos reescritos para refletir os interesses do aluno (esportes, jogos) mantiveram a mesma estrutura lógica e o mesmo nível de dificuldade — só a "casca" do problema mudou — e os alunos com essa versão personalizada tiveram desempenho melhor e mais duradouro, inclusive em unidades posteriores sem personalização.
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #166534; margin: 0;">
+                Esse padrão — "envelope muda, estrutura e métrica não mudam" — é o que fundamenta tanto a personalização das interações do bot quanto, de forma ainda mais direta, o envelope aplicado aos itens de teste (ver Seção 4), já que os problemas de Walkington são, estruturalmente, muito próximos de itens de avaliação.
+              </p>
             </div>
 
             <div style="background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 20px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #92400E; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Um cuidado que a literatura exige</h4>
+              <h4 style="font-size: 14px; font-weight: 800; color: #92400E; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">3. Um cuidado que a literatura exige (aplicável aos dois componentes)</h4>
+              <p style="font-size: 13.5px; line-height: 1.6; color: #78350F; margin: 0 0 10px 0;">
+                A mesma literatura documenta um risco quando a personalização é malfeita: o chamado <strong>efeito dos detalhes sedutores</strong> (Mayer e colegas) — quando o elemento "atraente" (referência de cultura pop, piada, curiosidade) é decorativo e não carrega relação com o raciocínio pedido, ele pode desviar atenção e prejudicar a retenção ou a performance, em vez de ajudar.
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.6; color: #78350F; margin: 0 0 10px 0;">
+                A implicação prática, tanto para o bot quanto para o envelope dos testes: a referência ao hobby/interesse do aluno deve estruturar o exemplo ou a analogia usada (ex.: usar a lógica de progressão de um jogo para ilustrar uma relação de causa-e-efeito), e não apenas ser mencionada de forma solta ou cosmética.
+              </p>
               <p style="font-size: 13.5px; line-height: 1.6; color: #78350F; margin: 0;">
-                O <strong>efeito dos detalhes sedutores</strong> (Harp & Mayer, 1998) mostra que, quando a referência de cultura pop é decorativa e não estrutura o raciocínio pedido, ela pode desviar atenção em vez de ajudar. Por isso, a referência ao hobby do aluno precisa estruturar o exemplo (ex.: usar a lógica de progressão de um jogo para ilustrar causa-e-efeito), não apenas ser mencionada de forma solta. A personalização também precisa vir de interesses efetivamente declarados pelo estudante — não de suposições genéricas — por isso há sempre múltiplas opções de escolha nos testes.
+                Vale também registrar, com transparência: parte da pesquisa mostra que esse efeito de personalização é mais forte em alunos com menor interesse prévio ou menor confiança no tema, e que a autenticidade da referência importa — tentativas de personalização "forçada" ou fora de contexto podem ser percebidas como artificiais por adolescentes e ter efeito contrário. Isso reforça a importância de a personalização vir de interesses efetivamente declarados pelo estudante, não de suposições genéricas sobre "o que os jovens gostam" — válido tanto para os exemplos usados pelo bot quanto para os itens de teste personalizados. Por isso o estudante tem múltiplas opções de escolha em todos os testes.
               </p>
             </div>
 
             <div style="background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 20px; border-radius: 0 12px 12px 0; margin-bottom: 20px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #1E3A8A; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">Cuidado adicional, específico dos testes: validade de medição</h4>
-              <p style="font-size: 13.5px; line-height: 1.6; color: #1E3A8A; margin: 0 0 10px 0;">
-                Diferente do bot, os testes do IAS exigem que cada item continue medindo o mesmo construto, com a mesma dificuldade, para todos os estudantes — independentemente do envelope usado. A abordagem de <strong>validade baseada em argumento</strong> (Kane, 1992/2006/2013) e o framework de validação para avaliações personalizadas (Sinharay, 2025) orientam três critérios de verificação técnica:
+              <h4 style="font-size: 14px; font-weight: 800; color: #1E3A8A; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">4. Cuidado adicional, específico dos testes: validade de medição</h4>
+              <p style="font-size: 13.5px; line-height: 1.6; color: #1E3A8A; margin: 0 0 14px 0;">
+                Diferente da interação com o bot — um espaço onde variar o exemplo não altera o que está sendo avaliado, porque nada ali é pontuado item a item —, os testes do IAS (as escalas/instrumentos que medem pensamento crítico e criatividade) impõem uma exigência adicional: cada item precisa continuar medindo o mesmo construto, com a mesma dificuldade, para todos os estudantes, independentemente do envelope usado. Esta seção trata exclusivamente desse componente.
               </p>
-              <ul style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
-                <li><strong>Isomorfismo estrutural:</strong> o envelope pode mudar o cenário, mas a pergunta, o critério de resposta válida e a escala devem permanecer idênticos entre estudantes.</li>
-                <li><strong>Ausência de distratores construto-irrelevantes:</strong> a personalização não pode exigir conhecimento específico do hobby do aluno para responder corretamente.</li>
-                <li><strong>Equidade entre perfis de interesse:</strong> o desenho evita favorecer estudantes com hobbies mais "prontos para virar metáfora" (ex.: jogos com regras claras) sobre estudantes com interesses menos estruturáveis — o que a literatura trata como funcionamento diferencial de item (DIF).</li>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #1E3A8A; margin: 0 0 6px 0;">4.1 O que a literatura de medição educacional diz sobre personalizar itens de teste</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0 0 8px 0;">
+                Existe uma linha de pesquisa específica — distinta da pesquisa de motivação citada nas Seções 2–3 — sobre como a "moldura" ou contexto de um item de avaliação pode, sem querer, mudar o que ele mede. Alguns achados centrais:
+              </p>
+              <ul style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0 0 14px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li>Kane (1992, 2006, 2013) desenvolveu a abordagem de "validade baseada em argumento" (argument-based approach to validity), hoje padrão na área de medição educacional (psicometria). O princípio central: a validade não é uma propriedade fixa do item, mas da interpretação e do uso do escore — ou seja, é preciso poder argumentar que o escore continua significando a mesma coisa (nível de pensamento crítico/criatividade do aluno) independentemente de qual versão do item foi apresentada.</li>
+                <li>Itens "isomórficos" — termo usado na literatura para itens que deveriam ser estatisticamente equivalentes, mas variam apenas na superfície (nomes, contexto, redação) — têm demonstrado, em múltiplos estudos (ex.: revisão em CBE—Life Sciences Education, 2023), que mudanças aparentemente pequenas na moldura de um item podem alterar significativamente o desempenho e a resposta afetiva dos estudantes, mesmo quando a estrutura lógica do item é idêntica. Isso não invalida o envelope de cultura pop, mas mostra que ele precisa ser monitorado.</li>
+                <li>Sinharay (2025, Journal of Educational Measurement) propõe um framework de validação específico para "avaliações personalizadas" (personalized assessments), reconhecendo que esse é um campo emergente.</li>
+                <li>Bernacki & Walkington (2014), no mesmo programa de pesquisa citado na Seção 2.3, compararam estudantes de álgebra sob diferentes graus de personalização e encontraram um resultado particularmente relevante para o caso do IAS: a personalização aumentou o interesse expresso pela matemática, mas não alterou os escores no teste de conhecimento de álgebra. Esse é um resultado favorável à lógica do envelope: sugere que é possível manter a métrica estável enquanto ainda assim há ganho no engajamento.</li>
+                <li>O contraponto de cautela, também de Walkington (relatado em reportagem do EdWeek, 2026, sobre o desenvolvimento de um "bot de realismo" para checar problemas gerados por IA): há um risco concreto quando a personalização é gerada automaticamente sem revisão — o exemplo citado é uma IA que criou um problema pedindo para contar "quantos broches" alguém usava durante um show, uma tarefa que "ninguém acompanharia por nenhuma razão real". Isso ilustra a necessidade de construir instruções para a IA que sejam específicas e precisas, além de incluir um humano supervisionando esse trabalho periodicamente.</li>
               </ul>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #1E3A8A; margin: 0 0 6px 0;">4.2 Por que a lógica "envelope, não instrumento" ainda se sustenta teoricamente para os testes</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0 0 10px 0;">
+                Apesar da literatura de medição impor um padrão de cuidado mais alto do que a interação livre com o bot, a arquitetura descrita pelo projeto — onde as escalas e os critérios de pontuação do IAS não são alterados, apenas a redação de superfície dos itens — é exatamente o desenho que a literatura de personalização de itens (Bernacki & Walkington; Davis-Dorsey et al., 1991; Ku & Sullivan, 2001) testou como sendo o mais defensável: variar o "contexto de superfície" mantendo fixos a estrutura lógica, o nível de dificuldade e o critério de resposta correta/pontuação.
+              </p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0 0 8px 0;">
+                A garantia teórica de que isso preserva a validade do instrumento vem de três exigências, extraídas diretamente dessa literatura, que devem ser tratadas como critérios de verificação técnica, não apenas como justificativa teórica:
+              </p>
+              <ol style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0 0 14px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Isomorfismo estrutural</strong> — o envelope pode mudar o "cenário" do item (ex.: usar um jogo específico do interesse do aluno), mas a pergunta em si, o critério do que conta como resposta válida, e a escala aplicada devem permanecer estruturalmente idênticos entre estudantes.</li>
+                <li><strong>Ausência de distratores construto-irrelevantes</strong> — a personalização não pode introduzir informação nova que exija conhecimento específico do universo de interesse do aluno para responder corretamente (isso mudaria o que está sendo medido, deixando de ser pensamento crítico/criatividade e passando a testar também familiaridade com aquele hobby/mídia).</li>
+                <li><strong>Equidade entre perfis de interesse</strong> — como nem todo estudante tem um interesse declarado igualmente "rico" em analogias, o desenho deve evitar que estudantes com hobbies mais "prontos para virar metáfora" (ex.: jogos com regras claras) sejam sistematicamente favorecidos sobre estudantes com interesses menos estruturáveis (ex.: um hobby mais contemplativo) — um risco de equidade que a literatura de personalização de itens trata sob o nome de differential item functioning (funcionamento diferencial de item, ou DIF).</li>
+              </ol>
+
+              <p style="font-size: 13.5px; font-weight: 800; color: #1E3A8A; margin: 0 0 6px 0;">4.3 Registro de cautela específico para os testes</p>
+              <p style="font-size: 13.5px; line-height: 1.65; color: #1E3A8A; margin: 0;">
+                Aqui o risco não é só motivacional — é de validade de medição. Por isso, esta seção recomenda que qualquer aplicação do envelope de personalização aos itens do IAS seja submetida a uma verificação técnica adicional, à parte da fundamentação teórica aqui descrita: idealmente, uma checagem por amostragem de que itens personalizados para diferentes interesses continuam produzindo distribuições de dificuldade e discriminação comparáveis (é isso que a literatura de DIF e itens isomórficos recomenda como prática mínima). Essa verificação está fora do escopo deste documento teórico, mas é a decorrência lógica dele.
+              </p>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+              <h4 style="font-size: 14px; font-weight: 800; color: #334155; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">5. Síntese dos dois componentes e suas fases correspondentes</h4>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; line-height: 1.5;">
+                  <thead>
+                    <tr style="background: #E2E8F0;">
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">Componente</th>
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">Fase do modelo Hidi & Renninger (2006)</th>
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">Função</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Envelope de cultura pop / personalização (bot e testes)</td>
+                      <td style="padding: 8px 10px; color: #475569;">Fase 1 — Interesse Situacional Desperto</td>
+                      <td style="padding: 8px 10px; color: #475569;">Capturar atenção inicial via relevância pessoal</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Interação continuada com o bot</td>
+                      <td style="padding: 8px 10px; color: #475569;">Fase 2 — Interesse Situacional Mantido (aplicação condicionada ao desenho conversacional do bot — ver Seção 2.1)</td>
+                      <td style="padding: 8px 10px; color: #475569;">Sustentar engajamento além do estímulo inicial</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 10px; color: #475569;">(fora de escopo)</td>
+                      <td style="padding: 8px 10px; color: #475569;">Fases 3 e 4 — Interesse Individual (emergente/desenvolvido)</td>
+                      <td style="padding: 8px 10px; color: #475569;">Não reivindicado; exigiria evidência longitudinal</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="background: #F1F5F9; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+              <h4 style="font-size: 14px; font-weight: 800; color: #334155; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">6. Ressalva sobre o status dos estudos citados</h4>
+              <p style="font-size: 13px; line-height: 1.6; color: #475569; margin: 0 0 10px 0;">
+                Os estudos e modelos referenciados neste documento são amplamente citados na literatura de psicologia educacional e de medição, mas não são consensuais nem estão isentos de crítica. Vale registrar, para uso responsável desta documentação:
+              </p>
+              <ul style="font-size: 13px; line-height: 1.6; color: #475569; margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Tamanhos de efeito modestos:</strong> a correlação entre interesse pessoal e desempenho acadêmico observada em meta-análises (ex.: Schiefele, Krapp & Winteler, 1992) é de magnitude pequena a moderada (r ≈ 0,31), não uma relação determinística.</li>
+                <li><strong>Resultados nulos e até negativos existem:</strong> nem todo estudo de personalização baseada em interesse encontra efeito positivo. Um RCT de grande porte (Iterbeke, Schelfhout & De Witte, 2022, com 1.449 estudantes) não encontrou aumento de interesse com personalização de exemplos, e identificou efeito negativo em estudantes com baixa autoconfiança — um contraponto relevante ao otimismo geral da área.</li>
+                <li><strong>O modelo de Hidi & Renninger é uma estrutura teórica, não uma lei empírica testável diretamente:</strong> as quatro fases foram propostas como um framework explicativo qualitativo; sua aplicação a um produto específico (como este bot e o envelope dos testes) é uma extrapolação razoável, não uma validação direta do modelo.</li>
+                <li>A correspondência da Fase 2 ao bot depende do método conversacional real do bot, que este documento não presume conhecer com certeza (ver nota de abertura). Se o bot não sustentar interação em múltiplos turnos de forma ativa, a correspondência à Fase 2 é mais fraca e deve ser revista.</li>
+                <li><strong>Personalização malfeita pode ter efeito reverso:</strong> o efeito dos "detalhes sedutores" (Mayer e colegas) mostra que a mesma estratégia, se executada sem cuidado, pode prejudicar em vez de ajudar — o que significa que a fundamentação teórica aqui apresentada justifica a direção da decisão de design, mas não garante o resultado; a qualidade de execução do envelope segue sendo determinante, tanto no bot quanto nos testes.</li>
+                <li>O documento fornecido pela pesquisa complementar (material extenso em anexo, em revisão anterior) contém as mesmas fontes primárias citadas aqui, mas com formulações retóricas e conclusões mais fortes do que as fontes originais sustentam; este documento manteve apenas as afirmações rastreáveis diretamente aos estudos primários.</li>
+                <li><strong>A literatura sobre personalização de itens de teste (Seção 4) é um campo ainda emergente:</strong> o próprio Sinharay (2025) descreve a falta de um "ferramental de medição" plenamente consolidado para avaliações personalizadas. Isso significa que a Seção 4 deste documento é uma aplicação lógica e razoável dos princípios de medição existentes ao caso do IAS, não a citação de um consenso já estabelecido especificamente para este tipo de produto.
+                </li>
+              </ul>
+              <p style="font-size: 13px; line-height: 1.6; color: #475569; margin: 12px 0 0 0;">
+                <strong>Em suma:</strong> a literatura dá suporte razoável e coerente à direção da decisão de design, tanto para o bot quanto para os testes, mas deve ser lida como fundamentação teórica plausível, não como comprovação definitiva de eficácia ou de validade psicométrica do produto.
+              </p>
+            </div>
+
+            <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+              <h4 style="font-size: 14px; font-weight: 800; color: #334155; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px;">7. Síntese para a documentação do projeto</h4>
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; line-height: 1.5;">
+                  <thead>
+                    <tr style="background: #E2E8F0;">
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">Elemento</th>
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">O que muda</th>
+                      <th style="text-align: left; padding: 8px 10px; color: #334155; font-weight: 800;">O que NÃO muda</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Exemplos e analogias usados pelo bot</td>
+                      <td style="padding: 8px 10px; color: #475569;">Passam a referenciar hobbies/interesses declarados pelo aluno</td>
+                      <td style="padding: 8px 10px; color: #475569;">—</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Conteúdo pedagógico do bot</td>
+                      <td style="padding: 8px 10px; color: #475569;">—</td>
+                      <td style="padding: 8px 10px; color: #475569;">Objetivo e conteúdo da interação permanecem os mesmos</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Redação de superfície dos itens de teste</td>
+                      <td style="padding: 8px 10px; color: #475569;">Cenário/contexto do exemplo, adaptado ao interesse do aluno</td>
+                      <td style="padding: 8px 10px; color: #475569;">Estrutura lógica do item, critério de resposta correta, escala de pontuação</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                      <td style="padding: 8px 10px; color: #475569;">Instrumento de avaliação (IAS)</td>
+                      <td style="padding: 8px 10px; color: #475569;">—</td>
+                      <td style="padding: 8px 10px; color: #475569;">Escalas, critérios e método de aplicação do IAS permanecem inalterados</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 10px; color: #475569;">Estrutura/dificuldade do raciocínio pedido (bot e testes)</td>
+                      <td style="padding: 8px 10px; color: #475569;">—</td>
+                      <td style="padding: 8px 10px; color: #475569;">Idêntica à versão sem personalização</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div style="background: #F1F5F9; padding: 20px; border-radius: 12px;">
-              <h4 style="font-size: 14px; font-weight: 800; color: #334155; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Ressalva sobre o status da pesquisa</h4>
-              <p style="font-size: 13px; line-height: 1.6; color: #475569; margin: 0 0 10px 0;">
-                Este é um registro de rastreabilidade da decisão de design, não uma comprovação científica. Os estudos citados têm tamanhos de efeito modestos (correlação interesse-desempenho r ≈ 0,31, Schiefele, Krapp & Winteler, 1992), nem sempre se replicam (um RCT com 1.449 estudantes de Iterbeke, Schelfhout & De Witte, 2022, não encontrou ganho de interesse e viu efeito negativo em alunos com baixa autoconfiança), e a personalização malfeita pode ter efeito reverso. A literatura de medição para avaliações personalizadas (Seção de validade acima) é um campo ainda emergente, sem ferramental plenamente consolidado.
-              </p>
-              <p style="font-size: 12px; line-height: 1.6; color: #64748B; margin: 0;">
-                <strong>Referências centrais:</strong> Cordova & Lepper (1996, J. Educational Psychology); Hidi & Renninger (2006, Educational Psychologist); Ryan & Deci (2000, American Psychologist); Walkington (2013, J. Educational Psychology); Bernacki & Walkington (2014); Harp & Mayer (1998, J. Educational Psychology); Iterbeke, Schelfhout & De Witte (2022); Kane (1992/2006/2013); Sinharay (2025, J. Educational Measurement).
+              <h4 style="font-size: 14px; font-weight: 800; color: #334155; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;">Referências centrais</h4>
+              <p style="font-size: 12.5px; font-weight: 700; color: #334155; margin: 0 0 4px 0;">Motivação e desenvolvimento do interesse (aplicável a bot e testes):</p>
+              <ul style="font-size: 12.5px; line-height: 1.6; color: #64748B; margin: 0 0 12px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px;">
+                <li>Cordova, D. & Lepper, M. (1996). Journal of Educational Psychology, 88(4), 715–730.</li>
+                <li>Hidi, S. & Renninger, K.A. (2006). Educational Psychologist, 41(2), 111–127.</li>
+                <li>Ryan, R. & Deci, E. (2000). American Psychologist, 55(1), 68–78.</li>
+                <li>Walkington, C. (2013). Journal of Educational Psychology, 105(4), 932–945.</li>
+                <li>Bernacki, M. & Walkington, C. (2014). Comparação de níveis de personalização no Cognitive Tutor de álgebra — interesse aumentou sem alteração no escore de conhecimento.</li>
+                <li>Harp, S. & Mayer, R. (1998). Journal of Educational Psychology, 90(3), 414–434 (efeito dos detalhes sedutores).</li>
+                <li>Iterbeke, K., Schelfhout, W. & De Witte, K. (2022). Personalização por cultura pop em educação financeira — sem efeito na aprendizagem, efeito negativo no interesse situacional.</li>
+              </ul>
+              <p style="font-size: 12.5px; font-weight: 700; color: #334155; margin: 0 0 4px 0;">Medição e validade de itens de teste (específico para a Seção 4, componente dos testes):</p>
+              <ul style="font-size: 12.5px; line-height: 1.6; color: #64748B; margin: 0 0 14px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px;">
+                <li>Kane, M.T. (1992, 2006, 2013). Abordagem de validade baseada em argumento.</li>
+                <li>Sinharay, S. (2025). Journal of Educational Measurement — framework de validação para avaliações personalizadas.</li>
+                <li>Bernacki, M. & Walkington, C. (2014), citado também em revisão de itens isomórficos, CBE—Life Sciences Education (2023) — sensibilidade de itens a mudanças de moldura aparentemente pequenas.</li>
+              </ul>
+              <p style="font-size: 11.5px; line-height: 1.6; color: #94A3B8; margin: 0;">
+                <strong>Nota metodológica:</strong> este documento consolida a pesquisa acadêmica já levantada em revisão anterior (fontes primárias verificadas com DOI) com o material long-form fornecido anteriormente, mantendo apenas as afirmações rastreáveis a estudos reais e removendo formulações retóricas sem valor probatório. Seu objetivo é registrar a fonte teórica da decisão de design — para o bot e para os testes, tratados aqui como componentes de igual relevância —, não afirmar validação científica ou psicométrica definitiva do produto, nem confirmar o método conversacional específico do bot.
               </p>
             </div>
           </div>
