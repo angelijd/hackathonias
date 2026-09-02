@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Pause, Volume2 } from 'lucide-react';
 import demogorgonImg from '../assets/demogorgon.png';
 import elevenImg from '../assets/eleven.png';
 import ambulanceImg from '../assets/ambulance.png';
@@ -53,6 +54,15 @@ export const FIXED_QUESTIONS = [
   'Pensando no seu dia a dia, quanto você se acha aberto(a) ao novo?',
 ];
 
+// Áudios das perguntas fixas (q-01.mp3 = FIXED_QUESTIONS[0], etc.)
+const QUESTION_AUDIO_FILES = import.meta.glob('../assets/audio/q-*.mp3', { eager: true, import: 'default' }) as Record<string, string>;
+
+const getQuestionAudioUrl = (idx: number): string | null => {
+  const filename = `q-${String(idx + 1).padStart(2, '0')}.mp3`;
+  const match = Object.entries(QUESTION_AUDIO_FILES).find(([path]) => path.endsWith(filename));
+  return match ? match[1] : null;
+};
+
 // 5 Opções de Resposta Padronizadas (Escala Likert Neutra)
 export const LIKERT_OPTIONS = [
   { value: 1, label: 'Nada', desc: 'Não tem nada a ver comigo' },
@@ -89,6 +99,8 @@ export const Screen3Assessment: React.FC<Props> = ({
 }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [isQuestionAudioPlaying, setIsQuestionAudioPlaying] = useState(false);
+  const questionAudioRef = useRef<HTMLAudioElement | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [activeMilestone, setActiveMilestone] = useState<MilestoneData | null>(null);
 
@@ -693,6 +705,26 @@ export const Screen3Assessment: React.FC<Props> = ({
   const milestoneNodeIcon = getSeriesMilestoneNodeIcon();
   const theme = getThemeStyles();
 
+  // Para a pergunta atual sempre que o usuário navega para outra
+  useEffect(() => {
+    questionAudioRef.current?.pause();
+    setIsQuestionAudioPlaying(false);
+  }, [currentIdx]);
+
+  const handleToggleQuestionAudio = () => {
+    if (isQuestionAudioPlaying) {
+      questionAudioRef.current?.pause();
+      setIsQuestionAudioPlaying(false);
+      return;
+    }
+    const url = getQuestionAudioUrl(currentIdx);
+    if (!url) return;
+    const audio = new Audio(url);
+    questionAudioRef.current = audio;
+    audio.onended = () => setIsQuestionAudioPlaying(false);
+    audio.play().then(() => setIsQuestionAudioPlaying(true)).catch(() => setIsQuestionAudioPlaying(false));
+  };
+
   return (
     <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 pt-4 pb-12 z-10 flex flex-col justify-between min-h-[calc(100vh-90px)]">
       {/* Beco Intro Video Modal before test starts */}
@@ -812,9 +844,20 @@ export const Screen3Assessment: React.FC<Props> = ({
         {/* Question Statement Card */}
         <div className="mb-8">
           <div className={`p-6 sm:p-8 rounded-3xl border ${theme.statementBox}`}>
-            <span className={`text-xs uppercase block mb-2 ${theme.statementEyebrow}`}>
-              Pergunta {currentIdx + 1} de {FIXED_QUESTIONS.length} — Leia a frase abaixo:
-            </span>
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <span className={`text-xs uppercase ${theme.statementEyebrow}`}>
+                Pergunta {currentIdx + 1} de {FIXED_QUESTIONS.length} — Leia a frase abaixo:
+              </span>
+              <button
+                type="button"
+                onClick={handleToggleQuestionAudio}
+                aria-label={isQuestionAudioPlaying ? 'Pausar áudio da pergunta' : 'Ouvir a pergunta em áudio'}
+                title={isQuestionAudioPlaying ? 'Pausar áudio' : 'Ouvir pergunta'}
+                className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${theme.backButton}`}
+              >
+                {isQuestionAudioPlaying ? <Pause size={18} /> : <Volume2 size={18} />}
+              </button>
+            </div>
             <p className={`text-[20px] sm:text-[24px] leading-snug ${theme.statementText}`}>
               {FIXED_QUESTIONS[currentIdx]}
             </p>
