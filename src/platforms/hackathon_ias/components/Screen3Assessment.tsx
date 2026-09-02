@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { INTEREST_OPTIONS, EXPECTATION_OPTIONS } from '../data/preferencesData';
 import { BecoBot } from './BecoBot';
 import { BecoIntroModal } from './BecoIntroModal';
+import { AiWaitingCard } from './AiWaitingCard';
 import { QuestionItem, Answer, ReportData, MergedReportData } from '../types';
 import becoAvatar from '../beco-bot.png';
 
@@ -332,12 +333,10 @@ export const Screen3Assessment: React.FC<Props> = ({
       >
         <div className="flex-1">
           {isLoading ? (
-            <div className="py-24 flex flex-col items-center justify-center space-y-4">
-              <div className="w-12 h-12 border-4 border-[#FDC300] border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm font-bold text-slate-500 dark:text-slate-400 animate-pulse">
-                Preparando seu teste personalizado...
-              </p>
-            </div>
+            <AiWaitingCard
+              testTypeLabel={activeTestType === 'critical_thinking' ? 'Pensamento Crítico' : 'Criatividade'}
+              interestLabel={interestDetail || INTEREST_OPTIONS.find((opt) => opt.id === selectedInterests[0])?.label}
+            />
           ) : isReportLoading ? (
             <div className="py-24 flex flex-col items-center justify-center space-y-4">
               <div className="w-12 h-12 border-4 border-[#0B7CFB] border-t-transparent rounded-full animate-spin"></div>
