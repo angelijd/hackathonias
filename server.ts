@@ -94,6 +94,52 @@ async function generateGeminiContent(ai: GoogleGenAI, contents: any, config: any
   throw lastErr || new Error('Todos os modelos Gemini falharam');
 }
 
+// Instruções de voz para o áudio das perguntas dissertativas de Pensamento Crítico/Criatividade
+const QUESTION_AUDIO_TTS_INSTRUCTIONS = `Voz e personalidade: Uma pessoa jovem-adulta, gentil e de confiança, como um educador(a) ou orientador(a) que conversa individualmente com um(a) adolescente — nunca um locutor formal ou robótico.
+
+Tom: Neutro, acolhedor e curioso — como quem convida o aluno a refletir sobre uma cena, não como quem aplica uma prova. Nunca soe como propaganda ou entusiasmo forçado.
+
+Ritmo: Levemente mais devagar que uma conversa comum, com uma pausa breve entre a cena e a pergunta final, para que quem ouve consiga acompanhar lendo o texto na tela ao mesmo tempo.
+
+Articulação: Português do Brasil claro e cotidiano, pronúncia natural, sem sotaque regional marcado e sem entonação de "texto lido" — deve soar como fala espontânea.
+
+Emoção: Calor humano sutil e sinceridade; evite dramatização, exclamação ou empolgação exagerada. Feche a pergunta final com entonação de pergunta genuína e curiosa.`;
+
+// Gera o áudio (TTS) de um enunciado de pergunta e retorna como data URI base64, ou null se indisponível/erro
+async function generateQuestionAudioDataUri(text: string): Promise<string | null> {
+  const openaiApiKey = process.env.OPENAI_API_KEY;
+  if (!openaiApiKey || !text) return null;
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini-tts',
+        voice: 'coral',
+        input: text,
+        instructions: QUESTION_AUDIO_TTS_INSTRUCTIONS,
+        response_format: 'mp3',
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn('[TTS] OpenAI respondeu com erro:', response.status, await response.text());
+      return null;
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    return `data:audio/mpeg;base64,${base64}`;
+  } catch (err) {
+    console.warn('[TTS] Falha ao gerar áudio da pergunta:', err);
+    return null;
+  }
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hcbbwzqufnyriphdaqdh.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjYmJ3enF1Zm55cmlwaGRhcWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4Mjk3NDEsImV4cCI6MjEwMzQwNTc0MX0.eIBYSHQO2K6ubK98vcVcWZQpfywVH0gxHa1FvphQyQo';
 
@@ -461,6 +507,25 @@ REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se você 
         { rubricaId: "m5", tipo: "dissertativa", enunciado: `5. Conte como você lidou com a frustração ao tentar aprender algo novo recentemente.` }
       ];
       res.json({ items: mockItems });
+    }
+  });
+
+  // API Route for on-demand question audio (perguntas 2-5 de Pensamento Crítico/Criatividade,
+  // geradas sob demanda quando o avaliador clica no botão — a Q1 já vem com áudio pré-gerado)
+  app.post('/api/generate-question-audio', async (req, res) => {
+    try {
+      const { text } = req.body;
+      if (!text || typeof text !== 'string') {
+        return res.status(400).json({ error: 'Campo "text" é obrigatório.' });
+      }
+      logTelemetry('ia_openai_tts', 'generate_question_audio_on_demand', {});
+      const audio = await generateQuestionAudioDataUri(text);
+      if (!audio) {
+        return res.status(503).json({ error: 'Áudio indisponível no momento.' });
+      }
+      res.json({ audio });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || 'Erro ao gerar áudio.' });
     }
   });
 

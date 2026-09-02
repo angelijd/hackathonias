@@ -92,6 +92,45 @@ async function generateGeminiContent(ai, contents, config = {}) {
   }
   throw lastErr || new Error("Todos os modelos Gemini falharam");
 }
+var QUESTION_AUDIO_TTS_INSTRUCTIONS = `Voz e personalidade: Uma pessoa jovem-adulta, gentil e de confian\xE7a, como um educador(a) ou orientador(a) que conversa individualmente com um(a) adolescente \u2014 nunca um locutor formal ou rob\xF3tico.
+
+Tom: Neutro, acolhedor e curioso \u2014 como quem convida o aluno a refletir sobre uma cena, n\xE3o como quem aplica uma prova. Nunca soe como propaganda ou entusiasmo for\xE7ado.
+
+Ritmo: Levemente mais devagar que uma conversa comum, com uma pausa breve entre a cena e a pergunta final, para que quem ouve consiga acompanhar lendo o texto na tela ao mesmo tempo.
+
+Articula\xE7\xE3o: Portugu\xEAs do Brasil claro e cotidiano, pron\xFAncia natural, sem sotaque regional marcado e sem entona\xE7\xE3o de "texto lido" \u2014 deve soar como fala espont\xE2nea.
+
+Emo\xE7\xE3o: Calor humano sutil e sinceridade; evite dramatiza\xE7\xE3o, exclama\xE7\xE3o ou empolga\xE7\xE3o exagerada. Feche a pergunta final com entona\xE7\xE3o de pergunta genu\xEDna e curiosa.`;
+async function generateQuestionAudioDataUri(text) {
+  const openaiApiKey = process.env.OPENAI_API_KEY;
+  if (!openaiApiKey || !text) return null;
+  try {
+    const response = await fetch("https://api.openai.com/v1/audio/speech", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${openaiApiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini-tts",
+        voice: "coral",
+        input: text,
+        instructions: QUESTION_AUDIO_TTS_INSTRUCTIONS,
+        response_format: "mp3"
+      })
+    });
+    if (!response.ok) {
+      console.warn("[TTS] OpenAI respondeu com erro:", response.status, await response.text());
+      return null;
+    }
+    const arrayBuffer = await response.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    return `data:audio/mpeg;base64,${base64}`;
+  } catch (err) {
+    console.warn("[TTS] Falha ao gerar \xE1udio da pergunta:", err);
+    return null;
+  }
+}
 var SUPABASE_URL = process.env.SUPABASE_URL || "https://hcbbwzqufnyriphdaqdh.supabase.co";
 var SUPABASE_KEY = process.env.SUPABASE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjYmJ3enF1Zm55cmlwaGRhcWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4Mjk3NDEsImV4cCI6MjEwMzQwNTc0MX0.eIBYSHQO2K6ubK98vcVcWZQpfywVH0gxHa1FvphQyQo";
 async function logTelemetry(origem, acao, detalhes = {}) {
@@ -437,6 +476,22 @@ REGRA DE FORMATO: Nenhum objeto do array pode conter o campo "opcoes". Se voc\xE
         { rubricaId: "m5", tipo: "dissertativa", enunciado: `5. Conte como voc\xEA lidou com a frustra\xE7\xE3o ao tentar aprender algo novo recentemente.` }
       ];
       res.json({ items: mockItems });
+    }
+  });
+  app.post("/api/generate-question-audio", async (req, res) => {
+    try {
+      const { text } = req.body;
+      if (!text || typeof text !== "string") {
+        return res.status(400).json({ error: 'Campo "text" \xE9 obrigat\xF3rio.' });
+      }
+      logTelemetry("ia_openai_tts", "generate_question_audio_on_demand", {});
+      const audio = await generateQuestionAudioDataUri(text);
+      if (!audio) {
+        return res.status(503).json({ error: "\xC1udio indispon\xEDvel no momento." });
+      }
+      res.json({ audio });
+    } catch (error) {
+      res.status(500).json({ error: error.message || "Erro ao gerar \xE1udio." });
     }
   });
   app.post("/api/generate-report", async (req, res) => {

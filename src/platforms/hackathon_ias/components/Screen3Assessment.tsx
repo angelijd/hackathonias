@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Loader2, Pause, Volume2 } from 'lucide-react';
 import { INTEREST_OPTIONS, EXPECTATION_OPTIONS } from '../data/preferencesData';
 import { BecoBot } from './BecoBot';
 import { BecoIntroModal } from './BecoIntroModal';
@@ -46,6 +47,11 @@ export const Screen3Assessment: React.FC<Props> = ({
   const [questions, setQuestions] = useState<QuestionItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Áudio das perguntas (Q1 vem pré-gerada junto da resposta; Q2-5 são geradas sob demanda no clique)
+  const [questionAudio, setQuestionAudio] = useState<Record<number, { status: 'loading' | 'ready' | 'error'; url?: string }>>({});
+  const [isQuestionAudioPlaying, setIsQuestionAudioPlaying] = useState(false);
+  const questionAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // O vídeo do Béco só deve aparecer no primeiro teste do bloco (hasSeenIntroVideo
   // vem do App, sobrevivendo a um remonte deste componente ao trocar de teste).
@@ -113,11 +119,19 @@ export const Screen3Assessment: React.FC<Props> = ({
       const fetchedItems: QuestionItem[] = data.items || [];
       setQuestions(fetchedItems);
       setCurrentIdx(0);
-      
-      const initialAnswers = fetchedItems.map(item => 
+
+      const initialAnswers = fetchedItems.map(item =>
         item.tipo === 'multipla_marcacao' ? [] : ''
       );
       setAnswers(initialAnswers);
+
+      // Dispara a geração do áudio da Q1 assim que as perguntas chegam, sem bloquear
+      // a tela — quando o avaliador clicar em play, é provável que já esteja pronto.
+      // Q2-5 só geram áudio sob demanda, no clique (mesma função, fetchAudioForQuestion).
+      setQuestionAudio({});
+      if (fetchedItems[0]?.enunciado) {
+        fetchAudioForQuestion(0, fetchedItems[0].enunciado);
+      }
     } catch (err: any) {
       if (activeRef && !activeRef.active) return;
       setError(err.message || 'Ocorreu um erro ao carregar o laboratório.');
@@ -126,6 +140,50 @@ export const Screen3Assessment: React.FC<Props> = ({
       setIsLoading(false);
     }
   };
+
+  const fetchAudioForQuestion = async (idx: number, enunciado: string) => {
+    setQuestionAudio(prev => ({ ...prev, [idx]: { status: 'loading' } }));
+    try {
+      const res = await fetch('/api/generate-question-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: enunciado }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.audio) throw new Error(data.error || 'Áudio indisponível');
+      setQuestionAudio(prev => ({ ...prev, [idx]: { status: 'ready', url: data.audio } }));
+    } catch {
+      setQuestionAudio(prev => ({ ...prev, [idx]: { status: 'error' } }));
+    }
+  };
+
+  const handleToggleQuestionAudio = () => {
+    const state = questionAudio[currentIdx];
+    const enunciado = questions[currentIdx]?.enunciado;
+
+    if (!state || state.status === 'error') {
+      if (enunciado) fetchAudioForQuestion(currentIdx, enunciado);
+      return;
+    }
+    if (state.status === 'loading') return;
+
+    if (state.status === 'ready' && state.url) {
+      if (isQuestionAudioPlaying) {
+        questionAudioRef.current?.pause();
+        setIsQuestionAudioPlaying(false);
+        return;
+      }
+      const audio = new Audio(state.url);
+      questionAudioRef.current = audio;
+      audio.onended = () => setIsQuestionAudioPlaying(false);
+      audio.play().then(() => setIsQuestionAudioPlaying(true)).catch(() => setIsQuestionAudioPlaying(false));
+    }
+  };
+
+  useEffect(() => {
+    questionAudioRef.current?.pause();
+    setIsQuestionAudioPlaying(false);
+  }, [currentIdx]);
 
   const generateReport = async () => {
     setIsReportLoading(true);
@@ -389,9 +447,29 @@ export const Screen3Assessment: React.FC<Props> = ({
                 <div className={`p-6 sm:p-7 rounded-3xl border mb-6 shadow-sm ${
                   darkMode ? 'bg-slate-900/80 border-slate-700/80' : 'bg-[#F8FAFC] border-slate-200/90'
                 }`}>
-                  <p className="text-[16px] sm:text-[18px] font-bold leading-relaxed text-[#04142B] dark:text-slate-100">
-                    {(currentQ?.enunciado || '').replace(/^(?:Quest[ãa]o\s*\d+[\.\-\:]*|\d+[\.\-\:]+)\s*/i, '')}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-[16px] sm:text-[18px] font-bold leading-relaxed text-[#04142B] dark:text-slate-100">
+                      {(currentQ?.enunciado || '').replace(/^(?:Quest[ãa]o\s*\d+[\.\-\:]*|\d+[\.\-\:]+)\s*/i, '')}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleToggleQuestionAudio}
+                      disabled={questionAudio[currentIdx]?.status === 'loading'}
+                      aria-label={isQuestionAudioPlaying ? 'Pausar áudio da pergunta' : 'Ouvir a pergunta em áudio'}
+                      title={isQuestionAudioPlaying ? 'Pausar áudio' : 'Ouvir pergunta'}
+                      className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer disabled:cursor-wait ${
+                        darkMode ? 'text-amber-300/80 hover:text-white hover:bg-slate-800' : 'text-[#04142B]/70 hover:text-[#04142B] hover:bg-amber-400/15'
+                      }`}
+                    >
+                      {questionAudio[currentIdx]?.status === 'loading' ? (
+                        <Loader2 size={18} className="animate-spin" />
+                      ) : isQuestionAudioPlaying ? (
+                        <Pause size={18} />
+                      ) : (
+                        <Volume2 size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Answer Area */}

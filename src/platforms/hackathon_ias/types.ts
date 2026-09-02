@@ -42,6 +42,7 @@ export interface QuestionItem {
   tipo: 'dissertativa' | 'multipla_marcacao';
   enunciado: string;
   opcoes?: string[];
+  audio?: string;
 }
 
 export type Answer = string | string[];
