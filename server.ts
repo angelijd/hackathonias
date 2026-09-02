@@ -330,11 +330,12 @@ Ao selecionar 4–5 itens de "itens_traduzidos" de uma rubrica:
 # REGRAS DE PERSONALIZAÇÃO
 
 1. O interesse ancora o cenário de forma concreta: use o nome do jogo, esporte, instrumento ou atividade específica — não o interesse amplo ("games", "música") quando o interesse detalhado estiver disponível.
-2. Use 1–2 termos que alguém que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "tática"). Se estiver usando o interesse amplo (fallback), use termos genéricos do domínio.
-3. O dilema da cena deve ser algo que realmente acontece naquele universo — não drama inventado.
-4. Nunca comece com "Já que você gosta de..." ou "Pensando nos seus interesses..." — coloque o aluno direto na cena.
-5. As consequências e a aposta devem ser realistas para a idade e o cotidiano do aluno.
-6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
+2. Use 1–2 termos que alguém que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "tática"). Se estiver usando o interesse amplo (fallback), use termos genéricos do domínio. Nunca use jargão técnico-profissional (termos de produção, indústria, bastidores, crítica especializada) — o vocabulário deve ser o de quem consome/vive aquele interesse como fã, nunca o de quem trabalha nele.
+3. O aluno nunca é colocado no papel de profissional, autor, produtor ou consultor de quem cria aquele conteúdo (ex: roteirista, diretor, produtor, desenvolvedor do jogo). A cena é sempre vivida pelo aluno como fã/praticante/espectador, na própria vida dele — nunca como alguém opinando sobre decisões de produção, roteiro ou bastidores de terceiros.
+4. O dilema da cena deve ser algo que realmente acontece naquele universo — não drama inventado.
+5. Nunca comece com "Já que você gosta de..." ou "Pensando nos seus interesses..." — coloque o aluno direto na cena.
+6. As consequências e a aposta devem ser realistas para a idade e o cotidiano do aluno.
+7. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
 
 # REGRAS OBRIGATÓRIAS
 
@@ -399,11 +400,12 @@ Para cada item, siga esta estrutura:
 # REGRAS DE PERSONALIZAÇÃO
 
 1. O dilema da cena só pode existir dentro do universo daquele interesse específico. Se trocar o interesse por outro e a pergunta continuar funcionando sem mudar nada, reescreva — a personalização está falsa.
-2. Use 1–2 termos que alguém que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos genéricos do domínio.
-3. Nunca comece com "Já que você gosta de..." ou "Pensando nos seus interesses..." — jogue o aluno direto na cena.
-4. O conflito deve ser algo que realmente acontece naquele interesse, não um drama inventado ou artificial.
-5. As consequências e a aposta devem ser realistas para a idade e o cotidiano do aluno — nem triviais demais, nem grandiosas demais.
-6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
+2. Use 1–2 termos que alguém que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos genéricos do domínio. Nunca use jargão técnico-profissional (termos de produção, indústria, bastidores, crítica especializada) — o vocabulário deve ser o de quem consome/vive aquele interesse como fã, nunca o de quem trabalha nele.
+3. O aluno nunca é colocado no papel de profissional, autor, produtor ou consultor de quem cria aquele conteúdo (ex: roteirista, diretor, produtor, desenvolvedor do jogo). A cena é sempre vivida pelo aluno como fã/praticante/espectador, na própria vida dele — nunca como alguém opinando sobre decisões de produção, roteiro ou bastidores de terceiros.
+4. Nunca comece com "Já que você gosta de..." ou "Pensando nos seus interesses..." — jogue o aluno direto na cena.
+5. O conflito deve ser algo que realmente acontece naquele interesse, não um drama inventado ou artificial.
+6. As consequências e a aposta devem ser realistas para a idade e o cotidiano do aluno — nem triviais demais, nem grandiosas demais.
+7. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
 
 # REGRAS OBRIGATÓRIAS
 
