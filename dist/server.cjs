@@ -311,11 +311,12 @@ Ao selecionar 4\u20135 itens de "itens_traduzidos" de uma rubrica:
 # REGRAS DE PERSONALIZA\xC7\xC3O
 
 1. O interesse ancora o cen\xE1rio de forma concreta: use o nome do jogo, esporte, instrumento ou atividade espec\xEDfica \u2014 n\xE3o o interesse amplo ("games", "m\xFAsica") quando o interesse detalhado estiver dispon\xEDvel.
-2. Use 1\u20132 termos que algu\xE9m que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "t\xE1tica"). Se estiver usando o interesse amplo (fallback), use termos gen\xE9ricos do dom\xEDnio.
-3. O dilema da cena deve ser algo que realmente acontece naquele universo \u2014 n\xE3o drama inventado.
-4. Nunca comece com "J\xE1 que voc\xEA gosta de..." ou "Pensando nos seus interesses..." \u2014 coloque o aluno direto na cena.
-5. As consequ\xEAncias e a aposta devem ser realistas para a idade e o cotidiano do aluno.
-6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
+2. Use 1\u20132 termos que algu\xE9m que vive esse interesse reconheceria (ex: "ranked", "build", "acorde", "t\xE1tica"). Se estiver usando o interesse amplo (fallback), use termos gen\xE9ricos do dom\xEDnio. Nunca use jarg\xE3o t\xE9cnico-profissional (termos de produ\xE7\xE3o, ind\xFAstria, bastidores, cr\xEDtica especializada) \u2014 o vocabul\xE1rio deve ser o de quem consome/vive aquele interesse como f\xE3, nunca o de quem trabalha nele.
+3. O aluno nunca \xE9 colocado no papel de profissional, autor, produtor ou consultor de quem cria aquele conte\xFAdo (ex: roteirista, diretor, produtor, desenvolvedor do jogo). A cena \xE9 sempre vivida pelo aluno como f\xE3/praticante/espectador, na pr\xF3pria vida dele \u2014 nunca como algu\xE9m opinando sobre decis\xF5es de produ\xE7\xE3o, roteiro ou bastidores de terceiros.
+4. O dilema da cena deve ser algo que realmente acontece naquele universo \u2014 n\xE3o drama inventado.
+5. Nunca comece com "J\xE1 que voc\xEA gosta de..." ou "Pensando nos seus interesses..." \u2014 coloque o aluno direto na cena.
+6. As consequ\xEAncias e a aposta devem ser realistas para a idade e o cotidiano do aluno.
+7. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
 
 # REGRAS OBRIGAT\xD3RIAS
 
@@ -379,11 +380,12 @@ Para cada item, siga esta estrutura:
 # REGRAS DE PERSONALIZA\xC7\xC3O
 
 1. O dilema da cena s\xF3 pode existir dentro do universo daquele interesse espec\xEDfico. Se trocar o interesse por outro e a pergunta continuar funcionando sem mudar nada, reescreva \u2014 a personaliza\xE7\xE3o est\xE1 falsa.
-2. Use 1\u20132 termos que algu\xE9m que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos gen\xE9ricos do dom\xEDnio.
-3. Nunca comece com "J\xE1 que voc\xEA gosta de..." ou "Pensando nos seus interesses..." \u2014 jogue o aluno direto na cena.
-4. O conflito deve ser algo que realmente acontece naquele interesse, n\xE3o um drama inventado ou artificial.
-5. As consequ\xEAncias e a aposta devem ser realistas para a idade e o cotidiano do aluno \u2014 nem triviais demais, nem grandiosas demais.
-6. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
+2. Use 1\u20132 termos que algu\xE9m que pratica esse interesse reconheceria (ex: "crafting table" para Minecraft, "passe de letra" para futebol). Se estiver usando o interesse amplo (fallback), use termos gen\xE9ricos do dom\xEDnio. Nunca use jarg\xE3o t\xE9cnico-profissional (termos de produ\xE7\xE3o, ind\xFAstria, bastidores, cr\xEDtica especializada) \u2014 o vocabul\xE1rio deve ser o de quem consome/vive aquele interesse como f\xE3, nunca o de quem trabalha nele.
+3. O aluno nunca \xE9 colocado no papel de profissional, autor, produtor ou consultor de quem cria aquele conte\xFAdo (ex: roteirista, diretor, produtor, desenvolvedor do jogo). A cena \xE9 sempre vivida pelo aluno como f\xE3/praticante/espectador, na pr\xF3pria vida dele \u2014 nunca como algu\xE9m opinando sobre decis\xF5es de produ\xE7\xE3o, roteiro ou bastidores de terceiros.
+4. Nunca comece com "J\xE1 que voc\xEA gosta de..." ou "Pensando nos seus interesses..." \u2014 jogue o aluno direto na cena.
+5. O conflito deve ser algo que realmente acontece naquele interesse, n\xE3o um drama inventado ou artificial.
+6. As consequ\xEAncias e a aposta devem ser realistas para a idade e o cotidiano do aluno \u2014 nem triviais demais, nem grandiosas demais.
+7. Use obrigatoriamente pelo menos 1 dado concreto do aluno (nome OU cidade OU escola OU interesse) por item, nunca mais de 2.
 
 # REGRAS OBRIGAT\xD3RIAS
 
