@@ -53,6 +53,33 @@ async function sendEmailViaResend(fromName: string, to: string, subject: string,
   return res.json();
 }
 
+// E-mail de alerta pro admin quando um envio crítico (WhatsApp/e-mail) falha em produção.
+const ADMIN_ALERT_EMAIL = process.env.ADMIN_ALERT_EMAIL || 'angelijd@gmail.com';
+
+async function notifyAdminError(context: string, errorDetail: string) {
+  try {
+    if (!process.env.RESEND_API_KEY) {
+      console.warn(`[Admin Alert] RESEND_API_KEY ausente, não foi possível notificar erro: ${context}`);
+      return;
+    }
+    await sendEmailViaResend(
+      'Alerta do Sistema — Portal IAS',
+      ADMIN_ALERT_EMAIL,
+      `⚠️ Falha no Portal IAS: ${context}`,
+      `Ocorreu uma falha em produção.\n\nContexto: ${context}\n\nDetalhes: ${errorDetail}\n\nHorário: ${new Date().toISOString()}`,
+      `<div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+        <h2 style="color:#b91c1c; margin-top:0;">⚠️ Falha no Portal IAS</h2>
+        <p><strong>Contexto:</strong> ${context}</p>
+        <p><strong>Detalhes:</strong></p>
+        <pre style="background:#f8fafc;padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word;">${errorDetail}</pre>
+        <p style="font-size:12px;color:#64748b;">${new Date().toISOString()}</p>
+      </div>`
+    );
+  } catch (err) {
+    console.error('[Admin Alert] Falha ao enviar alerta de erro:', err);
+  }
+}
+
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -1313,11 +1340,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
       } else {
         const errText = await evoRes.text();
         console.warn('[Evolution API Export Error]:', errText);
+        notifyAdminError('Envio de relatório via WhatsApp (/api/ai/export)', errText);
         return res.status(500).json({ error: 'Erro ao enviar a mensagem via Evolution API.' });
       }
 
     } catch (err: any) {
       console.error('[Export Route Error]:', err);
+      notifyAdminError('Envio de relatório via WhatsApp (/api/ai/export)', err?.message || String(err));
       return res.status(500).json({ error: err.message || 'Erro interno na rota de exportação.' });
     }
   });
@@ -1505,6 +1534,7 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
             );
           } catch (mailErr: any) {
             console.error('[Recovery Email] Falha ao enviar via Resend:', mailErr);
+            notifyAdminError('Recuperação de senha por e-mail (/api/auth/recovery-send)', mailErr?.message || String(mailErr));
             return res.status(502).json({ error: 'Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes ou contate o suporte.' });
           }
         } else {
@@ -1541,10 +1571,12 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
           if (!evoRes.ok) {
             const errText = await evoRes.text();
             console.error('[Evolution API Password Recovery Error]:', errText);
+            notifyAdminError('Recuperação de senha por WhatsApp (/api/auth/recovery-send)', errText);
             return res.status(502).json({ error: 'Não foi possível enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte.' });
           }
-        } catch (evoErr) {
+        } catch (evoErr: any) {
           console.error('[Evolution API Password Recovery Dispatch Error]:', evoErr);
+          notifyAdminError('Recuperação de senha por WhatsApp (/api/auth/recovery-send)', evoErr?.message || String(evoErr));
           return res.status(502).json({ error: 'Não foi possível enviar as credenciais via WhatsApp. Tente novamente em instantes ou contate o suporte.' });
         }
 
@@ -1810,9 +1842,11 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
           } else {
             const errData = await evoRes.text();
             console.warn('[Recuperação de Acesso] Falha no envio do sendText:', evoRes.status, errData);
+            notifyAdminError('Solicitação de acesso do aluno via WhatsApp (/api/auth-recovery/request)', errData);
           }
-        } catch (evoErr) {
+        } catch (evoErr: any) {
           console.warn('[Recuperação de Acesso] Falha ao tentar contato com Evolution API:', evoErr);
+          notifyAdminError('Solicitação de acesso do aluno via WhatsApp (/api/auth-recovery/request)', evoErr?.message || String(evoErr));
         }
       }
 
