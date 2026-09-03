@@ -22,7 +22,7 @@ export const AiWaitingCard: React.FC<Props> = ({ testTypeLabel, interestLabel })
   useEffect(() => {
     const id = setInterval(() => {
       setStageIdx((i) => (i + 1) % messages.length);
-    }, 2600);
+    }, 4200);
     return () => clearInterval(id);
   }, [messages.length]);
 
