@@ -399,6 +399,29 @@ export const Screen3Assessment: React.FC<Props> = ({
     }
   };
 
+  useEffect(() => {
+    if (!isCompleted) return;
+    const studentScores = calculateStudentSocioEmotional(answers);
+    const matchResult = matchCharacter(universeKey, studentScores);
+    fetch('/api/save-fixed-test-result', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        platform: 'autoavaliacao',
+        studentName: userName,
+        interests: selectedInterests,
+        questions: FIXED_QUESTIONS,
+        answers,
+        result: {
+          scores: studentScores,
+          character: matchResult.character.name,
+          matchPercentage: matchResult.matchPercentage
+        }
+      })
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCompleted]);
+
   if (isCompleted) {
     const studentScores = calculateStudentSocioEmotional(answers);
     const matchResult = matchCharacter(universeKey, studentScores);
