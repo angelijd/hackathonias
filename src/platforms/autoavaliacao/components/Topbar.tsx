@@ -1,6 +1,7 @@
 import React from 'react';
 import logoClaro from '../assets/logo-claro.png';
 import logoEscuro from '../assets/logo-escuro.png';
+import { AccessibilityButton } from './AccessibilityButton';
 
 interface TopbarProps {
   darkMode: boolean;
@@ -48,6 +49,9 @@ export const Topbar: React.FC<TopbarProps> = ({
           <span className="w-2 h-2 rounded-full bg-[#05B85B] animate-pulse"></span>
           <span>Usuário: <strong className={darkMode ? 'text-white' : 'text-slate-900'}>{userName}</strong></span>
         </button>
+
+        {/* Accessibility Button */}
+        <AccessibilityButton darkMode={darkMode} />
 
         {/* Theme Toggle Button */}
         <div className={`flex items-center rounded-full p-1 gap-0.5 shadow-inner ${darkMode ? 'bg-white' : 'bg-slate-100 ring-1 ring-inset ring-slate-200'}`}>
