@@ -132,7 +132,7 @@ async function generateQuestionAudioDataUri(text) {
   }
 }
 var SUPABASE_URL = process.env.SUPABASE_URL || "https://hcbbwzqufnyriphdaqdh.supabase.co";
-var SUPABASE_KEY = process.env.SUPABASE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjYmJ3enF1Zm55cmlwaGRhcWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4Mjk3NDEsImV4cCI6MjEwMzQwNTc0MX0.eIBYSHQO2K6ubK98vcVcWZQpfywVH0gxHa1FvphQyQo";
+var SUPABASE_KEY = process.env.SUPABASE_KEY || "sb_publishable_Xlmkb7AqkuTEh2MyfNSY9g_aej8kptI";
 async function logTelemetry(origem, acao, detalhes = {}) {
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/logs_telemetria`, {
@@ -151,6 +151,22 @@ async function logTelemetry(origem, acao, detalhes = {}) {
     });
   } catch (err) {
     console.error("[Telemetry Error]", err);
+  }
+}
+async function saveToSupabase(table, row) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(row)
+    });
+  } catch (err) {
+    console.error(`[Supabase Save Error] tabela=${table}`, err);
   }
 }
 async function startServer() {
@@ -836,6 +852,19 @@ Cada string e um topico completo e independente.
           proximoPasso: ["Tente novamente em alguns instantes."]
         };
       }
+      saveToSupabase("test_answers", {
+        platform: "hackathon_ias",
+        test_type: testType || null,
+        student_name: name || null,
+        student_age: age || null,
+        student_grade: grade || null,
+        student_city: city || null,
+        student_school: school || null,
+        interests: interests || null,
+        questions: questions || null,
+        answers: answers || null,
+        result
+      });
       return res.json(result);
     } catch (error) {
       console.log("Serving mock report.");
@@ -848,9 +877,29 @@ Cada string e um topico completo e independente.
       });
     }
   });
+  app.post("/api/save-fixed-test-result", (req, res) => {
+    const { platform, studentName, interests, questions, answers, result } = req.body;
+    if (!platform) {
+      return res.status(400).json({ error: "Par\xE2metro platform ausente." });
+    }
+    saveToSupabase("test_answers", {
+      platform,
+      test_type: null,
+      student_name: studentName || null,
+      student_age: null,
+      student_grade: null,
+      student_city: null,
+      student_school: null,
+      interests: interests || null,
+      questions: questions || null,
+      answers: answers || null,
+      result: result || null
+    });
+    return res.json({ success: true });
+  });
   app.post("/api/beco-chat", async (req, res) => {
     try {
-      const { question, userMessage, history } = req.body;
+      const { question, userMessage, history, userName, interests } = req.body;
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
         await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -912,6 +961,13 @@ Voc\xEA deve responder ESTRITAMENTE com um objeto JSON v\xE1lido, sem qualquer t
           chips: ["Me explica de outro jeito?", "Quero uma pista", "Por que isso importa?"]
         };
       }
+      saveToSupabase("beco_messages", {
+        student_name: userName || null,
+        interests: interests || null,
+        question_enunciado: question?.enunciado || question || null,
+        user_message: userMessage,
+        bot_response: result?.response || null
+      });
       return res.json(result);
     } catch (error) {
       console.log("Serving mock chat.");
@@ -1087,7 +1143,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
         parts: [{ text: message }]
       });
       const response = await generateGeminiContent(ai, contents);
-      return res.json({ text: response.text || "Desculpe, tive um pequeno problema para processar sua pergunta. Como posso ajudar?" });
+      const text = response.text || "Desculpe, tive um pequeno problema para processar sua pergunta. Como posso ajudar?";
+      saveToSupabase("mentor_messages", {
+        role: role || null,
+        user_message: message,
+        bot_response: text
+      });
+      return res.json({ text });
     } catch (err) {
       console.error("[Prof. Cl\xE1udio AI Error]:", err);
       return res.status(500).json({ error: err.message || "Erro ao consultar o mentor de IA." });
@@ -1170,6 +1232,13 @@ Quando o educador ou gestor lhe fizer perguntas sobre os dados, ajude de forma h
     if (!user || user.password !== password) {
       return res.status(401).json({ error: "C\xF3digo ou senha incorretos." });
     }
+    saveToSupabase("logins", {
+      code: user.code,
+      name: user.name,
+      role: user.role,
+      school: user.school,
+      is_first_access: user.isFirstAccess
+    });
     return res.json({
       success: true,
       code: user.code,
